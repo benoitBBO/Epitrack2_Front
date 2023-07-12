@@ -1,0 +1,17 @@
+input {
+    width: 100%;
+}
+ul {
+    list-style-type: none;
+    background: white;
+    position: absolute;
+    width: 100%;
+    padding: 10px 20px;
+}
+li {
+    padding: 5px 0px;
+}
+li:hover {
+    background: rgb(244, 244, 247);
+    cursor: pointer;
+}
