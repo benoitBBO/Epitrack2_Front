@@ -9,6 +9,8 @@ import { MovieListComponent } from './movie-list/movie-list.component';
 import { StarsComponent } from './shared/components/stars/stars.component';
 import { PrintImgPipe } from './shared/pipes/print-img.pipe';
 import { SerieListComponent } from './serie-list/serie-list.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './auth/login/login.component';
 
 @NgModule({
   declarations: [
@@ -18,12 +20,14 @@ import { SerieListComponent } from './serie-list/serie-list.component';
     MovieListComponent,
     StarsComponent,
     PrintImgPipe,
-    SerieListComponent
+    SerieListComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
