@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
@@ -13,14 +14,14 @@ export class LoginComponent {
   isSubmitted:boolean = false;
   
   constructor(private fb:FormBuilder,
-            private userService:UserService
+            private userService:UserService,
+            private router:Router
               // private msgService:MessageService,
-              // private router:Router
-              ){}
+               ){}
 
   ngOnInit(){
     this.loginForm = this.fb.group({
-      email:['', [Validators.required, Validators.email]],
+      username:['', [Validators.required]],
       password:['', [Validators.required]]
     });
   }
@@ -28,15 +29,19 @@ export class LoginComponent {
   onLoginSubmit(ev:Event){
     this.isSubmitted = true;
     if(this.loginForm.valid){
-      this.userService.login(this.loginForm.value).subscribe( {
-           next: (response:any) => {
-             console.log('retour post login ', response.headers.get('Authorization'));
-             localStorage.setItem('token', response.headers.get('Authorization'));
-           }
-        }  
-      )
+      this.userService.login(this.loginForm.value)
+        .subscribe( {
+          next: (response:any) => {
+            sessionStorage.setItem('token', response.token);
+            sessionStorage.setItem('username', response.username);
+            //localStorage.setItem('token', response.headers.get('Authorization'));
+            this.router.navigate(['/']);         
+          }
+        }
+          
+        )
     }
   }
-  
+ 
 
 }

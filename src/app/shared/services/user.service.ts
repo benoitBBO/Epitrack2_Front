@@ -1,6 +1,16 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpClientModule } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
+
+
+interface User {
+  username:string;
+  firstname:string;
+  lastname:string;
+  email:string;
+  password:string;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,26 +21,22 @@ export class UserService {
 
   constructor(private http:HttpClient) { }
 
-  login(data:{email:String, password:String}):Observable<any> {
-    
-    //appel serveur pour vérifier les données de login
+  login(data:{username:String, password:String}){
+   
+    //appel serveur (seveur vérifie les données de login et renvoie
+    //               un token de connexion si ok)
     let endpoint = '/login';
-
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': '' });
-    let options = { headers: headers };
-    return this.http.post(this.EPITRACK_API+endpoint, data, options)
-      .pipe(
-        tap((response:any) => {
-          console.log('Token:', response.headers.get('Authorization'));
-        })
+    console.log("service login")
+    return this.http.post(this.EPITRACK_API+endpoint, data)
+    //return this.http.post(this.EPITRACK_API+endpoint, data, {withCredentials: true})
+    //.subscribe(resp => console.log("resp.headers= ",resp.headers))
       
-      )
-
-    //et récupérer un token de connexion
-    
-
-
   }
+
+  register(user:User){
+    console.log("méthode register")
+  }
+
+
+
 }
