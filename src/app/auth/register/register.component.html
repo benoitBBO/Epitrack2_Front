@@ -1,0 +1,48 @@
+<div class="container">
+    <form (submit)="onRegisterSubmit($event)" [formGroup]="registerForm">
+
+        <div class="mb-3">
+            <label for="username-id" class="form-label">Nom d'utilisateur</label>
+            <input id="username-id" class="form-control" type="text" required>
+            <p class="error" 
+               *ngIf="registerForm.controls['username'].invalid && isSubmitted">
+              Nom d'utilisateur obligatoire
+            </p>
+        </div>
+
+        <div class="mb-3">
+            <label for="firstname-id" class="form-label">Prénom</label>
+            <input id="firstname-id" class="form-control" type="text">
+        </div>
+
+        <div class="mb-3">
+            <label for="lastname-id" class="form-label">Nom</label>
+            <input id="lastname-id" class="form-control" type="text">
+        </div>
+
+        <div class="mb-3">
+          <label for="email-id" class="form-label">Adresse Email</label>
+          <input id="email-id" formControlName="email" type="email" class="form-control">
+          <p class="error" 
+             *ngIf="registerForm.controls['email'].invalid && isSubmitted">
+            email invalide
+          </p>
+        </div>
+        
+        <div class="mb-3">
+          <label for="pwd-id" class="form-label">Mot de passe</label>
+          <input id="pwd-id" formControlName="password" type="password" class="form-control" id="exampleInputPassword1">
+          <div id="pwd-HelpBlock" class="form-text">
+            Votre mot de passe doit contenir 8 caractères ou plus, des lettres, chiffres and caractères spéciaux
+          </div>
+          <p class="error" 
+             *ngIf="registerForm.controls['password'].hasError('required') 
+                    && isSubmitted">
+            mot de passe invalide
+          </p>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">S'inscrire</button>
+        
+    </form>
+</div>

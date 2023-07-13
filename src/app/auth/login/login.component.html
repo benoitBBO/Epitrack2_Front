@@ -2,11 +2,11 @@
     <form (submit)="onLoginSubmit($event)" [formGroup]="loginForm">
 
         <div class="mb-3">
-          <label for="email-id" class="form-label">Adresse Email</label>
-          <input id="email-id" formControlName="email" type="email" class="form-control">
+          <label for="username-id" class="form-label">Nom utilisateur</label>
+          <input id="username-id" formControlName="username" type="text" class="form-control">
           <p class="error" 
-             *ngIf="loginForm.controls['email'].invalid && isSubmitted">
-            email ou mot de passe invalide
+             *ngIf="loginForm.controls['username'].invalid && isSubmitted">
+            Nom utilisateur ou mot de passe invalide
           </p>
         </div>
         
@@ -16,11 +16,16 @@
           <p class="error" 
              *ngIf="loginForm.controls['password'].hasError('required') 
                     && isSubmitted">
-            email ou mot de passe invalide
+            Nom utilisateur ou mot de passe invalide
           </p>
         </div>
         
         <button type="submit" class="btn btn-primary">Se Connecter</button>
-    
+        
+        <div class="mt-5 mb-3">
+          <p>Pas encore de compte Epitrack ? Inscrivez-vous</p>
+        </div>
+
+        <button routerLink="/register" type="button" class="btn btn-primary">S'inscrire</button>
     </form>
 </div>

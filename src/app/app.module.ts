@@ -11,6 +11,7 @@ import { PrintImgPipe } from './shared/pipes/print-img.pipe';
 import { SerieListComponent } from './serie-list/serie-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { LoginComponent } from './auth/login/login.component';
     StarsComponent,
     PrintImgPipe,
     SerieListComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

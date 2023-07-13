@@ -1,5 +1,16 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+
+interface User {
+  username:string;
+  firstname:string;
+  lastname:string;
+  email:string;
+  password:string;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,19 +21,21 @@ export class UserService {
 
   constructor(private http:HttpClient) { }
 
-  login(data:{email:String, password:String}){
+  login(data:{username:String, password:String}){
     
-    //appel serveur pour vérifier les données de login
+    //appel serveur (seveur vérifie les données de login et renvoie
+    //               un token de connexion si ok)
     let endpoint = '/login';
-    let option = 
-    this.http.post(this.EPITRACK_API+endpoint, data, {observe: 'response'})
-    .subscribe(resp => console.log("resp.headers= ",resp.headers.get('Authorization')))
+    console.log("service login")
+    return this.http.post(this.EPITRACK_API+endpoint, data)
+    //return this.http.post(this.EPITRACK_API+endpoint, data, {withCredentials: true})
+    //.subscribe(resp => console.log("resp.headers= ",resp.headers))
       
-
-
-    //et récupérer un token de connexion
-    
-
-
   }
+
+  register(user:User){
+    console.log("méthode register")
+  }
+
+
 }
