@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MovieModel } from '../shared/models/movie.model';
 import { MovieService } from '../shared/services/movie.service';
+import { RouteReuseStrategy, Router, RouterState } from '@angular/router';
 
 @Component({
   selector: 'app-movie-list',
@@ -11,15 +12,13 @@ export class MovieListComponent {
   movies: MovieModel[] = [];
   movie!: MovieModel;
 
-  constructor(private service: MovieService) {
+  constructor(private service: MovieService, private router:Router) {
     console.log("constructor MovieService : ", this);
   }
 
   ngOnInit() {
     //requete get API
-    console.log("ng init movie list");
     this.service.getBest4MoviesFromApi();
-    //abonné aux changements du service movies$
     this.service.movies$.subscribe( data => this.movies = data);
   }
 }

@@ -28,17 +28,13 @@ export class LoginComponent {
   onLoginSubmit(ev:Event){
     this.isSubmitted = true;
     if(this.loginForm.valid){
-      this.userService.login(this.loginForm.value)
-        // .subscribe( {
-        //   next: (response:any) => {
-        //     console.log("retour post login ", response.Headers.get("Authorization"));
-        //     console.log("retour post login ", response.getHeaders);
-            
-
-        //   }
-        // }
-          
-        //)
+      this.userService.login(this.loginForm.value).subscribe( {
+           next: (response:any) => {
+             console.log('retour post login ', response.headers.get('Authorization'));
+             localStorage.setItem('token', response.headers.get('Authorization'));
+           }
+        }  
+      )
     }
   }
   

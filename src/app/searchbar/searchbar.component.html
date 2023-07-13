@@ -1,8 +1,12 @@
 <div>
-    <input class="form-control" type="text">
-    <!--<div>
+    <input (keyup)="onKeyUp(tagSaisie.value)" 
+            #tagSaisie placeholder="Rechercher une vidéo..." 
+            class="form-control" type="text">
+    <div *ngIf="searchVideos.length!=0">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">titre video..</li>
+            <li class="list-group-item" *ngFor="let video of searchVideos">
+                <i *ngIf="video.type=='Movie'" class="fas fa-film"></i>
+                <i *ngIf="video.type=='Serie'" class="fas fa-tv"></i> {{video.title}}</li>
         </ul> 
-    </div>-->
+    </div>
 </div>
