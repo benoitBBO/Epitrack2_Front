@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { MovieModel } from '../models/movie.model';
 
@@ -32,6 +32,15 @@ export class MovieService {
       .subscribe(data => this._movies$.next(data))
   }
 
+  searchMoviesFromApi(saisieRch:string):Observable<MovieModel[]> {
+    let endpoint = '/movies/search';
+    let options = new HttpParams()
+      .set('query', saisieRch)
+    return this.http.get( this.EPITRACK_API + endpoint, {params:options})
+    // on map la reponse pour que le compoment ait un MovieModel[]
+      .pipe( map( (response:any) => 
+            response.map((movie:any) => new MovieModel(movie)) ) )
+  }
 
   get movies$():Observable<MovieModel[]> {
     return this._movies$.asObservable();

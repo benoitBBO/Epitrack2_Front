@@ -21,6 +21,7 @@ export class MovieModel {
     genres!: Genre[];
     actors!: Actor[];
     imdb_ref!:string;
+    type:string = "Movie";
 
     constructor(movieFromApi: any) {
         this.id = movieFromApi.id;
