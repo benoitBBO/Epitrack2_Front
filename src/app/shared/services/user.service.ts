@@ -1,4 +1,4 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpClientModule } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -22,7 +22,7 @@ export class UserService {
   constructor(private http:HttpClient) { }
 
   login(data:{username:String, password:String}){
-    
+   
     //appel serveur (seveur vérifie les données de login et renvoie
     //               un token de connexion si ok)
     let endpoint = '/login';
@@ -36,6 +36,7 @@ export class UserService {
   register(user:User){
     console.log("méthode register")
   }
+
 
 
 }

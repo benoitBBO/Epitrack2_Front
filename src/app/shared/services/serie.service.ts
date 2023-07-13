@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { SerieModel } from '../models/serie.model';
 
@@ -32,6 +32,15 @@ export class SerieService {
       .subscribe(data => this._series$.next(data))
   }
 
+  searchSeriesFromApi(saisieRch:string):Observable<SerieModel[]> {
+    let endpoint = '/series/search';
+    let options = new HttpParams()
+      .set('query', saisieRch)
+    return this.http.get( this.EPITRACK_API + endpoint, {params:options})
+    // on map la reponse pour que le compoment ait un SerieModel[]
+      .pipe( map( (response:any) => 
+            response.map((serie:any) => new SerieModel(serie)) ) )
+  }
 
   get series$():Observable<SerieModel[]> {
     return this._series$.asObservable();
