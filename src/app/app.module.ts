@@ -43,14 +43,12 @@ import { UserAccueilComponent } from './user-accueil/user-accueil.component';
     BrowserAnimationsModule,
     MatSnackBarModule
   ],
-  providers: [{
-    provide : HTTP_INTERCEPTORS,  
-    useClass : TokenInterceptor,
-    multi:true
-  },
+
+  providers: [
+    // {provide : HTTP_INTERCEPTORS, useClass : ErrorInterceptor, multi:true},
   {
     provide : HTTP_INTERCEPTORS, 
-    useClass : ErrorInterceptor, 
+    useClass : TokenInterceptor,
     multi:true
   }
 ],
