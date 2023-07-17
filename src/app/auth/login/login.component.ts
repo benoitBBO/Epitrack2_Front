@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MessageService } from 'src/app/shared/services/message.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
@@ -15,8 +16,8 @@ export class LoginComponent {
   
   constructor(private fb:FormBuilder,
             private userService:UserService,
-            private router:Router
-              // private msgService:MessageService,
+            private router:Router,
+            private msgService:MessageService
                ){}
 
   ngOnInit(){
@@ -34,7 +35,7 @@ export class LoginComponent {
           next: (response:any) => {
             sessionStorage.setItem('token', response.token);
             sessionStorage.setItem('username', response.username);
-            //localStorage.setItem('token', response.headers.get('Authorization'));
+            this.msgService.show("Vous êtes connecté", "success");
             this.router.navigate(['/']);  
             this.isSubmitted = false;       
           }
