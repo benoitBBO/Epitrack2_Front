@@ -1,0 +1,11 @@
+.entete {
+    position: sticky;
+    z-index: 1;
+    top:0;
+    display: block;
+    padding: 10px 15px;
+    background-color: #eee;
+}
+.width40 {
+    width: 40%;
+}

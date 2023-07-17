@@ -1,0 +1,14 @@
+<div class="text-center">
+    <i class="fas fa-tv fa-2x"></i><h2><a routerLink="/series">Les Séries</a></h2>
+</div>
+<div class="row">
+    <div *ngFor="let serie of series" class="col-12 col-md-3">
+        <div class="card">
+            <img [src]="serie.image_landscape | printImg" [alt]="serie.title">
+            <div class="card-body">
+                <h2>{{serie.title}}</h2>
+                <app-stars [score]="serie.rating"></app-stars>                
+            </div>
+        </div>
+    </div>
+</div>
