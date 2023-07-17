@@ -41,9 +41,10 @@ import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
     BrowserAnimationsModule,
     MatSnackBarModule
   ],
-  providers: [{
+  providers: [
+    // {provide : HTTP_INTERCEPTORS, useClass : ErrorInterceptor, multi:true},
+  {
     provide : HTTP_INTERCEPTORS, 
-    useClass : ErrorInterceptor, 
     useClass : TokenInterceptor,
     multi:true
   }],
