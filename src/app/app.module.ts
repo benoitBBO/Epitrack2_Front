@@ -18,6 +18,7 @@ import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
+import { VideoDetailsComponent } from './video-details/video-details/video-details.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
     LoginComponent,
     RegisterComponent,
     MovieAccueilComponent,
-    SerieAccueilComponent
+    SerieAccueilComponent,
+    VideoDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +46,10 @@ import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
   providers: [{
     provide : HTTP_INTERCEPTORS, 
     useClass : ErrorInterceptor, 
+    multi:true
+  },
+  {
+    provide : HTTP_INTERCEPTORS, 
     useClass : TokenInterceptor,
     multi:true
   }],
