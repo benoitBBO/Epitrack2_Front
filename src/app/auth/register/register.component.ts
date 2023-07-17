@@ -20,11 +20,11 @@ export class RegisterComponent {
 
   ngOnInit(){
     this.registerForm = this.fb.group({
-      username:['', [Validators.required]],
-      firstname:[''],
-      lastname:[''],
+      userName:['', [Validators.required]],
+      password:['', [Validators.required, Validators.minLength(8)]],
       email:['', [Validators.required, Validators.email]],
-      password:['', [Validators.required, Validators.minLength(8)]]
+      firstName:[''],
+      lastName:['']     
     });
   }
 
@@ -32,9 +32,14 @@ export class RegisterComponent {
     this.isSubmitted = true;
     if(this.registerForm.valid){
       this.userService.register(this.registerForm.value)
-      //  .subscribe( )
+      .subscribe( {
+        next: (response:any) => {
+          console.log("inscription ok"+response);
+        //comment faire pour que le http response 201 soit dans le next et pas dans error ?
+        //  this.userService.login({this.registerForm.value.userName, this.registerForm.value.password})
+        }
+      })
     }
   }
  
-
 }
