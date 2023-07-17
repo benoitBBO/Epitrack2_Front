@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SearchbarComponent } from './searchbar/searchbar.component';
@@ -12,6 +12,9 @@ import { SerieListComponent } from './serie-list/serie-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { MovieAccueilComponent } from './movie-accueil/movie-accueil.component';
+import { SerieAccueilComponent } from './serie-accueil/serie-accueil.component';
+import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,9 @@ import { RegisterComponent } from './auth/register/register.component';
     PrintImgPipe,
     SerieListComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    MovieAccueilComponent,
+    SerieAccueilComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +36,11 @@ import { RegisterComponent } from './auth/register/register.component';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [{
+    provide : HTTP_INTERCEPTORS, 
+    useClass : TokenInterceptor,
+    multi:true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
