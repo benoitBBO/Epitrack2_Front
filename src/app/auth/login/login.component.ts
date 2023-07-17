@@ -35,7 +35,8 @@ export class LoginComponent {
             sessionStorage.setItem('token', response.token);
             sessionStorage.setItem('username', response.username);
             //localStorage.setItem('token', response.headers.get('Authorization'));
-            this.router.navigate(['/']);         
+            this.router.navigate(['/']);  
+            this.isSubmitted = false;       
           }
         }
           

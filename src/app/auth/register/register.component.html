@@ -2,36 +2,17 @@
     <form (submit)="onRegisterSubmit($event)" [formGroup]="registerForm">
 
         <div class="mb-3">
-            <label for="username-id" class="form-label">Nom d'utilisateur</label>
-            <input id="username-id" class="form-control" type="text" required>
+            <label for="username-id" class="form-label">Nom d'utilisateur (*obligatoire)</label>
+            <input id="username-id" formControlName="userName" class="form-control" type="text">
             <p class="error" 
-               *ngIf="registerForm.controls['username'].invalid && isSubmitted">
+               *ngIf="registerForm.controls['userName'].invalid && isSubmitted">
               Nom d'utilisateur obligatoire
             </p>
         </div>
 
         <div class="mb-3">
-            <label for="firstname-id" class="form-label">Prénom</label>
-            <input id="firstname-id" class="form-control" type="text">
-        </div>
-
-        <div class="mb-3">
-            <label for="lastname-id" class="form-label">Nom</label>
-            <input id="lastname-id" class="form-control" type="text">
-        </div>
-
-        <div class="mb-3">
-          <label for="email-id" class="form-label">Adresse Email</label>
-          <input id="email-id" formControlName="email" type="email" class="form-control">
-          <p class="error" 
-             *ngIf="registerForm.controls['email'].invalid && isSubmitted">
-            email invalide
-          </p>
-        </div>
-        
-        <div class="mb-3">
-          <label for="pwd-id" class="form-label">Mot de passe</label>
-          <input id="pwd-id" formControlName="password" type="password" class="form-control" id="exampleInputPassword1">
+          <label for="pwd-id" class="form-label">Mot de passe (*obligatoire)</label>
+          <input id="pwd-id" formControlName="password" type="password" class="form-control">
           <div id="pwd-HelpBlock" class="form-text">
             Votre mot de passe doit contenir 8 caractères ou plus, des lettres, chiffres and caractères spéciaux
           </div>
@@ -41,7 +22,26 @@
             mot de passe invalide
           </p>
         </div>
-        
+
+        <div class="mb-3">
+          <label for="email-id" class="form-label">Adresse Email (*obligatoire)</label>
+          <input id="email-id" formControlName="email" type="email" class="form-control">
+          <p class="error" 
+             *ngIf="registerForm.controls['email'].invalid && isSubmitted">
+            email invalide
+          </p>
+        </div>
+
+        <div class="mb-3">
+            <label for="firstname-id" class="form-label">Prénom</label>
+            <input id="firstname-id" formControlName="firstName" class="form-control" type="text">
+        </div>
+
+        <div class="mb-3">
+            <label for="lastname-id" class="form-label">Nom</label>
+            <input id="lastname-id" formControlName="lastName" class="form-control" type="text">
+        </div>      
+                
         <button type="submit" class="btn btn-primary">S'inscrire</button>
         
     </form>
