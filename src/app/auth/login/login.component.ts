@@ -34,13 +34,16 @@ export class LoginComponent {
           next: (response:any) => {
             sessionStorage.setItem('token', response.token);
             sessionStorage.setItem('username', response.username);
+            sessionStorage.setItem('id', response.id);
+            sessionStorage.setItem('lastname', response.lastname);
+            sessionStorage.setItem('firstname', response.firstname);
+            sessionStorage.setItem('email', response.email);
             //localStorage.setItem('token', response.headers.get('Authorization'));
-            this.router.navigate(['/']);  
+            this.router.navigate(['/user']);  
             this.isSubmitted = false;       
           }
-        }
-          
-        )
+        }    
+      )
     }
   }
  
