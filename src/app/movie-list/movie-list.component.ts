@@ -18,7 +18,11 @@ export class MovieListComponent {
 
   ngOnInit() {
     //requete get API
-    this.service.getBest4MoviesFromApi();
+    if (this.router.url == '/') {
+      this.service.getBest4MoviesFromApi();
+    } else if (this.router.url == '/movies') {
+      this.service.getMoviesFromApi();
+    }
     this.service.movies$.subscribe( data => this.movies = data);
   }
 }

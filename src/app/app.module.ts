@@ -12,6 +12,9 @@ import { SerieListComponent } from './serie-list/serie-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { MovieAccueilComponent } from './movie-accueil/movie-accueil.component';
+import { SerieAccueilComponent } from './serie-accueil/serie-accueil.component';
+import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
@@ -26,7 +29,9 @@ import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
     PrintImgPipe,
     SerieListComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    MovieAccueilComponent,
+    SerieAccueilComponent
   ],
   imports: [
     BrowserModule,
@@ -36,9 +41,12 @@ import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
     BrowserAnimationsModule,
     MatSnackBarModule
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
-  ],
+  providers: [{
+    provide : HTTP_INTERCEPTORS, 
+    useClass : ErrorInterceptor, 
+    useClass : TokenInterceptor,
+    multi:true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
