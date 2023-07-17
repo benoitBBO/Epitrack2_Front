@@ -1,3 +1,37 @@
 <div class="container-fluid">
-    <p>video-details works!</p>
+    
+    <ng-template [ngIf]="type === 'Movie'" [ngIfElse]="seriesTpl">
+        <div>Display Movie</div>
+        <div>{{movie.title}}</div>
+        <div>{{movie.overview}}</div>
+        <div>{{movie.rating}}</div>
+        <div>{{movie.release_date}}</div>
+        <div>{{movie.image_landscape}}</div>
+        <div>{{movie.image_portrait}}</div>
+        <div *ngFor='let genre of movie.genres'>
+            <div>{{genre.name}}</div>
+        </div>
+        <div *ngFor='let actor of movie.actors'>
+            <div>{{actor.name}}</div>
+            <div>{{actor.photo_url}}</div>
+        </div>
+    </ng-template>
+    
+    <ng-template #seriesTpl>
+        <div>Display Series</div>
+        <div>{{serie.title}}</div>
+        <div>{{serie.overview}}</div>
+        <div>{{serie.rating}}</div>
+        <div>{{serie.release_date}}</div>
+        <div>{{serie.image_landscape}}</div>
+        <div>{{serie.image_portrait}}</div>
+        <div *ngFor='let genre of serie.genres'>
+            <div>{{genre.name}}</div>
+        </div>
+        <br>
+        <div *ngFor='let actor of serie.actors'>
+            <div>{{actor.name}}</div>
+            <div>{{actor.photo_url}}</div>
+        </div>
+    </ng-template>
 </div>    

@@ -33,7 +33,8 @@ import { UserAccueilComponent } from './user-accueil/user-accueil.component';
     LoginComponent,
     RegisterComponent,
     MovieAccueilComponent,
-    SerieAccueilComponent
+    SerieAccueilComponent,
+    VideoDetailsComponent
   ],
   imports: [
     BrowserModule,

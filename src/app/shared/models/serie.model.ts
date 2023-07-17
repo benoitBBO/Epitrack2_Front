@@ -10,6 +10,14 @@ interface Actor {
     tmdb_ref:string;
 }
 
+interface Season {
+    id: number;
+    title:string;
+    seasonNumber:number;
+    imageUrl:string;
+    airDate: Date;
+}
+
 export class SerieModel {
     id!: number;
     title!: string;
@@ -21,6 +29,7 @@ export class SerieModel {
     genres!: Genre[];
     actors!: Actor[];
     imdb_ref!:string;
+    seasons!: Season[];
     type:string = "Serie";
 
     constructor(serieFromApi: any) {
