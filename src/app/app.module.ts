@@ -19,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { VideoDetailsComponent } from './video-details/video-details/video-details.component';
+import { UserAccueilComponent } from './user-accueil/user-accueil.component';
 
 @NgModule({
   declarations: [
@@ -32,8 +33,7 @@ import { VideoDetailsComponent } from './video-details/video-details/video-detai
     LoginComponent,
     RegisterComponent,
     MovieAccueilComponent,
-    SerieAccueilComponent,
-    VideoDetailsComponent
+    SerieAccueilComponent
   ],
   imports: [
     BrowserModule,
@@ -43,16 +43,15 @@ import { VideoDetailsComponent } from './video-details/video-details/video-detai
     BrowserAnimationsModule,
     MatSnackBarModule
   ],
-  providers: [{
-    provide : HTTP_INTERCEPTORS, 
-    useClass : ErrorInterceptor, 
-    multi:true
-  },
+
+  providers: [
+    // {provide : HTTP_INTERCEPTORS, useClass : ErrorInterceptor, multi:true},
   {
     provide : HTTP_INTERCEPTORS, 
     useClass : TokenInterceptor,
     multi:true
-  }],
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
