@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MovieModel } from '../shared/models/movie.model';
 import { MovieService } from '../shared/services/movie.service';
 import { RouteReuseStrategy, Router, RouterState } from '@angular/router';
+import { UserMovieService } from '../shared/services/user-movie.service';
 
 @Component({
   selector: 'app-movie-list',
@@ -12,7 +13,9 @@ export class MovieListComponent {
   movies: MovieModel[] = [];
   movie!: MovieModel;
 
-  constructor(private service: MovieService, private router:Router) {
+  constructor(private service: MovieService,
+              private router:Router,
+              private userMovie:UserMovieService) {
     console.log("constructor MovieService : ", this);
   }
 
@@ -24,5 +27,14 @@ export class MovieListComponent {
       this.service.getMoviesFromApi();
     }
     this.service.movies$.subscribe( data => this.movies = data);
+  }
+  onClickAddMovie(idMovie:Number) {
+    console.log('onClickAddMovie===');
+    this.userMovie.postUserMovie(idMovie)
+      .subscribe( {
+        next: (response:any) => {
+          console.log("retour post userMovie",response);
+        }
+      });
   }
 }
