@@ -35,6 +35,7 @@ export class RegisterComponent {
 
   onRegisterSubmit(ev:Event){
     this.isSubmitted = true;
+    console.log("avant inscription "+this.registerForm.valid);
     if(this.registerForm.valid){
       this.userService.register(this.registerForm.value)
       .subscribe( {
