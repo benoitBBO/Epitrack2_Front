@@ -18,6 +18,7 @@ import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
+import { VideoDetailsComponent } from './video-details/video-details/video-details.component';
 import { UserAccueilComponent } from './user-accueil/user-accueil.component';
 
 @NgModule({
@@ -33,7 +34,7 @@ import { UserAccueilComponent } from './user-accueil/user-accueil.component';
     RegisterComponent,
     MovieAccueilComponent,
     SerieAccueilComponent,
-    UserAccueilComponent
+    VideoDetailsComponent
   ],
   imports: [
     BrowserModule,
