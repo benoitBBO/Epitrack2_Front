@@ -46,25 +46,25 @@ export class UserService {
     console.log("user"+user.userName+" "+user.password+" "+user.email+" "+user.firstName+" "+user.lastName);
     let endpoint = '/users/register';
     return this.http.post(this.EPITRACK_API+endpoint, user, {responseType:'text'})
-      .pipe(
-        tap( {
-          error: (err:unknown) => {
-            if (err instanceof HttpErrorResponse){
-              switch(err.status) {
-                case 404:
-                  this.msgService.show("Bad Request", "error");
-                  break;
-                case 409:
-                  this.msgService.show("Un compte existe déjà pour ce nom d'utilisateur", "error");
-                  this.router.navigate(['/register'])
-                  break;
-                default:
-                  this.msgService.show("Erreur Serveur", "error");
-              }          
-            }
-          }          
-        })
-      )
+      // .pipe(
+      //   tap( {
+      //     error: (err:unknown) => {
+      //       if (err instanceof HttpErrorResponse){
+      //         switch(err.status) {
+      //           case 404:
+      //             this.msgService.show("Bad Request", "error");
+      //             break;
+      //           case 409:
+      //             this.msgService.show("Un compte existe déjà pour "+user.userName, "error");
+      //             this.router.navigate(['/register'])
+      //             break;
+      //           default:
+      //             this.msgService.show("Erreur Serveur", "error");
+      //         }          
+      //       }
+      //     }          
+      //   })
+      // )
 
   }
 
