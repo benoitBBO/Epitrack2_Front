@@ -30,8 +30,8 @@ export class RegisterComponent {
       firstName:[''],
       lastName:['']     
     });
-    //this.registerForm.reset();
   }
+
 
   onRegisterSubmit(ev:Event){
     this.isSubmitted = true;
@@ -42,7 +42,23 @@ export class RegisterComponent {
           console.log("inscription ok"+response);
           this.msgService.show("Compte créé avec succès", "success");
           this.router.navigate(['/login']);
+        },
+        error: (err:unknown) => {
+          if (err instanceof HttpErrorResponse){
+            switch(err.status) {
+              case 404:
+                this.msgService.show("Bad Request", "error");
+                break;
+              case 409:
+                this.msgService.show("Un compte existe déjà pour "+this.registerForm.get('userName')?.value, "error");
+                this.registerForm.patchValue({userName:""});
+                break;
+              default:
+                this.msgService.show("Erreur Serveur", "error");
+            }          
+          }
         }
+        
       })
     }
   }
