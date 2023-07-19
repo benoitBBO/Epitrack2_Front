@@ -21,18 +21,20 @@ export class UserService {
     //               un token de connexion si ok)
     let endpoint = '/login';
     console.log("service login")
-    return this.http.post(this.EPITRACK_API+endpoint, data)
+    return this.http.post(this.EPITRACK_API+endpoint, data, {responseType:'text'})
        .pipe(
         tap( {
           error: (err:unknown) => {
             if (err instanceof HttpErrorResponse){
-              console.log(err)
+              //let errorObj = JSON.parse(err.error);
               switch(err.status) {
                 case 401:
-                  this.msgService.show("Accès refusé, utilisateur non authentifié", "error");
+                  //this.msgService.show(errorObj.description, "error");
+                  this.msgService.show("utilisateur non authentifié", "error");
                   break;
                 default:
-                  this.msgService.show("Erreur Serveur", "error");
+                  //this.msgService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
+                  this.msgService.show("erreur serveur", "error");
               }          
             }
           }
@@ -45,27 +47,7 @@ export class UserService {
     console.log("méthode register");
     console.log("user"+user.userName+" "+user.password+" "+user.email+" "+user.firstName+" "+user.lastName);
     let endpoint = '/users/register';
-    return this.http.post(this.EPITRACK_API+endpoint, user, {responseType:'text'})
-      // .pipe(
-      //   tap( {
-      //     error: (err:unknown) => {
-      //       if (err instanceof HttpErrorResponse){
-      //         switch(err.status) {
-      //           case 404:
-      //             this.msgService.show("Bad Request", "error");
-      //             break;
-      //           case 409:
-      //             this.msgService.show("Un compte existe déjà pour "+user.userName, "error");
-      //             this.router.navigate(['/register'])
-      //             break;
-      //           default:
-      //             this.msgService.show("Erreur Serveur", "error");
-      //         }          
-      //       }
-      //     }          
-      //   })
-      // )
-
+    return this.http.post(this.EPITRACK_API+endpoint, user, {responseType:'text'});
   }
 
   findUser(username:String){

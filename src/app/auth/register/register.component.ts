@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { ParseError } from '@angular/compiler';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -46,16 +47,17 @@ export class RegisterComponent {
         },
         error: (err:unknown) => {
           if (err instanceof HttpErrorResponse){
+            let errorObj = JSON.parse(err.error);
             switch(err.status) {
               case 404:
-                this.msgService.show("Bad Request", "error");
+                this.msgService.show(errorObj.description, "error");
                 break;
               case 409:
                 this.msgService.show("Un compte existe déjà pour "+this.registerForm.get('userName')?.value, "error");
                 this.registerForm.patchValue({userName:""});
                 break;
               default:
-                this.msgService.show("Erreur Serveur", "error");
+                this.msgService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
             }          
           }
         }
