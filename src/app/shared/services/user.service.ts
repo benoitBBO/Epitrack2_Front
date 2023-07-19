@@ -19,7 +19,7 @@ export class UserService {
     //               un token de connexion si ok)
     let endpoint = '/login';
     console.log("service login")
-    return this.http.post(this.EPITRACK_API+endpoint, data, {responseType:'text'})
+    return this.http.post(this.EPITRACK_API+endpoint, data)
        .pipe(
         tap( {
           error: (err:unknown) => {

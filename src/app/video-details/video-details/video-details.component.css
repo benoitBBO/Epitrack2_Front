@@ -5,3 +5,13 @@
 #episodePart div.card{
     width: 60%;
 }
+
+.customWidth {
+    width: 50%;
+}
+
+.ellipse {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

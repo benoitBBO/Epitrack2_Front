@@ -22,11 +22,10 @@ export class MovieListComponent {
   ngOnInit() {
     //requete get API
     if (this.router.url == '/') {
-      this.service.getBest4MoviesFromApi();
+      this.service.getBest4MoviesFromApi().subscribe( data => this.movies = data);
     } else if (this.router.url == '/movies') {
-      this.service.getMoviesFromApi();
+      this.service.getMoviesFromApi().subscribe( data => this.movies = data);
     }
-    this.service.movies$.subscribe( data => this.movies = data);
   }
   onClickAddMovie(idMovie:Number) {
     console.log('onClickAddMovie===');
