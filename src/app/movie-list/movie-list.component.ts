@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MovieModel } from '../shared/models/movie.model';
 import { MovieService } from '../shared/services/movie.service';
-import { RouteReuseStrategy, Router, RouterState } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserMovieService } from '../shared/services/user-movie.service';
 
 @Component({
@@ -30,11 +30,15 @@ export class MovieListComponent {
   }
   onClickAddMovie(idMovie:Number) {
     console.log('onClickAddMovie===');
-    this.userMovie.postUserMovie(idMovie)
-      .subscribe( {
-        next: (response:any) => {
-          console.log("retour post userMovie",response);
-        }
-      });
+    if (sessionStorage.getItem('token')) {
+        this.userMovie.postUserMovie(idMovie)
+          .subscribe( {
+            next: (response:any) => {
+              console.log("retour post userMovie",response);
+            }
+          });
+    } else {
+        this.router.navigate(['/login']);
+    }
   }
 }

@@ -60,15 +60,10 @@ export class MovieService {
   setMovies$(data: MovieModel[]) {
     this._movies$.next(data);
   }
-
   get movie$():Observable<MovieModel> {
     return this._movie$.asObservable();
   }
   setMovie$(data: MovieModel) {
     this._movie$.next(data);
   }
-
-
-  
-
 }
