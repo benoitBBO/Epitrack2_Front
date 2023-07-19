@@ -14,7 +14,7 @@ export class MovieModel {
     id!: number;
     title!: string;
     overview!: string;
-    release_date!: Date;
+    release_date!: string;
     rating!: number;
     image_landscape!: string;
     image_portrait!: string;
@@ -27,7 +27,7 @@ export class MovieModel {
         this.id = movieFromApi.id;
         this.title = movieFromApi.title;
         this.overview = movieFromApi.overview;
-        this.release_date = new Date(movieFromApi.releaseDate)
+        this.release_date = movieFromApi.releaseDate;
         this.rating = movieFromApi.totalRating;
         this.image_landscape = movieFromApi.imageLandscapeUrl;
         this.image_portrait = movieFromApi.imagePosterUrl;

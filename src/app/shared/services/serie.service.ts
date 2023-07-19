@@ -46,6 +46,8 @@ export class SerieService {
   getSerieById(id: number):void {
     let endpoint = '/series/' + id;
     this.http.get(this.EPITRACK_API + endpoint)
+          .pipe( map( (response:any) => 
+            new SerieModel(response)) )
       .subscribe(data => this._serie$.next(data));
   }
 
