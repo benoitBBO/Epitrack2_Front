@@ -17,12 +17,12 @@ export class VideoDetailsComponent {
   type!: string;
   movie!: MovieModel;
   serie!: SerieModel;
+  actors!: string[];
 
 
   constructor(
     private movieService: MovieService,
     private serieService: SerieService,
-    private router: Router,
     private route: ActivatedRoute){}
 
   ngOnInit() {
@@ -40,8 +40,8 @@ export class VideoDetailsComponent {
     } else {
       this.serieService.getSerieById(this.id);
       this.serieService.serie$.subscribe( data => this.serie = data);
-    }
+    }  
+    
 
   }
-
 }

@@ -48,6 +48,8 @@ export class MovieService {
   getMovieById(id: number):void {
     let endpoint = '/movies/' + id;
       this.http.get(this.EPITRACK_API + endpoint)
+          .pipe( map( (response:any) => 
+            new MovieModel(response)) )
       .subscribe(data => this._movie$.next(data));
       
   }
