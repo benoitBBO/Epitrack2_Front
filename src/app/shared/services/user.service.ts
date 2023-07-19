@@ -1,8 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { MessageService } from './message.service';
-import { Router } from '@angular/router';
 import { UserModel } from '../models/user.model';
 
 @Injectable({
@@ -13,8 +12,7 @@ export class UserService {
   EPITRACK_API = 'http://localhost:8080/api/v1';
 
   constructor(private http:HttpClient,
-              private msgService:MessageService,
-              private router:Router) { }
+              private msgService:MessageService) { }
 
   login(data:{username:String, password:String}){
     //appel serveur (seveur vérifie les données de login et renvoie

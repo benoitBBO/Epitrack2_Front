@@ -20,6 +20,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { VideoDetailsComponent } from './video-details/video-details/video-details.component';
 import { UserAccueilComponent } from './user-accueil/user-accueil.component';
+import { UserMovieListComponent } from './user-movie-list/user-movie-list.component';
+import { UserSerieListComponent } from './user-serie-list/user-serie-list.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,10 @@ import { UserAccueilComponent } from './user-accueil/user-accueil.component';
     RegisterComponent,
     MovieAccueilComponent,
     SerieAccueilComponent,
-    VideoDetailsComponent
+    VideoDetailsComponent,
+    UserMovieListComponent,
+    UserSerieListComponent,
+    UserAccueilComponent
   ],
   imports: [
     BrowserModule,

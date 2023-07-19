@@ -7,7 +7,7 @@
             <img [src]="movie.image_landscape | printImg" [alt]="movie.title" [routerLink]='["/details"]' [queryParams]="{id: movie.id, type: movie.type}">
             <div class="card-body">
                 <div class=" d-flex align-items-center justify-content-between">
-                    <h2 [routerLink]='["/details"]' [queryParams]="{id: movie.id, type: movie.type}">{{movie.title}}</h2><button (click)="onClickAddMovie(movie.id)" class="btn btn-light"><i class="fas fa-plus"></i></button>
+                    <h2 [routerLink]='["/details"]' [queryParams]="{id: movie.id, type: movie.type}">{{movie.title}}</h2><button (click)="onClickAddMovie(movie.id)" class="btn btn-light" title="Ajouter un film dans mon catalogue"><i class="fas fa-plus"></i></button>
                 </div>
                 <app-stars [score]="movie.rating"></app-stars>
             </div>

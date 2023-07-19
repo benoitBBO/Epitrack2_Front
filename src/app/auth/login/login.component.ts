@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserModel } from 'src/app/shared/models/user.model';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
@@ -14,7 +13,6 @@ export class LoginComponent {
 
   loginForm!:FormGroup;
   isSubmitted:boolean = false;
-  connectedUser!:UserModel;
   
   constructor(private fb:FormBuilder,
             private userService:UserService,
@@ -40,7 +38,10 @@ export class LoginComponent {
             this.userService.findUser(response.username)
               .subscribe( {
                 next: (response:any) => {
-                  this.connectedUser = response;
+                  sessionStorage.setItem('id',response.id);
+                  sessionStorage.setItem('lastname',response.lastname);
+                  sessionStorage.setItem('firstname',response.firstname);
+                  sessionStorage.setItem('email',response.email);
                   console.log("reponse findUser", response);
                   this.msgService.show("Vous êtes connecté", "success");
                   this.router.navigate(['/user']);
