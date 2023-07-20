@@ -1,4 +1,5 @@
 import { MovieModel } from "./movie.model";
+import { UserModel } from "./user.model";
 
 export class UsermovieModel {
     id!: number;
@@ -6,12 +7,14 @@ export class UsermovieModel {
     status!: string;
     userRating!: number;
     statusDate!: Date;
+    user!:UserModel;
 
-    constructor(user: any) {
-        this.id = user.id;
-        this.movie = user.movie;
-        this.status = user.status;
-        this.userRating = user.userRating;
-        this.statusDate = user.statusDate;
+    constructor(userMovie: any) {
+        this.id = userMovie.id;
+        this.movie = new MovieModel(userMovie.movie);
+        this.status = userMovie.status;
+        this.userRating = userMovie.userRating;
+        this.statusDate = userMovie.statusDate;
+        this.user = new UserModel(userMovie.user)
     }
 }
