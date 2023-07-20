@@ -3,6 +3,8 @@ import { MovieModel } from '../shared/models/movie.model';
 import { MovieService } from '../shared/services/movie.service';
 import { Router } from '@angular/router';
 import { UserMovieService } from '../shared/services/user-movie.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MessageService } from '../shared/services/message.service';
 
 @Component({
   selector: 'app-movie-list',
@@ -15,6 +17,7 @@ export class MovieListComponent {
 
   constructor(private service: MovieService,
               private router:Router,
+              private msgService:MessageService,
               private userMovie:UserMovieService) {
     console.log("constructor MovieService : ", this);
   }
@@ -34,6 +37,22 @@ export class MovieListComponent {
           .subscribe( {
             next: (response:any) => {
               console.log("retour post userMovie",response);
+              this.msgService.show("Film ajouté avec succès", "success");
+            },
+            error: (err:unknown) => {
+              if (err instanceof HttpErrorResponse){
+                let errorObj = JSON.parse(err.error);
+                switch(err.status) {
+                  case 404:
+                    this.msgService.show(errorObj.description, "error");
+                    break;
+                  case 409:
+                    this.msgService.show("Ce film est déjà suivi", "error");
+                    break;
+                  default:
+                    this.msgService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
+                }          
+              }
             }
           });
     } else {

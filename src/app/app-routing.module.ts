@@ -7,6 +7,7 @@ import { MovieAccueilComponent } from './movie-accueil/movie-accueil.component';
 import { SerieAccueilComponent } from './serie-accueil/serie-accueil.component';
 import { UserAccueilComponent } from './user-accueil/user-accueil.component';
 import { VideoDetailsComponent } from './video-details/video-details/video-details.component';
+import { UserMovieAccueilComponent } from './user-movie-accueil/user-movie-accueil.component';
 
 const routes: Routes = [
   {path:'', component:VideoAccueilComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path:'movies', component:MovieAccueilComponent},
   {path:'series', component:SerieAccueilComponent},
   {path:'user', component:UserAccueilComponent},
+  {path:'user/movies', component:UserMovieAccueilComponent},
   {path:'details/:id/:type', component:VideoDetailsComponent}
 ];
 

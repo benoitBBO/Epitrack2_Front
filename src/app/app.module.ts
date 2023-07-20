@@ -22,6 +22,9 @@ import { VideoDetailsComponent } from './video-details/video-details/video-detai
 import { UserAccueilComponent } from './user-accueil/user-accueil.component';
 import { UserMovieListComponent } from './user-movie-list/user-movie-list.component';
 import { UserSerieListComponent } from './user-serie-list/user-serie-list.component';
+import { UserMovieAccueilComponent } from './user-movie-accueil/user-movie-accueil.component';
+import { ToggleComponent } from './shared/components/toggle/toggle.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,8 @@ import { UserSerieListComponent } from './user-serie-list/user-serie-list.compon
     VideoDetailsComponent,
     UserMovieListComponent,
     UserSerieListComponent,
-    UserAccueilComponent
+    UserAccueilComponent,
+    UserMovieAccueilComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +51,9 @@ import { UserSerieListComponent } from './user-serie-list/user-serie-list.compon
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSlideToggleModule,
+    ToggleComponent
   ],
 
   providers: [
