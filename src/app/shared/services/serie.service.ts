@@ -17,20 +17,18 @@ export class SerieService {
     console.log("construteur Serie => ", this)
   }
 
-  getSeriesFromApi():void {
+  getSeriesFromApi():Observable<SerieModel[]> {
     let endpoint = '/series';
-    this.http.get( this.EPITRACK_API + endpoint)
+    return this.http.get( this.EPITRACK_API + endpoint)
       .pipe( map( (response:any) => 
-            response.map((serie:any) => new SerieModel(serie)) ) )
-      .subscribe(data => this._series$.next(data))
+            response.map((serie:any) => new SerieModel(serie)) ) );
   }
 
-  getBest4SeriesFromApi():void {
+  getBest4SeriesFromApi():Observable<SerieModel[]> {
     let endpoint = '/series/best4';
-    this.http.get( this.EPITRACK_API + endpoint)
+    return this.http.get( this.EPITRACK_API + endpoint)
       .pipe( map( (response:any) => 
-            response.map((serie:any) => new SerieModel(serie)) ) )
-      .subscribe(data => this._series$.next(data))
+            response.map((serie:any) => new SerieModel(serie)) ) );
   }
 
   searchSeriesFromApi(saisieRch:string):Observable<SerieModel[]> {
@@ -43,12 +41,11 @@ export class SerieService {
             response.map((serie:any) => new SerieModel(serie)) ) )
   }
 
-  getSerieById(id: number):void {
+  getSerieById(id: number):Observable<SerieModel> {
     let endpoint = '/series/' + id;
-    this.http.get(this.EPITRACK_API + endpoint)
+    return this.http.get(this.EPITRACK_API + endpoint)
           .pipe( map( (response:any) => 
-            new SerieModel(response)) )
-      .subscribe(data => this._serie$.next(data));
+            new SerieModel(response)) );
   }
 
   get series$():Observable<SerieModel[]> {

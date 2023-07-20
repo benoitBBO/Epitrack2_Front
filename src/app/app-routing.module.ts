@@ -15,7 +15,7 @@ const routes: Routes = [
   {path:'movies', component:MovieAccueilComponent},
   {path:'series', component:SerieAccueilComponent},
   {path:'user', component:UserAccueilComponent},
-  {path:'details', component:VideoDetailsComponent}
+  {path:'details/:id/:type', component:VideoDetailsComponent}
 ];
 
 @NgModule({
