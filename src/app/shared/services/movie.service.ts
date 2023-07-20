@@ -19,20 +19,18 @@ export class MovieService {
     console.log("construteur Movie => ", this)
   }
 
-  getMoviesFromApi():void {
+  getMoviesFromApi():Observable<MovieModel[]> {
     let endpoint = '/movies';
-    this.http.get( this.EPITRACK_API + endpoint)
+    return this.http.get( this.EPITRACK_API + endpoint)
       .pipe( map( (response:any) => 
-            response.map((movie:any) => new MovieModel(movie)) ) )
-      .subscribe(data => this._movies$.next(data))
+            response.map((movie:any) => new MovieModel(movie)) ) );
   }
 
-  getBest4MoviesFromApi():void {
+  getBest4MoviesFromApi():Observable<MovieModel[]> {
     let endpoint = '/movies/best4';
-    this.http.get( this.EPITRACK_API + endpoint)
+    return this.http.get( this.EPITRACK_API + endpoint)
       .pipe( map( (response:any) => 
-            response.map((movie:any) => new MovieModel(movie)) ) )
-      .subscribe(data => this._movies$.next(data))
+            response.map((movie:any) => new MovieModel(movie)) ) );
   }
 
   searchMoviesFromApi(saisieRch:string):Observable<MovieModel[]> {
@@ -45,12 +43,19 @@ export class MovieService {
             response.map((movie:any) => new MovieModel(movie)) ) )
   }
 
-  getMovieById(id: number):void {
+  // getMovieById(id: number):void {
+  //   let endpoint = '/movies/' + id;
+  //     this.http.get(this.EPITRACK_API + endpoint)
+  //         .pipe( map( (response:any) => 
+  //           new MovieModel(response)) )
+  //     .subscribe(data => this._movie$.next(data));
+      
+  // }
+  getMovieById(id: number):Observable<MovieModel> {
     let endpoint = '/movies/' + id;
-      this.http.get(this.EPITRACK_API + endpoint)
+      return this.http.get(this.EPITRACK_API + endpoint)
           .pipe( map( (response:any) => 
-            new MovieModel(response)) )
-      .subscribe(data => this._movie$.next(data));
+            new MovieModel(response)) );
       
   }
 

@@ -1,7 +1,17 @@
-#seasonPart div.card{
+/* #seasonPart div.card{
     width: 60%;
-}
+} */
 
 #episodePart div.card{
     width: 60%;
+}
+
+.customWidth {
+    width: 160px;
+}
+
+.ellipse {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

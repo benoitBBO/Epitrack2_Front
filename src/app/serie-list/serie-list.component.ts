@@ -18,10 +18,9 @@ export class SerieListComponent {
 
   ngOnInit() {
     if (this.router.url == '/') {
-      this.service.getBest4SeriesFromApi();
+      this.service.getBest4SeriesFromApi().subscribe( data => this.series = data);
     } else if (this.router.url == '/series') {
-      this.service.getSeriesFromApi();
+      this.service.getSeriesFromApi().subscribe( data => this.series = data);
     }
-    this.service.series$.subscribe( data => this.series = data);
   }
 }

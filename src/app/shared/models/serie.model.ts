@@ -10,12 +10,20 @@ interface Actor {
     tmdb_ref:string;
 }
 
+interface Episode {
+    id: number;
+    title:string;
+    imageUrl:string;
+    airDate: Date;
+}
+
 interface Season {
     id: number;
     title:string;
     seasonNumber:number;
     imageUrl:string;
     airDate: Date;
+    episodes: Episode[];
 }
 
 export class SerieModel {

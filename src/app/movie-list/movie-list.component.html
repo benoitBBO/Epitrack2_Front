@@ -6,12 +6,10 @@
         <div class="card">
             <img [src]="movie.image_landscape | printImg" 
                  [alt]="movie.title" 
-                 [routerLink]='["/details"]' 
-                 [queryParams]="{id: movie.id, type: movie.type}">
+                 [routerLink]='["/details", movie.id, movie.type]'>
             <div class="card-body">
                 <div class=" d-flex align-items-center justify-content-between">
-                    <h2 [routerLink]='["/details"]'
-                        [queryParams]="{id: movie.id, type: movie.type}">
+                    <h2 [routerLink]='["/details", movie.id, movie.type]'>
                         {{movie.title}}
                     </h2>
                     <button (click)="onClickAddMovie(movie.id)" class="btn btn-light" 

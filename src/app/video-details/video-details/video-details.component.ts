@@ -17,7 +17,9 @@ export class VideoDetailsComponent {
   type!: string;
   movie!: MovieModel;
   serie!: SerieModel;
+  activeSeason!: any;
   actors!: string[];
+  loaded: boolean = false;
 
 
   constructor(
@@ -27,21 +29,25 @@ export class VideoDetailsComponent {
 
   ngOnInit() {
     //Params recovery for Get Request
-    this.route.queryParams
-      .subscribe(params => {
-        this.id = params['id'];
-        this.type = params['type'];
-      })
-
+    this.id = this.route.snapshot.params['id'];
+    this.type = this.route.snapshot.params['type'];
 
     if(this.type === "Movie"){
-      this.movieService.getMovieById(this.id);
-      this.movieService.movie$.subscribe( data => this.movie = data);
+      this.movieService.getMovieById(this.id).subscribe( data => {
+        this.movie = data;
+        this.loaded = true;
+      });
     } else {
-      this.serieService.getSerieById(this.id);
-      this.serieService.serie$.subscribe( data => this.serie = data);
+      this.serieService.getSerieById(this.id).subscribe( data => {
+        this.serie = data;
+        this.loaded = true;
+        this.activeSeason = this.serie.seasons[0];
+      });
     }  
-    
-
   }
+
+  onClickSeasonCard(event: MouseEvent, seasonNumber: number){
+    this.activeSeason = this.serie.seasons[seasonNumber-1];
+  }
+  
 }
