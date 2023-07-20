@@ -1,13 +1,13 @@
-#seasonPart div.card{
+/* #seasonPart div.card{
     width: 60%;
-}
+} */
 
 #episodePart div.card{
     width: 60%;
 }
 
 .customWidth {
-    width: 50%;
+    width: 160px;
 }
 
 .ellipse {

@@ -56,9 +56,9 @@
                             </div>
                         </div>
                     </div> -->
-                    <div class="row row-cols-6 g-0 justify-content-center">
+                    <div class="row row-cols-8 g-0 justify-content-center">
                         <div *ngFor="let season of serie.seasons" class="col mb-3">
-                            <div class="card" (click)="onClickSeasonCard($event,season.seasonNumber)" >
+                            <div class="card customWidth" (click)="onClickSeasonCard($event,season.seasonNumber)" >
                                 <img class="card-img-top" [src]="season.imageUrl | printImg" [alt]="season.title">
                                 <div class="card-body text-center">
                                     <h5 class="card-title ellipse" [title]="season.title">{{season.title}}</h5>            
