@@ -25,6 +25,8 @@ import { UserSerieListComponent } from './user-serie-list/user-serie-list.compon
 import { UserMovieAccueilComponent } from './user-movie-accueil/user-movie-accueil.component';
 import { ToggleComponent } from './shared/components/toggle/toggle.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatMenuModule } from '@angular/material/menu';
+import { SearchTMDBComponent } from './search-tmdb/search-tmdb.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     UserMovieListComponent,
     UserSerieListComponent,
     UserAccueilComponent,
-    UserMovieAccueilComponent
+    UserMovieAccueilComponent,
+    SearchTMDBComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     BrowserAnimationsModule,
     MatSnackBarModule,
     MatSlideToggleModule,
-    ToggleComponent
+    ToggleComponent,
+    MatMenuModule
   ],
 
   providers: [

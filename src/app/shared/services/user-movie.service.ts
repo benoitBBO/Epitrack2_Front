@@ -57,7 +57,6 @@ export class UserMovieService {
   changeStatusUserMovie(userMovieId:number, status:string) {
     let endpoint = '/usermovie/status/';
     let data = {}
-    console.log("avant put status");
     this.http.put( this.EPITRACK_API + endpoint + userMovieId + "/" + status, data, {responseType:'text'})
       .subscribe();
   }
