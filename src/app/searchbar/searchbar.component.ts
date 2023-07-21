@@ -3,6 +3,7 @@ import { MovieModel } from '../shared/models/movie.model';
 import { MovieService } from '../shared/services/movie.service';
 import { SerieService } from '../shared/services/serie.service';
 import { SerieModel } from '../shared/models/serie.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-searchbar',
@@ -15,7 +16,9 @@ export class SearchbarComponent {
   searchSeries: SerieModel[] = [];
   searchVideos: MovieModel[] = [];
 
-  constructor(private movieService: MovieService, private serieService: SerieService) {
+  constructor(private movieService: MovieService,
+              private serieService: SerieService,
+              private router:Router) {
     console.log("constructor MovieService et Serie dans search");
   }
 
@@ -26,8 +29,6 @@ export class SearchbarComponent {
         .subscribe((movies:MovieModel[]) => this.searchVideos.push(...movies));
       this.serieService.searchSeriesFromApi(saisie)
         .subscribe((series:SerieModel[]) => this.searchVideos.push(...series));
-    } else {
-      this.searchVideos = [];
     }
   }
 }

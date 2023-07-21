@@ -24,12 +24,9 @@ export class ToggleComponent {
   }
   
   changed(){
-    console.log(this.checked)
-    //appel update status usermovie
+    this.status = "UNWATCHED";
     if (this.checked) {
-      this.status == "WATCHED";
-    } else {
-      this.status == "UNWATCHED";
+      this.status = "WATCHED"
     }
     this.userMovieService.changeStatusUserMovie(this.userMovieId, this.status);
   }
