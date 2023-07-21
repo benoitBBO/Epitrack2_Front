@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { MovieModel } from '../models/movie.model';
-import { SerieModel } from '../models/serie.model';
+import { TmdbmovieModel } from '../models/tmdbmovie.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
   
-  EPITRACK_API = 'http://localhost:8080/api/v1';
-  
+  EPITRACK_API = 'http://localhost:8080/api/v1';//TODO a mettre en constante
+  TMDB_API = 'https://api.themoviedb.org/3';
+  APIKEY_TMDB = '503f9b6e89ed3a77b5a426dbc8e1094f';
+
   private _movies$ = new BehaviorSubject<MovieModel[]>([]);
   private _movie$ = new BehaviorSubject<any>(MovieModel);
 
@@ -56,9 +58,18 @@ export class MovieService {
       return this.http.get(this.EPITRACK_API + endpoint)
           .pipe( map( (response:any) => 
             new MovieModel(response)) );
-      
   }
 
+  searchMoviesFromTMDBApi(saisieRch:string):Observable<TmdbmovieModel[]> {
+    let endpoint = '/search/movie';
+    let options = new HttpParams()
+      .set('api_key', this.APIKEY_TMDB)
+      .set('query', saisieRch)
+      .set('language', 'fr')
+    return this.http.get( this.TMDB_API + endpoint, {params:options})
+      .pipe( map( (response:any) => 
+            response.results.map((movie:any) => new TmdbmovieModel(movie)) ) )
+  }
   get movies$():Observable<MovieModel[]> {
     return this._movies$.asObservable();
   }

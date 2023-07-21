@@ -32,10 +32,9 @@ export class ToggleComponent {
   changed(){
     console.log(this.checked)
     //appel update status usermovie ou userserie
+    this.status = "UNWATCHED";
     if (this.checked) {
-      this.status == "WATCHED";
-    } else {
-      this.status == "UNWATCHED";
+      this.status = "WATCHED"
     }
     switch (this.videoType) {
       case 'MOVIE': 
