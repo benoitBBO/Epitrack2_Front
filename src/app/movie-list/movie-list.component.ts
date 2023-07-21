@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserMovieService } from '../shared/services/user-movie.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from '../shared/services/message.service';
+import { TmdbmovieModel } from '../shared/models/tmdbmovie.model';
 
 @Component({
   selector: 'app-movie-list',
@@ -14,6 +15,7 @@ import { MessageService } from '../shared/services/message.service';
 export class MovieListComponent {
   movies: MovieModel[] = [];
   movie!: MovieModel;
+  tmdb_movies: TmdbmovieModel[] = [];
 
   constructor(private service: MovieService,
               private router:Router,
