@@ -28,6 +28,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UserSerieAccueilComponent } from './user-serie-accueil/user-serie-accueil.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { SearchTMDBComponent } from './search-tmdb/search-tmdb.component';
+import { IsInCatalogPipe } from './shared/pipes/is-in-catalog.pipe';
 
 @NgModule({
   declarations: [
@@ -47,8 +48,9 @@ import { SearchTMDBComponent } from './search-tmdb/search-tmdb.component';
     UserSerieListComponent,
     UserAccueilComponent,
     UserMovieAccueilComponent,
-    UserSerieAccueilComponent
-    SearchTMDBComponent
+    UserSerieAccueilComponent,
+    SearchTMDBComponent,
+    IsInCatalogPipe
   ],
   imports: [
     BrowserModule,
