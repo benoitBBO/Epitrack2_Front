@@ -47,7 +47,7 @@ import { SearchTMDBComponent } from './search-tmdb/search-tmdb.component';
     UserSerieListComponent,
     UserAccueilComponent,
     UserMovieAccueilComponent,
-    UserSerieAccueilComponent
+    UserSerieAccueilComponent,
     SearchTMDBComponent
   ],
   imports: [

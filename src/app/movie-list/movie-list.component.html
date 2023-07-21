@@ -4,7 +4,7 @@
 <div class="row">
     <div *ngFor="let movie of movies" class="col-12 col-md-3">
         <div class="card">
-            <img [src]="movie.image_landscape | printImg" 
+            <img [src]="movie.image_landscape != null ? (movie.image_landscape | printImg) : './assets/img/noimage.png'"
                  [alt]="movie.title" 
                  [routerLink]='["/details", movie.id, movie.type, isInCatalog(movie.id) ? "out" : "in"]'>
             <div class="card-body">

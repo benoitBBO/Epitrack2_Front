@@ -4,7 +4,7 @@
 <div class="row">
     <div *ngFor="let serie of series" class="col-12 col-md-3">
         <div class="card">
-            <img [src]="serie.image_landscape | printImg" [alt]="serie.title" [routerLink]='["/details", serie.id, serie.type, "#TODOCatalogOwn"]'>
+            <img [src]="serie.image_landscape != null ? (serie.image_landscape | printImg) : './assets/img/noimage.png'" [alt]="serie.title" [routerLink]='["/details", serie.id, serie.type, "#TODOCatalogOwn"]'>
             <div class="card-body">
                 <h2 [routerLink]='["/details", serie.id, serie.type, "#TODOCatalogOwn"]'>{{serie.title}}</h2>
                 <app-stars [score]="serie.rating"></app-stars>                
