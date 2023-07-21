@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserMovieService } from '../shared/services/user-movie.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from '../shared/services/message.service';
+import { UsermovieModel } from '../shared/models/usermovie.model';
 import { TmdbmovieModel } from '../shared/models/tmdbmovie.model';
 
 @Component({
@@ -15,6 +16,7 @@ import { TmdbmovieModel } from '../shared/models/tmdbmovie.model';
 export class MovieListComponent {
   movies: MovieModel[] = [];
   movie!: MovieModel;
+  userMovies!: UsermovieModel[];
   tmdb_movies: TmdbmovieModel[] = [];
 
   constructor(private service: MovieService,
@@ -25,6 +27,9 @@ export class MovieListComponent {
   }
 
   ngOnInit() {
+    //Récupération des userMovies
+    this.userMovie._usermovies$.subscribe(data => this.userMovies = data);
+
     //requete get API
     if (this.router.url == '/') {
       this.service.getBest4MoviesFromApi().subscribe( data => this.movies = data);
@@ -60,5 +65,16 @@ export class MovieListComponent {
     } else {
         this.router.navigate(['/login']);
     }
+  }
+  isInCatalog(idMovie:Number){
+    if(sessionStorage.length > 0){
+      for(let userMovie of this.userMovies){
+        if(userMovie.movie.id === idMovie){
+          return false;
+        }
+      }
+      return true;
+    }
+    return true;
   }
 }
