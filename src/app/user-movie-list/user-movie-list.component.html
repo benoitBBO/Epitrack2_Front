@@ -14,7 +14,10 @@
                         [queryParams]="{id: movie.movie.id, type: movie.movie.type}">
                         {{movie.movie.title}}
                     </h2>
-                    <app-toggle [status]="movie.status" [userMovieId]="movie.id"></app-toggle>
+                    <app-toggle [status]="movie.status" 
+                                [userVideoId]="movie.id"
+                                videoType="MOVIE">
+                    </app-toggle>
                 </div>
                 <app-stars [score]="movie.movie.rating"></app-stars>
             </div>

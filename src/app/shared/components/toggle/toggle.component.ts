@@ -2,6 +2,8 @@ import {Component, Input} from '@angular/core';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {FormsModule} from '@angular/forms';
 import { UserMovieService } from '../../services/user-movie.service';
+import { UserSerieService } from '../../services/user-serie.service';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-toggle',
@@ -12,10 +14,14 @@ import { UserMovieService } from '../../services/user-movie.service';
 })
 export class ToggleComponent {
   @Input() status!:string;
-  @Input() userMovieId!:number;
+  @Input() userVideoId!:number;
+  @Input() videoType!:String;
   checked = false;
 
-  constructor(private userMovieService: UserMovieService){}
+  constructor(private userMovieService: UserMovieService,
+              private userSerieService: UserSerieService,
+              private messageService: MessageService          
+            ){}
 
   ngOnInit(){
     if (this.status == "WATCHED") {
@@ -25,12 +31,22 @@ export class ToggleComponent {
   
   changed(){
     console.log(this.checked)
-    //appel update status usermovie
+    //appel update status usermovie ou userserie
     if (this.checked) {
       this.status == "WATCHED";
     } else {
       this.status == "UNWATCHED";
     }
-    this.userMovieService.changeStatusUserMovie(this.userMovieId, this.status);
+    switch (this.videoType) {
+      case 'MOVIE': 
+        this.userMovieService.changeStatusUserMovie(this.userVideoId, this.status);
+        break;
+      case 'SERIE':
+        //this.userSerieService.changeStatusUserSerie(this.userVideoId, this.status);
+        console.log("change status serie)");
+        break;
+      default:
+        this.messageService.show("Erreur type de video inconnu", "error");
+    }
   }
 }

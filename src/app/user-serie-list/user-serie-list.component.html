@@ -1,1 +1,26 @@
-<p>user-serie-list works!</p>
+<div class="text-center mb-3">
+    <i class="fas fa-tv fa-2x"></i> <h2><a routerLink="/user/series">Mes Series</a></h2>
+</div>
+<div class="row">
+    <div *ngFor="let serie of series" class="col-12 col-md-3">
+        <div class="card">
+            <img [src]="serie.serie.image_landscape | printImg" 
+                 [alt]="serie.serie.title" 
+                 [routerLink]='["/details"]' 
+                 [queryParams]="{id: serie.serie.id, type: serie.serie.type}">
+            <div class="card-body">
+                <div class=" d-flex align-items-center justify-content-between">
+                    <h2 [routerLink]='["/details"]'
+                        [queryParams]="{id: serie.serie.id, type: serie.serie.type}">
+                        {{serie.serie.title}}
+                    </h2>
+                    <app-toggle [status]="serie.status" 
+                                [userVideoId]="serie.id"
+                                videoType="SERIE">
+                    </app-toggle>
+                </div>
+                <app-stars [score]="serie.serie.rating"></app-stars>
+            </div>
+        </div>
+    </div>
+</div>

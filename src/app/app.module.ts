@@ -25,6 +25,7 @@ import { UserSerieListComponent } from './user-serie-list/user-serie-list.compon
 import { UserMovieAccueilComponent } from './user-movie-accueil/user-movie-accueil.component';
 import { ToggleComponent } from './shared/components/toggle/toggle.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { UserSerieAccueilComponent } from './user-serie-accueil/user-serie-accueil.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     UserMovieListComponent,
     UserSerieListComponent,
     UserAccueilComponent,
-    UserMovieAccueilComponent
+    UserMovieAccueilComponent,
+    UserSerieAccueilComponent
   ],
   imports: [
     BrowserModule,
