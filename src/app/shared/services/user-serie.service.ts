@@ -10,13 +10,10 @@ export class UserSerieService {
 
   EPITRACK_API = 'http://localhost:8080/api/v1';
   
-  private _userseries$ = new BehaviorSubject<UserserieModel[]>([]);
+  public _userseries$ = new BehaviorSubject<UserserieModel[]>([]);
 
   constructor(private http:HttpClient) { }
 
-  get userseries$():Observable<UserserieModel[]> {
-    return this._userseries$.asObservable();
-  }
   getUserSeriesFromApi():void {
     let endpoint = '/userserie/user/';
     this.http.get( this.EPITRACK_API + endpoint + sessionStorage.getItem('id'))
@@ -36,6 +33,13 @@ export class UserSerieService {
         console.log("this._userseries$ : ", this._userseries$)
         }
       )
+  }
+
+  get userseries$():Observable<UserserieModel[]> {
+    return this._userseries$.asObservable();
+  }
+  setUserSeries$(data: UserserieModel[]) {
+    this._userseries$.next(data);
   }
 
 }
