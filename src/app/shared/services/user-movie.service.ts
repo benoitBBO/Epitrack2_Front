@@ -11,7 +11,7 @@ export class UserMovieService {
 
   EPITRACK_API = 'http://localhost:8080/api/v1';
   
-  private _usermovies$ = new BehaviorSubject<UsermovieModel[]>([]);
+  public _usermovies$ = new BehaviorSubject<UsermovieModel[]>([]); //##Permet d'utiliser _usermovies$ à travers les composants
   private _usermovie$ = new BehaviorSubject<any>(UsermovieModel);
 
   constructor(private http: HttpClient,
@@ -60,6 +60,14 @@ export class UserMovieService {
     console.log("avant put status");
     this.http.put( this.EPITRACK_API + endpoint + userMovieId + "/" + status, data, {responseType:'text'})
       .subscribe();
+  }
+
+  getUserMovieById(id: number):Observable<UsermovieModel> {
+    let endpoint = '/usermovie/' + id;
+      return this.http.get(this.EPITRACK_API + endpoint)
+          .pipe( map( (response:any) => 
+            new UsermovieModel(response)) );
+      
   }
 
   get usermovies$():Observable<UsermovieModel[]> {

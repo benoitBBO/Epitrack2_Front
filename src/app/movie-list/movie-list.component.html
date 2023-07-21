@@ -6,16 +6,24 @@
         <div class="card">
             <img [src]="movie.image_landscape | printImg" 
                  [alt]="movie.title" 
-                 [routerLink]='["/details", movie.id, movie.type]'>
+                 [routerLink]='["/details", movie.id, movie.type, isInCatalog(movie.id) ? "out" : "in"]'>
             <div class="card-body">
                 <div class=" d-flex align-items-center justify-content-between">
-                    <h2 [routerLink]='["/details", movie.id, movie.type]'>
+                    <h2 [routerLink]='["/details", movie.id, movie.type, isInCatalog(movie.id) ? "out" : "in"]'>
                         {{movie.title}}
                     </h2>
-                    <button (click)="onClickAddMovie(movie.id)" class="btn btn-light" 
-                            title="Ajouter un film dans mon catalogue">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                    <ng-template [ngIf]="isInCatalog(movie.id) === true" [ngIfElse]="inCatalog">
+                        <button (click)="onClickAddMovie(movie.id)" class="btn btn-light" 
+                                title="Ajouter un film dans mon catalogue">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </ng-template>
+                    <ng-template #inCatalog>
+                        <button (click)="onClickAddMovie(movie.id)" class="btn btn-light" 
+                                title="Supprimer un film dans mon catalogue">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </ng-template>
                 </div>
                 <app-stars [score]="movie.rating"></app-stars>
             </div>
