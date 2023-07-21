@@ -28,7 +28,7 @@ export class MovieModel {
         this.title = movieFromApi.title;
         this.overview = movieFromApi.overview;
         this.release_date = movieFromApi.releaseDate;
-        this.rating = movieFromApi.totalRating;
+        this.rating = movieFromApi.ratingAverage;
         this.image_landscape = movieFromApi.imageLandscapeUrl;
         this.image_portrait = movieFromApi.imagePosterUrl;
         this.genres = movieFromApi.genres;

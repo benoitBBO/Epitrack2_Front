@@ -45,7 +45,7 @@ export class SerieModel {
         this.title = serieFromApi.title;
         this.overview = serieFromApi.overview;
         this.release_date = serieFromApi.releaseDate;
-        this.rating = serieFromApi.totalRating;
+        this.rating = serieFromApi.ratingAverage;
         this.image_landscape = serieFromApi.imageLandscapeUrl;
         this.image_portrait = serieFromApi.imagePosterUrl;
         this.genres = serieFromApi.genres;

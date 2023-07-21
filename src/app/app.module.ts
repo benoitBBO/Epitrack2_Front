@@ -25,6 +25,7 @@ import { UserSerieListComponent } from './user-serie-list/user-serie-list.compon
 import { UserMovieAccueilComponent } from './user-movie-accueil/user-movie-accueil.component';
 import { ToggleComponent } from './shared/components/toggle/toggle.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { UserSerieAccueilComponent } from './user-serie-accueil/user-serie-accueil.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { SearchTMDBComponent } from './search-tmdb/search-tmdb.component';
 
@@ -46,6 +47,7 @@ import { SearchTMDBComponent } from './search-tmdb/search-tmdb.component';
     UserSerieListComponent,
     UserAccueilComponent,
     UserMovieAccueilComponent,
+    UserSerieAccueilComponent
     SearchTMDBComponent
   ],
   imports: [
