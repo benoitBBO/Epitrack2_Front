@@ -84,20 +84,9 @@ export class UserSerieService {
 
   changeStatusUserSerie(userSerieId:number, status:string) {
     let endpoint = '/userserie/status/';
-    let data = {}
-    return this.http.put( this.EPITRACK_API + endpoint + userSerieId + "/" + status, data, {responseType:'text'})
-  }
-    // .pipe(
-      //   tap( {
-      //     error: (err:unknown) => {
-      //       if (err instanceof HttpErrorResponse){
-      //         this.msgService.show("erreur de mise à jour du statut", "error");
-      //         this.router.navigate(['/user/series']);
-      //       }
-      //     }
-      //   } )
-      // );
-      
+    return this.http.put( this.EPITRACK_API + endpoint + userSerieId + "/" + status, {responseType:'text'})
+    ;
+  } 
 
   get userseries$():Observable<UserserieModel[]> {
     return this._userseries$.asObservable();

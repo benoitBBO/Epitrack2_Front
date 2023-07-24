@@ -15,30 +15,26 @@
                         {{userserie.serie.title}}
                     </h2>
                     
-                    <div>
-                        <button type="button" class="btn"
-                                (click)="updateStatusOfUserSerie(userserie.id,'WATCHED')" 
-                                [class.btn-info]="userserie.status=='WATCHED'" 
-                                [class.btn-light]="userserie.status!='WATCHED'"
-                                [disabled]="userserie.status=='WATCHED'">
-                            Déjà Vu</button>
-                        <button type="button" class="btn"
-                                (click)="updateStatusOfUserSerie(userserie.id,'UNWATCHED')" 
-                                [class.btn-info]="userserie.status=='UNWATCHED'"
-                                [class.btn-light]="userserie.status!='UNWATCHED'"
-                                [disabled]="userserie.status=='UNWATCHED'">
-                            A voir</button>
-                    </div>
-                    <!-- <mat-button-toggle-group [value]="userserie.status" name="statusChoice" aria-label="Status Choice"> -->
-                        <!-- <mat-button-toggle (click)="updateStatusOfUserSerie(userserie.id,'WATCHED')" value="WATCHED">Déjà vu</mat-button-toggle> -->
-                        <!-- <mat-button-toggle (click)="updateStatusOfUserSerie(userserie.id,'UNWATCHED')" value="UNWATCHED">A voir</mat-button-toggle> -->
-                    <!-- </mat-button-toggle-group> -->
-
-                    <!-- <app-toggle [status]="serie.status"  -->
-                                <!-- [userVideoId]="serie.id" -->
-                                <!-- videoType="SERIE"> -->
+                    <!-- <div> -->
+                        <!-- <button type="button" class="btn" -->
+                                <!-- (click)="updateStatusOfUserSerie(userserie.id,'WATCHED')"  -->
+                                <!-- [class.btn-info]="userserie.status=='WATCHED'"  -->
+                                <!-- [class.btn-light]="userserie.status!='WATCHED'" -->
+                                <!-- [disabled]="userserie.status=='WATCHED'"> -->
+                            <!-- Déjà Vu</button> -->
+                        <!-- <button type="button" class="btn" -->
+                                <!-- (click)="updateStatusOfUserSerie(userserie.id,'UNWATCHED')"  -->
+                                <!-- [class.btn-info]="userserie.status=='UNWATCHED'" -->
+                                <!-- [class.btn-light]="userserie.status!='UNWATCHED'" -->
+                                <!-- [disabled]="userserie.status=='UNWATCHED'"> -->
+                            <!-- A voir</button> -->
+                    <!-- </div> -->
+                    
+                    <app-toggle [status]="serie.status" 
+                                [userVideoId]="serie.id"
+                                videoType="SERIE">
                                 <!-- (statusEvent)="updateUserSerieList($event)" -->
-                    <!-- </app-toggle> -->
+                    </app-toggle>
                 </div>
                 <app-stars [componentType]="'display'" [score]="serie.serie.rating"></app-stars>
 
