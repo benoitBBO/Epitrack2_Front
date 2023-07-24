@@ -28,6 +28,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UserSerieAccueilComponent } from './user-serie-accueil/user-serie-accueil.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { SearchTMDBComponent } from './search-tmdb/search-tmdb.component';
+import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { LogoutComponent } from './auth/logout/logout.component';
 import { IsInCatalogPipe } from './shared/pipes/is-in-catalog.pipe';
 
 @NgModule({
@@ -50,6 +53,8 @@ import { IsInCatalogPipe } from './shared/pipes/is-in-catalog.pipe';
     UserMovieAccueilComponent,
     UserSerieAccueilComponent,
     SearchTMDBComponent,
+    ConfirmationDialogComponent,
+    LogoutComponent,
     IsInCatalogPipe
   ],
   imports: [
@@ -61,17 +66,19 @@ import { IsInCatalogPipe } from './shared/pipes/is-in-catalog.pipe';
     MatSnackBarModule,
     MatSlideToggleModule,
     ToggleComponent,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule
   ],
 
   providers: [
     // {provide : HTTP_INTERCEPTORS, useClass : ErrorInterceptor, multi:true},
-  {
+    {
     provide : HTTP_INTERCEPTORS, 
     useClass : TokenInterceptor,
     multi:true
-  }
-],
+    }
+  ],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }

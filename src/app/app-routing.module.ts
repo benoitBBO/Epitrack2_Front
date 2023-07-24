@@ -10,10 +10,12 @@ import { VideoDetailsComponent } from './video-details/video-details/video-detai
 import { UserMovieAccueilComponent } from './user-movie-accueil/user-movie-accueil.component';
 import { UserSerieAccueilComponent } from './user-serie-accueil/user-serie-accueil.component';
 import { SearchTMDBComponent } from './search-tmdb/search-tmdb.component';
+import { LogoutComponent } from './auth/logout/logout.component';
 
 const routes: Routes = [
   {path:'', component:VideoAccueilComponent},
   {path:'login', component:LoginComponent},
+  {path:'logout', component:LogoutComponent},
   {path:'register', component:RegisterComponent},
   {path:'movies', component:MovieAccueilComponent},
   {path:'series', component:SerieAccueilComponent},
@@ -21,7 +23,6 @@ const routes: Routes = [
   {path:'user/movies', component:UserMovieAccueilComponent},
   {path:'user/series', component:UserSerieAccueilComponent},
   {path:'details/:id/:type/:isInCatalog/:whereFrom', component:VideoDetailsComponent},
-  {path:'details/:id/:type', component:VideoDetailsComponent},
   {path:'searchTMDB/:search_input', component:SearchTMDBComponent}
 ];
 
