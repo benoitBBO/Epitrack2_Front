@@ -10,6 +10,7 @@ import { UserService } from './shared/services/user.service';
 export class AppComponent {
   title = 'epitrack2_front';
   loggedUser!: UserModel;
+  
 
   constructor(private userService:UserService){}
 
@@ -17,6 +18,8 @@ export class AppComponent {
     console.log("ngOnInit de app-component");
     //charger loggedUSer
     this.userService._loggedUser$.subscribe((user:any) => this.loggedUser=user );
+   
+
   }
   
 }
