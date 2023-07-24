@@ -7,6 +7,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from '../shared/services/message.service';
 import { UsermovieModel } from '../shared/models/usermovie.model';
 import { TmdbmovieModel } from '../shared/models/tmdbmovie.model';
+import { UserModel } from '../shared/models/user.model';
+import { UserService } from '../shared/services/user.service';
 
 @Component({
   selector: 'app-movie-list',
@@ -17,19 +19,19 @@ export class MovieListComponent {
   movies: MovieModel[] = [];
   movie!: MovieModel;
   userMovies!: UsermovieModel[];
-  tmdb_movies: TmdbmovieModel[] = [];
+  loggedUser!:UserModel;
 
   constructor(private service: MovieService,
               private router:Router,
               private msgService:MessageService,
-              private userMovie:UserMovieService) {
+              private userMovie:UserMovieService,
+              private userService:UserService) {
     console.log("constructor MovieService : ", this);
   }
 
   ngOnInit() {
     //Récupération des userMovies
     this.userMovie._usermovies$.subscribe(data => this.userMovies = data);
-
     //requete get API
     if (this.router.url == '/') {
       this.service.getBest4MoviesFromApi().subscribe( data => this.movies = data);
@@ -40,7 +42,9 @@ export class MovieListComponent {
   onClickAddMovie(idMovie:Number) {
     console.log('onClickAddMovie===');
     if (sessionStorage.getItem('token')) {
-        this.userMovie.postUserMovie(idMovie)
+        this.userService._loggedUser$.subscribe((user:any) => {
+        this.loggedUser=user;
+        this.userMovie.postUserMovie(idMovie, this.loggedUser.id)
           .subscribe( {
             next: (response:any) => {
               console.log("retour post userMovie",response);
@@ -62,12 +66,13 @@ export class MovieListComponent {
               }
             }
           });
+        });
     } else {
         this.router.navigate(['/login']);
     }
   }
   isInCatalog(idMovie:Number){
-    if(sessionStorage.length > 0){
+    if(sessionStorage.length > 0 && this.userMovies.length > 0){
       for(let userMovie of this.userMovies){
         if(userMovie.movie.id === idMovie){
           return false;

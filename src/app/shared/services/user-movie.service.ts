@@ -1,6 +1,5 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { UsermovieModel } from '../models/usermovie.model';
 
@@ -14,10 +13,9 @@ export class UserMovieService {
   public _usermovies$ = new BehaviorSubject<UsermovieModel[]>([]); //##Permet d'utiliser _usermovies$ à travers les composants
   private _usermovie$ = new BehaviorSubject<any>(UsermovieModel);
 
-  constructor(private http: HttpClient,
-              private router:Router) { }
-
-  postUserMovie(idMovie:Number):any {
+  constructor(private http: HttpClient) { }
+              
+  postUserMovie(idMovie:Number, idUser:Number):any {
     let endpoint = '/usermovie';
     let data = {
       "movie":{
@@ -27,7 +25,7 @@ export class UserMovieService {
       "userRatings":0,
       "statusDate":new Date().toLocaleDateString(),
       "user":{
-          "id": sessionStorage.getItem('id')
+          "id": idUser
       }
     }
     console.log('avant post /usermovie', data);
