@@ -2,24 +2,45 @@
     <i class="fas fa-tv fa-2x"></i> <h2><a routerLink="/user/series">Mes Series</a></h2>
 </div>
 <div class="row">
-    <div *ngFor="let serie of series" class="col-12 col-md-3">
+    <div *ngFor="let userserie of series" class="col-12 col-md-3">
         <div class="card">
-            <img [src]="serie.serie.image_landscape | printImg" 
-                 [alt]="serie.serie.title" 
+            <img [src]="userserie.serie.image_landscape | printImg" 
+                 [alt]="userserie.serie.title" 
                  [routerLink]='["/details"]' 
-                 [queryParams]="{id: serie.serie.id, type: serie.serie.type}">
+                 [queryParams]="{id: userserie.serie.id, type: userserie.serie.type}">
             <div class="card-body">
                 <div class=" d-flex align-items-center justify-content-between">
                     <h2 [routerLink]='["/details"]'
-                        [queryParams]="{id: serie.serie.id, type: serie.serie.type}">
-                        {{serie.serie.title}}
+                        [queryParams]="{id: userserie.serie.id, type: userserie.serie.type}">
+                        {{userserie.serie.title}}
                     </h2>
-                    <app-toggle [status]="serie.status" 
-                                [userVideoId]="serie.id"
-                                videoType="SERIE">
-                    </app-toggle>
+                    
+                    <div>
+                        <button type="button" class="btn"
+                                (click)="updateStatusOfUserSerie(userserie.id,'WATCHED')" 
+                                [class.btn-info]="userserie.status=='WATCHED'" 
+                                [class.btn-light]="userserie.status!='WATCHED'"
+                                [disabled]="userserie.status=='WATCHED'">
+                            Déjà Vu</button>
+                        <button type="button" class="btn"
+                                (click)="updateStatusOfUserSerie(userserie.id,'UNWATCHED')" 
+                                [class.btn-info]="userserie.status=='UNWATCHED'"
+                                [class.btn-light]="userserie.status!='UNWATCHED'"
+                                [disabled]="userserie.status=='UNWATCHED'">
+                            A voir</button>
+                    </div>
+                    <!-- <mat-button-toggle-group [value]="userserie.status" name="statusChoice" aria-label="Status Choice"> -->
+                        <!-- <mat-button-toggle (click)="updateStatusOfUserSerie(userserie.id,'WATCHED')" value="WATCHED">Déjà vu</mat-button-toggle> -->
+                        <!-- <mat-button-toggle (click)="updateStatusOfUserSerie(userserie.id,'UNWATCHED')" value="UNWATCHED">A voir</mat-button-toggle> -->
+                    <!-- </mat-button-toggle-group> -->
+
+                    <!-- <app-toggle [status]="serie.status"  -->
+                                <!-- [userVideoId]="serie.id" -->
+                                <!-- videoType="SERIE"> -->
+                                <!-- (statusEvent)="updateUserSerieList($event)" -->
+                    <!-- </app-toggle> -->
                 </div>
-                <app-stars [score]="serie.serie.rating"></app-stars>
+                <app-stars [score]="userserie.serie.rating"></app-stars>
             </div>
         </div>
     </div>

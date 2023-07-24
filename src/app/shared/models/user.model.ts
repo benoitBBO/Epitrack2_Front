@@ -2,8 +2,8 @@ export class UserModel {
     id!: number;
     userName!: string;
     firstName!: string;
-    lastName!: Date;
-    email!: number;
+    lastName!: string;
+    email!: string;
     password!: string;
 
     constructor(user: any) {
@@ -15,3 +15,4 @@ export class UserModel {
         this.password = user.password;
     }
 }
+

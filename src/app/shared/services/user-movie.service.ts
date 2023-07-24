@@ -34,17 +34,17 @@ export class UserMovieService {
     return this.http.post( this.EPITRACK_API + endpoint, data, {responseType:'text'});
   }
 
-  getUserMoviesFromApi():void {
+  getUserMoviesFromApi(userid:number):void {
     let endpoint = '/usermovie/user/';
-    this.http.get( this.EPITRACK_API + endpoint + sessionStorage.getItem('id'))
+    this.http.get( this.EPITRACK_API + endpoint + userid)
       .pipe( map( (response:any) => 
             response.map((movie:any) => new UsermovieModel(movie)) ) )
       .subscribe(data => this._usermovies$.next(data))
   }
 
-  getBest4UserMoviesFromApi():void {
+  getBest4UserMoviesFromApi(userid:number):void {
     let endpoint = '/usermovie/best4/';
-    this.http.get( this.EPITRACK_API + endpoint + sessionStorage.getItem('id'))
+    this.http.get( this.EPITRACK_API + endpoint + userid)
       .pipe( map( (response:any) => 
             response.map((movie:any) => new UsermovieModel(movie)) ) )
       .subscribe(

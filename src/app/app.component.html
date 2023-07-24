@@ -15,8 +15,10 @@
       </div>
       <app-searchbar class="width40"></app-searchbar>
       <div>
-        Bonjour
-        <button routerLink="/login" class="btn btn-light"><i class="fas fa-user"></i></button>
+        <span *ngIf="loggedUser.userName">{{loggedUser.userName}} </span>
+        <!-- <a *ngIf="loggedUser.userName" class="link-opacity-100">Se déconnecter</a> -->
+        <button *ngIf="!loggedUser.userName" routerLink="/login" class="btn btn-light"><i class="fas fa-user"></i></button>
+        <button *ngIf="loggedUser.userName" routerLink="/logout" class="btn btn-light"><i class="fas fa-user"></i></button>
       </div>
   </div>
 </nav>
