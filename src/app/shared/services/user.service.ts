@@ -104,6 +104,14 @@ export class UserService {
 
   saveLoggedUser(user:any){
     console.log("méthode saveLoggedUser");
+    
+    sessionStorage.setItem('id',user.id);
+    sessionStorage.setItem('username',user.userName);
+    sessionStorage.setItem('lastname',user.lastName);
+    sessionStorage.setItem('firstname',user.firstName);
+    sessionStorage.setItem('email',user.email);
+
+    //TODO en double sessionStorage + loggedUser
     this._loggedUser$.next(user);
     return new Promise( (resolve, reject) => {
       if (this.loggedUser == null) {
@@ -116,6 +124,7 @@ export class UserService {
 
   clearLoggedUser(){
     console.log("méthode clearLoggedUser");
+    
     this.loggedUser.id = 0;
     this.loggedUser.userName = "";
     this.loggedUser.firstName = "";
