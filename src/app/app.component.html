@@ -4,13 +4,13 @@
       <div>
         <button class="btnMenu" [matMenuTriggerFor]="menu">Le Catalogue</button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item><a routerLink="/movies" class="navbar-brand">Les films</a></button>
-          <button mat-menu-item><a routerLink="/series" class="navbar-brand">Les séries</a></button>
+          <button mat-menu-item  routerLink="/movies"><a class="navbar-brand">Les films</a></button>
+          <button mat-menu-item routerLink="/series"><a class="navbar-brand">Les séries</a></button>
         </mat-menu>
         <button class="btnMenu" [matMenuTriggerFor]="menu2">Mon Catalogue</button>
         <mat-menu #menu2="matMenu">
-          <button mat-menu-item><a routerLink="/user/movies" class="navbar-brand">Mes films</a></button>
-          <button mat-menu-item><a routerLink="/user/series" class="navbar-brand">Mes séries</a></button>
+          <button mat-menu-item routerLink="/user/movies"><a class="navbar-brand">Mes films</a></button>
+          <button mat-menu-item routerLink="/user/series"><a class="navbar-brand">Mes séries</a></button>
         </mat-menu>
       </div>
       <app-searchbar class="width40"></app-searchbar>
