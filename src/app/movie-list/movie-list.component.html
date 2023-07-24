@@ -6,10 +6,10 @@
         <div class="card">
             <img [src]="movie.image_landscape != null ? (movie.image_landscape | printImg) : './assets/img/noimage.png'"
                  [alt]="movie.title" 
-                 [routerLink]='["/details", movie.id, movie.type, isInCatalog(movie.id) ? "out" : "in"]'>
+                 [routerLink]='["/details", movie.id, movie.type, ((movie.id | isInCatalog:movie.type) ? "out" : "in"), "catalog"]'>
             <div class="card-body">
                 <div class=" d-flex align-items-center justify-content-between">
-                    <h2 [routerLink]='["/details", movie.id, movie.type, isInCatalog(movie.id) ? "out" : "in"]'>
+                    <h2 [routerLink]='["/details", movie.id, movie.type, ((movie.id | isInCatalog:movie.type) ? "out" : "in"), "catalog"]'>
                         {{movie.title}}
                     </h2>
                     <ng-template [ngIf]="isInCatalog(movie.id) === true" [ngIfElse]="inCatalog">
@@ -25,7 +25,7 @@
                         </button>
                     </ng-template>
                 </div>
-                <app-stars [score]="movie.rating"></app-stars>
+                <app-stars [componentType]="'display'" [score]="movie.rating"></app-stars>
             </div>
         </div>
     </div>

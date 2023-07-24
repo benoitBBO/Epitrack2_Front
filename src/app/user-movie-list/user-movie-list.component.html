@@ -6,12 +6,10 @@
         <div class="card">
             <img [src]="movie.movie.image_landscape | printImg" 
                  [alt]="movie.movie.title" 
-                 [routerLink]='["/details"]' 
-                 [queryParams]="{id: movie.movie.id, type: movie.movie.type}">
+                 [routerLink]='["/details", movie.id, "Movie", "in", "userCatalog"]'>
             <div class="card-body">
                 <div class=" d-flex align-items-center justify-content-between">
-                    <h2 [routerLink]='["/details"]'
-                        [queryParams]="{id: movie.movie.id, type: movie.movie.type}">
+                    <h2 [routerLink]='["/details", movie.id, "Movie", "in"]'>
                         {{movie.movie.title}}
                     </h2>
                     <app-toggle [status]="movie.status" 
@@ -19,7 +17,7 @@
                                 videoType="MOVIE">
                     </app-toggle>
                 </div>
-                <app-stars [score]="movie.movie.rating"></app-stars>
+                <app-stars [componentType]="'display'" [score]="movie.movie.rating"></app-stars>
             </div>
         </div>
     </div>

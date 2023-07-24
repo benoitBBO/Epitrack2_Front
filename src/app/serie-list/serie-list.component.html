@@ -4,10 +4,10 @@
 <div class="row">
     <div *ngFor="let serie of series" class="col-12 col-md-3">
         <div class="card">
-            <img [src]="serie.image_landscape != null ? (serie.image_landscape | printImg) : './assets/img/noimage.png'" [alt]="serie.title" [routerLink]='["/details", serie.id, serie.type, "#TODOCatalogOwn"]'>
+            <img [src]="serie.image_landscape != null ? (serie.image_landscape | printImg) : './assets/img/noimage.png'" [alt]="serie.title" [routerLink]='["/details", serie.id, serie.type, ((serie.id | isInCatalog:serie.type) ? "out" : "in"), "catalog"]'>
             <div class="card-body">
-                <h2 [routerLink]='["/details", serie.id, serie.type, "#TODOCatalogOwn"]'>{{serie.title}}</h2>
-                <app-stars [score]="serie.rating"></app-stars>                
+                <h2 [routerLink]='["/details", serie.id, serie.type, ((serie.id | isInCatalog:serie.type) ? "out" : "in"), "catalog"]' >{{serie.title}}</h2>
+                <app-stars [componentType]="'display'" [score]="serie.rating"></app-stars>                
             </div>
         </div>
     </div>

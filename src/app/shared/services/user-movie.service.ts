@@ -69,6 +69,12 @@ export class UserMovieService {
       
   }
 
+  updateUserRating(userRating:object):any{
+    let endpoint = '/usermovie/rating';
+    let data = userRating;
+    return this.http.put( this.EPITRACK_API + endpoint + "/", data, {responseType:'text'});
+  }
+
   get usermovies$():Observable<UsermovieModel[]> {
     return this._usermovies$.asObservable();
   }

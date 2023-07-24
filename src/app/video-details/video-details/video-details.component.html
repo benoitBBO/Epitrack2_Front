@@ -4,11 +4,10 @@
             <div class="row">
                 <div class="col-md-2 p-4">
                     <img [src]="movie.image_portrait != null ? (movie.image_portrait | printImg) : './assets/img/noimageposter.png'" [alt]="movie.title" class="img-fluid img-thumbnail">
-                    <!-- <app-stars *ngIf="this.userOwned === 'in'" [score]="movie.rating"></app-stars> -->
                 </div>
                 <div class="col-md-10 p-4 d-flex flex-column"> 
                     <h2 class="mb-0">{{movie.title}}</h2>
-                    <div class="mb-auto"><app-stars [score]="movie.rating"></app-stars></div>
+                    <div class="mb-auto"><app-stars [componentType]="'display'" [score]="movie.rating"></app-stars></div>
                     <p class="mb-auto"><strong>Résumé : </strong>{{movie.overview}}</p>
                     <p class="mb-auto"><strong>Date de diffusion : </strong>{{movie.release_date}}</p>
                     <p class="mb-auto"><strong>Genres : </strong> <span *ngFor="let genre of movie.genres">
@@ -18,6 +17,9 @@
                         {{actor.name}}
                     </span></p>
                     <p *ngIf="this.userOwned === 'in'" class="mb-auto"><strong>Statut : </strong> {{this.userMovie.status}}</p>
+                    <p *ngIf="this.userOwned === 'in'" class="mb-auto inlineFlex"><strong class="customPaddingRight">Vote : </strong> <app-stars *ngIf="this.userOwned === 'in'" [selectedUserMovie]="userMovie" [componentType]="'vote'" [score]="userMovie.userRating"></app-stars></p>
+                    
+
                 </div>
             </div>
         </div> 
@@ -31,7 +33,7 @@
                 </div>
                 <div class="col-md-10 p-4 d-flex flex-column">
                     <h2 class="mb-0">{{serie.title}}</h2>
-                    <div class="mb-auto"><app-stars [score]="serie.rating"></app-stars></div>
+                    <div class="mb-auto"><app-stars [componentType]="'display'" [score]="serie.rating"></app-stars></div>
                     <p class="mb-auto"><strong>Résumé : </strong>{{serie.overview}}</p>
                     <p class="mb-auto"><strong>Date de diffusion : </strong>{{serie.release_date}}</p>
                     <p class="mb-auto"><strong>Genres : </strong> <span *ngFor="let genre of serie.genres">
