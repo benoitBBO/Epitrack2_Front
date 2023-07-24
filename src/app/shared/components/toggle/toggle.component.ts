@@ -18,12 +18,9 @@ export class ToggleComponent {
   @Input() status!:string;
   @Input() userVideoId!:number;
   @Input() videoType!:String;
-  newStatus!:string;
-  //@Output() statusEvent = new EventEmitter();
-  checked = false;
-  //confirmed = false;
-  //obj!:any;
-
+  //newStatus!:string;
+  checked = false;    //false quand satus "A voir" - true quand status 'Déjà vu"
+  
   constructor(private userMovieService: UserMovieService,
               private userSerieService: UserSerieService,
               private messageService: MessageService,
@@ -37,110 +34,63 @@ export class ToggleComponent {
   }
   
   changed(event: any){
-    console.log(this.checked)
-    //appel update status usermovie ou userserie
+    console.log("toggle changed");
     if (this.checked) {
-      if (!confirm('Vous confirmez avoir vu toutes les saisons?')) {
-        this.checked = !this.checked;
-      }
+      this.status = "WATCHED";
     } else {
-      if (!confirm('Vous confirmez passer toutes les saisons à Non Vu?')) {
-        this.checked = !this.checked;
-      }
+      this.status = "UNWATCHED";
     }
 
-    this.status = "UNWATCHED";
-    if (this.checked) {
-      this.status = "WATCHED"
-    }
     switch (this.videoType) {
       case 'MOVIE': 
-        //this.userMovieService.changeStatusUserMovie(this.userVideoId, this.status);
-        this.userMovieService.changeStatusUserMovie(this.userVideoId, this.newStatus);
+        this.changedForMovie();
         break;
       case 'SERIE':
-        // message de confirmation car va mettre à jour aussi le statut de tous les saisons / épisodes
-        //let msg = "Le changement de statut de la série va mettre à jour le statut de toutes les saisons et épisodes.\nVoulez-vous continuer ?";
-        //this.messageService.openConfirmDialog(msg);
-        //if(this.confirmed){
-          // appel service changeStatusUserService seulement si confirmation OUI
-          console.log("change status serie)");
-          //------ version avec @Output statusEvent
-          //--------pour appel update back dans le parent user-serie-list
-          //this.statusEvent.emit({userVideoId: this.userVideoId, status:this.newStatus});
-          //------ version avec appel update back ici dans enfant toggle
-          //this.userSerieService.changeStatusUserSerie(this.userVideoId, this.newStatus)
-            //.subscribe({
-            //   next: (response:any) => {
-            //     console.log("next");
-            //     this.messageService.show("statut mis à jour", "success");
-            //     this.statusEvent.emit({userVideoId: this.userVideoId, status:this.newStatus})
-            //     //this.router.navigate(['/user/series']);
-            //   } ,
-            //   error: (err:unknown) => {
-            //     if (err instanceof HttpErrorResponse){
-            //       console.log("error avant message");
-            //       this.newStatus = this.status;
-            //       this.statusEvent.emit({userVideoId: this.userVideoId, status:this.newStatus})
-            //       this.messageService.show("erreur de mise à jour du statut", "error");
-            //       console.log("error après message");
-            //       this.router.navigate(['/user/series']);
-            //     }
-            //   },
-            //   complete: () => {
-            //     console.log("complete");
-            //     this.router.navigate(['/user/series']);
-            //   }         
-            // })
-          
-        //}else{
-        //  console.log("pas de changement statut en base");
-          //il manque le toggle qui a bougé, le faire revenir en arrière
-        //}
-        
+        this.changedForSerie();
         break;
       default:
         this.messageService.show("Erreur type de video inconnu", "error");
     }
   }
 
-  //changed2(obj:any){
-    //console.log(this.checked)
-    //console.log("obj: ", obj);
-    //this.checked=false;
-    //appel update status usermovie ou userserie
-    // this.status = "UNWATCHED";
-    // if (this.checked) {
-    //   this.status = "WATCHED"
-    // }
-    // switch (this.videoType) {
-    //   case 'MOVIE': 
-    //     this.userMovieService.changeStatusUserMovie(this.userVideoId, this.status);
-    //     break;
-    //   case 'SERIE':
-    //     // message de confirmation car va mettre à jour aussi le statut de tous les saisons / épisodes
-    //     let msg = "Le changement de statut de la série va mettre à jour le statut de toutes les saisons et épisodes.\nVoulez-vous continuer ?";
-    //     let confirmChose:boolean = this.messageService.confirm(msg, this.confirmed);
-    //     if(confirmChose == false){
-    //       this.checked=!this.checked;
-    //     }
+  changedForMovie(){
+    console.log("changedForMovie");
+    this.userMovieService.changeStatusUserMovie(this.userVideoId, this.status)
+    .subscribe({
+      next: () => this.messageService.show("statut du film mis à jour", "success"),
+      error: (err:unknown) => {
+        this.checked = !this.checked;
+        this.messageService.show("erreur de mise à jour du statut", "error");
+      }
+    });
+  }
 
-    //     // appel service changeStatusUserService seulement si confirmation OUI
-    //     this.userSerieService.changeStatusUserSerie(this.userVideoId, this.status);
-    //     console.log("change status serie)");
-    //     break;
-    //   default:
-    //     this.messageService.show("Erreur type de video inconnu", "error");
-    // }
-    //}
+  changedForSerie(){
+    // Pour Serie, avant de mettre à jour le statut, on demande confirmation à l'utilisateur
+    // car la màj de la serie va entrainer la màj des saisons/épisodes
+    let confirmationMessage: string;
+    
+    if (this.checked) {
+      confirmationMessage = 'Confirmez-vous avoir vu la serie ET toutes les saisons/épisodes ?';
+    } else {
+      confirmationMessage = 'Confirmez-vous vouloir remettre à "A voir" la serie ET toutes les saisons/épisodes ?';
+    };
+    
+    //    si confirme non -> pas d'update en base + inverser this.checked pour le remettre à son état initial
+    //    si confirme oui -> update en base serie/saisons/épisodes avec nouveau status
+    if (!confirm(confirmationMessage)) {
+      this.checked = !this.checked;
+    } else {
+      this.userSerieService.changeStatusUserSerie(this.userVideoId, this.status)
+      .subscribe({
+        next: () => this.messageService.show("statut du film mis à jour", "success"),
+        error: (err:unknown) => {
+          this.checked = !this.checked;
+          this.messageService.show("erreur de mise à jour du statut", "error");
+        }
+      })
+    }
+  }
   
 
-  // saveConfirm(event:Event){
-  //   if(event){
-  //     this.confirmed=true;
-  //   }else{
-  //     this.confirmed=false;
-  //   }
-  //   console.log("saveConfirm: ", this.confirmed);
-  // }
 }
