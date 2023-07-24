@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../components/confirmation-dialog/confirmation-dialog.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
 
-  constructor(private _snackbar:MatSnackBar) { }
+  constructor(private _snackbar:MatSnackBar
+              ,private _dialog:MatDialog
+              ) { }
 
   show(msg:string, type?:'error' | 'success' | 'info'){
     console.log("show, msg: ", msg, " , type: ", type);
@@ -26,4 +30,11 @@ export class MessageService {
         });
     }
   }
+
+  openConfirmDialog(msg:string):void{
+    console.log("confirm, msg: ", msg);
+    //this._dialog.open(ConfirmationDialogComponent, {message:msg});
+    this._dialog.open(ConfirmationDialogComponent);
+  }
+
 }
