@@ -15,6 +15,7 @@ export class SearchbarComponent {
   searchMovies: MovieModel[] = [];
   searchSeries: SerieModel[] = [];
   searchVideos: MovieModel[] = [];
+  isListVisible:boolean = false;
 
   constructor(private movieService: MovieService,
               private serieService: SerieService,
@@ -25,10 +26,12 @@ export class SearchbarComponent {
   onKeyUp(saisie: string){
     this.searchVideos = [];
     if (saisie.length > 2) {
+      this.isListVisible = true;
       this.movieService.searchMoviesFromApi(saisie)
         .subscribe((movies:MovieModel[]) => this.searchVideos.push(...movies));
       this.serieService.searchSeriesFromApi(saisie)
         .subscribe((series:SerieModel[]) => this.searchVideos.push(...series));
     }
   }
+  
 }

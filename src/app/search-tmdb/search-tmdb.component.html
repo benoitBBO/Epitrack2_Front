@@ -13,7 +13,8 @@
                         <h2 [routerLink]='["/details"]'>
                             {{movie.titre}}
                         </h2>
-                        <button class="btn btn-light" 
+                        <button (click)="onClickAddMovie(movie.id)"
+                                class="btn btn-light" 
                                 title="Ajouter un film dans le catalogue EpiTrack">
                             <i class="fas fa-plus"></i>
                         </button>

@@ -15,6 +15,9 @@
 h2 {
     font-size: large;
     margin-bottom: 0px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 a {
     color: black;
