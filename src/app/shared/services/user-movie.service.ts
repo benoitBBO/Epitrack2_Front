@@ -56,9 +56,8 @@ export class UserMovieService {
   }
   changeStatusUserMovie(userMovieId:number, status:string) {
     let endpoint = '/usermovie/status/';
-    let data = {}
-    this.http.put( this.EPITRACK_API + endpoint + userMovieId + "/" + status, data, {responseType:'text'})
-      .subscribe();
+    return this.http.put( this.EPITRACK_API + endpoint + userMovieId + "/" + status, {responseType:'text'});
+    //  .subscribe();
   }
 
   getUserMovieById(id: number):Observable<UsermovieModel> {
