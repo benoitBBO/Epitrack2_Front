@@ -6,7 +6,21 @@
         <div class="card">
             <img [src]="serie.image_landscape != null ? (serie.image_landscape | printImg) : './assets/img/noimage.png'" [alt]="serie.title" [routerLink]='["/details", serie.id, serie.type, ((serie.id | isInCatalog:serie.type) ? "out" : "in"), "catalog"]'>
             <div class="card-body">
-                <h2 [routerLink]='["/details", serie.id, serie.type, ((serie.id | isInCatalog:serie.type) ? "out" : "in"), "catalog"]' >{{serie.title}}</h2>
+                <div class=" d-flex align-items-center justify-content-between">
+                    <h2 [routerLink]='["/details", serie.id, serie.type, ((serie.id | isInCatalog:serie.type) ? "out" : "in"), "catalog"]' >{{serie.title}}</h2>
+                    <ng-template [ngIf]="isInCatalog(serie.id) === true" [ngIfElse]="inCatalog">
+                        <button (click)="onClickAddSerie(serie)" class="btn btn-light" 
+                                title="Ajouter une série dans mon catalogue">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </ng-template>
+                    <ng-template #inCatalog>
+                        <button (click)="onClickAddSerie(serie)" class="btn btn-light" 
+                                title="Supprimer une série dans mon catalogue">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </ng-template>
+                </div>
                 <app-stars [componentType]="'display'" [score]="serie.rating"></app-stars>                
             </div>
         </div>
