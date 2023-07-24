@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { MovieModel } from '../models/movie.model';
 import { TmdbmovieModel } from '../models/tmdbmovie.model';
+import { TmdbmovieDetailDtoModel } from '../models/tmdbmovie-detail-dto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +71,22 @@ export class MovieService {
       .pipe( map( (response:any) => 
             response.results.map((movie:any) => new TmdbmovieModel(movie)) ) )
   }
+
+  getMovieTmdbById(movieId:number) {
+    let endpoint = '/movie/';
+    let options = new HttpParams()
+      .set('api_key', this.APIKEY_TMDB)
+      .set('append_to_response','credits')
+      .set('language', 'fr')
+    return this.http.get( this.TMDB_API + endpoint + movieId, {params:options})
+      .pipe( map( (response:any) => new TmdbmovieDetailDtoModel(response) ) )
+  }
+
+  postNewMovie(movie:TmdbmovieDetailDtoModel) {
+    this.http.post(this.EPITRACK_API + '/movies', movie)
+      .subscribe(() => {})
+  }
+
   get movies$():Observable<MovieModel[]> {
     return this._movies$.asObservable();
   }

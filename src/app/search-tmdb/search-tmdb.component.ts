@@ -30,6 +30,10 @@ export class SearchTMDBComponent {
   }
   onClickAddSerie(serieId:number) {
     this.serieService.getSerieTmdbById(serieId)
-      .subscribe( (data:any) => this.serieService.postNewSerie(data) )
+      .subscribe( (serie:any) => this.serieService.postNewSerie(serie) )
+  }
+  onClickAddMovie(movieId:number) {
+    this.movieService.getMovieTmdbById(movieId)
+      .subscribe( (movie:any) => this.movieService.postNewMovie(movie) )
   }
 }

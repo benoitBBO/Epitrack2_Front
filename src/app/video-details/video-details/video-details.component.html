@@ -14,7 +14,7 @@
                         {{genre.name}} 
                     </span></p>
                     <p class="mb-auto"><strong>Acteurs : </strong> <span *ngFor="let actor of movie.actors">
-                        {{actor.name}}
+                        {{actor.name}}, 
                     </span></p>
                     <p *ngIf="this.userOwned === 'in'" class="mb-auto"><strong>Statut : </strong> {{this.userMovie.status}}</p>
                     <p *ngIf="this.userOwned === 'in'" class="mb-auto inlineFlex"><strong class="customPaddingRight">Vote : </strong> <app-stars *ngIf="this.userOwned === 'in'" [selectedUserMovie]="userMovie" [componentType]="'vote'" [score]="userMovie.userRating"></app-stars></p>
@@ -40,7 +40,7 @@
                         {{genre.name}} 
                     </span></p>
                     <p class="mb-auto"><strong>Acteurs : </strong> <span *ngFor="let actor of serie.actors">
-                        {{actor.name}}
+                        {{actor.name}}, 
                     </span></p>
                 </div>
             </div>

@@ -3,6 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { SerieModel } from '../models/serie.model';
 import { TmdbserieModel } from '../models/tmdbserie.model';
+import { TmdbserieDetailDtoModel } from '../models/tmdbserie-detail-dto.model';
+import { TmdbepisodeDetailDtoModel } from '../models/tmdbepisode-detail-dto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -63,19 +65,39 @@ export class SerieService {
   }
 
   getSerieTmdbById(serieId:number) {
-    let endpoint = '/search/tv';
+    let endpoint = '/tv/';
     let options = new HttpParams()
       .set('api_key', this.APIKEY_TMDB)
-      .set('query', serieId)
+      .set('append_to_response','credits')
       .set('language', 'fr')
-    return this.http.get( this.TMDB_API + endpoint, {params:options})
+    return this.http.get( this.TMDB_API + endpoint + serieId, {params:options})
+      .pipe( map( (response:any) => new TmdbserieDetailDtoModel(response) ) )
+  }
+
+  postNewSerie(serie:TmdbserieDetailDtoModel) {
+    for (let season of serie.seasons) {
+      this.getSeasonTmdbById(serie.id, season.season_number)
+        .subscribe( (episodes:TmdbepisodeDetailDtoModel[]) => {
+          season.episodes = episodes
+          if (serie.seasons.every((season) => season.episodes.length > 0)) {
+            this.http.post(this.EPITRACK_API + '/series', serie)
+              .subscribe(() => {})
+          }
+        }
+      )
+    }
+  }
+  
+  getSeasonTmdbById(serieId:number, seasonNumber:number) {
+    let endpoint = '/tv/';
+    let options = new HttpParams()
+      .set('api_key', this.APIKEY_TMDB)
+      .set('language', 'fr')
+    return this.http.get( this.TMDB_API + endpoint + serieId + '/season/' +  seasonNumber, {params:options})
       .pipe( map( (response:any) => 
-            response.results.map((serie:any) => new TmdbserieModel(serie)) ) )
+            response.episodes.map((episode:any) => new TmdbepisodeDetailDtoModel(episode)) ) )
   }
 
-  postNewSerie(data:any) {
-
-  }
 
   get series$():Observable<SerieModel[]> {
     return this._series$.asObservable();

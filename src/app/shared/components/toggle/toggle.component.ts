@@ -35,10 +35,20 @@ export class ToggleComponent {
       this.checked = true;
     }
   }
-    
-  changed(){
+  
+  changed(event: any){
     console.log(this.checked)
     //appel update status usermovie ou userserie
+    if (this.checked) {
+      if (!confirm('Vous confirmez avoir vu toutes les saisons?')) {
+        this.checked = !this.checked;
+      }
+    } else {
+      if (!confirm('Vous confirmez passer toutes les saisons à Non Vu?')) {
+        this.checked = !this.checked;
+      }
+    }
+
     this.status = "UNWATCHED";
     if (this.checked) {
       this.status = "WATCHED"
