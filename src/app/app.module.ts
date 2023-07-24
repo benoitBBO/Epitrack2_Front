@@ -31,7 +31,7 @@ import { SearchTMDBComponent } from './search-tmdb/search-tmdb.component';
 import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LogoutComponent } from './auth/logout/logout.component';
-
+import { IsInCatalogPipe } from './shared/pipes/is-in-catalog.pipe';
 
 @NgModule({
   declarations: [
@@ -54,7 +54,8 @@ import { LogoutComponent } from './auth/logout/logout.component';
     UserSerieAccueilComponent,
     SearchTMDBComponent,
     ConfirmationDialogComponent,
-    LogoutComponent
+    LogoutComponent,
+    IsInCatalogPipe
   ],
   imports: [
     BrowserModule,

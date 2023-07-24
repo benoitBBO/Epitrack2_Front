@@ -22,8 +22,7 @@ const routes: Routes = [
   {path:'user', component:UserAccueilComponent},
   {path:'user/movies', component:UserMovieAccueilComponent},
   {path:'user/series', component:UserSerieAccueilComponent},
-  {path:'details/:id/:type/:isInCatalog', component:VideoDetailsComponent},
-  {path:'details/:id/:type', component:VideoDetailsComponent},
+  {path:'details/:id/:type/:isInCatalog/:whereFrom', component:VideoDetailsComponent},
   {path:'searchTMDB/:search_input', component:SearchTMDBComponent}
 ];
 

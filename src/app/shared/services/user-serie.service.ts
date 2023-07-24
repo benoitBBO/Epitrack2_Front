@@ -19,16 +19,9 @@ export class UserSerieService {
               private msgService:MessageService,
               private router:Router) { }
 
-  get userseries$():Observable<UserserieModel[]> {
-    return this._userseries$.asObservable();
-  }
-  get userseries():UserserieModel[] {
-    return this._userseries$.getValue();
-  }
+  
 
-  setUserSeries$(data:UserserieModel[]){
-    this._userseries$.next(data);
-  }
+  
   
   getUserSeriesFromApi(userid:number):void {
     let endpoint = '/userserie/user/';
@@ -52,6 +45,7 @@ export class UserSerieService {
       )
   }
 
+
   changeStatusUserSerie(userSerieId:number, status:string) {
     let endpoint = '/userserie/status/';
     let data = {}
@@ -68,6 +62,17 @@ export class UserSerieService {
       //   } )
       // );
       
+
+  get userseries$():Observable<UserserieModel[]> {
+    return this._userseries$.asObservable();
   }
+  setUserSeries$(data: UserserieModel[]) {
+    this._userseries$.next(data);
+  }
+
+  get userseries():UserserieModel[] {
+    return this._userseries$.getValue();
+  }
+  
 
 }

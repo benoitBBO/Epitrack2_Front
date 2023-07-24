@@ -25,6 +25,7 @@ export class VideoDetailsComponent {
   loaded: boolean = false;
   userMovies!: UsermovieModel[];
   userMovie!: UsermovieModel;
+  previousPage!: string;
 
 
   constructor(
@@ -46,16 +47,24 @@ export class VideoDetailsComponent {
     //Params recovery for Get Request
     this.userOwned = this.route.snapshot.params['isInCatalog'];
     this.type = this.route.snapshot.params['type'];
-    this.id = this.userOwned === "out" ? this.route.snapshot.params['id'] : this.getUserVideoId(this.type, this.route.snapshot.params['id']);
+    this.id;
+    this.previousPage = this.route.snapshot.params['whereFrom'];
+
+    //Definition de l'id selon le type de user
+    if(this.previousPage !== "userCatalog"){
+      this.id = this.userOwned === "out" ? this.route.snapshot.params['id'] : this.getUserVideoId(this.type, this.route.snapshot.params['id'])
+    } else {
+      this.id = this.route.snapshot.params['id'];
+    }
     
 
     if(this.type === "Movie"){
-      if(sessionStorage.length === 0){
+      if(sessionStorage.length === 0){ //Si Utilisateur non connecté
         this.movieService.getMovieById(this.id).subscribe( data => {
           this.movie = data;
           this.loaded = true;
         });
-      } else {
+      } else { //Utilisateur connecté
         if(this.userOwned === "out"){
           this.movieService.getMovieById(this.id).subscribe( data => {
             this.movie = data;

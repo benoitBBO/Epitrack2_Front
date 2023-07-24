@@ -40,7 +40,8 @@
                                 <!-- (statusEvent)="updateUserSerieList($event)" -->
                     <!-- </app-toggle> -->
                 </div>
-                <app-stars [score]="userserie.serie.rating"></app-stars>
+                <app-stars [componentType]="'display'" [score]="serie.serie.rating"></app-stars>
+
             </div>
         </div>
     </div>

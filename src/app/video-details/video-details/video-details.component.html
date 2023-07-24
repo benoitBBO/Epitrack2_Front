@@ -3,11 +3,11 @@
         <div class="col-md-12 bg-white">
             <div class="row">
                 <div class="col-md-2 p-4">
-                    <img [src]="movie.image_portrait | printImg" [alt]="movie.title" class="img-fluid img-thumbnail">
+                    <img [src]="movie.image_portrait != null ? (movie.image_portrait | printImg) : './assets/img/noimageposter.png'" [alt]="movie.title" class="img-fluid img-thumbnail">
                 </div>
                 <div class="col-md-10 p-4 d-flex flex-column"> 
                     <h2 class="mb-0">{{movie.title}}</h2>
-                    <div class="mb-auto"><app-stars [score]="movie.rating"></app-stars></div>
+                    <div class="mb-auto"><app-stars [componentType]="'display'" [score]="movie.rating"></app-stars></div>
                     <p class="mb-auto"><strong>Résumé : </strong>{{movie.overview}}</p>
                     <p class="mb-auto"><strong>Date de diffusion : </strong>{{movie.release_date}}</p>
                     <p class="mb-auto"><strong>Genres : </strong> <span *ngFor="let genre of movie.genres">
@@ -17,6 +17,9 @@
                         {{actor.name}}
                     </span></p>
                     <p *ngIf="this.userOwned === 'in'" class="mb-auto"><strong>Statut : </strong> {{this.userMovie.status}}</p>
+                    <p *ngIf="this.userOwned === 'in'" class="mb-auto inlineFlex"><strong class="customPaddingRight">Vote : </strong> <app-stars *ngIf="this.userOwned === 'in'" [selectedUserMovie]="userMovie" [componentType]="'vote'" [score]="userMovie.userRating"></app-stars></p>
+                    
+
                 </div>
             </div>
         </div> 
@@ -26,11 +29,11 @@
         <div class="col-md-12 bg-white mb-3">
             <div class="row">
                 <div class="col-md-2 p-4">
-                    <img [src]="serie.image_portrait | printImg" [alt]="serie.title" class="img-fluid img-thumbnail">
+                    <img [src]="serie.image_portrait != null ? (serie.image_portrait | printImg) : './assets/img/noimageposter.png'" [alt]="serie.title" class="img-fluid img-thumbnail">
                 </div>
                 <div class="col-md-10 p-4 d-flex flex-column">
                     <h2 class="mb-0">{{serie.title}}</h2>
-                    <div class="mb-auto"><app-stars [score]="serie.rating"></app-stars></div>
+                    <div class="mb-auto"><app-stars [componentType]="'display'" [score]="serie.rating"></app-stars></div>
                     <p class="mb-auto"><strong>Résumé : </strong>{{serie.overview}}</p>
                     <p class="mb-auto"><strong>Date de diffusion : </strong>{{serie.release_date}}</p>
                     <p class="mb-auto"><strong>Genres : </strong> <span *ngFor="let genre of serie.genres">
@@ -60,7 +63,7 @@
                     <div class="row row-cols-8 g-0 justify-content-center">
                         <div *ngFor="let season of serie.seasons" class="col mb-3">
                             <div class="card customWidth" (click)="onClickSeasonCard($event,season.seasonNumber)" >
-                                <img class="card-img-top" [src]="season.imageUrl | printImg" [alt]="season.title">
+                                <img class="card-img-top" [src]="season.imageUrl != null ? (season.imageUrl | printImg) : './assets/img/noimageposter.png'" [alt]="season.title">
                                 <div class="card-body text-center">
                                     <h5 class="card-title ellipse" [title]="season.title">{{season.title}}</h5>            
                                 </div>
@@ -78,7 +81,7 @@
                     <div class="row justify-content-center">
                         <div *ngFor="let episode of activeSeason.episodes" class="col-md-2 mb-3">
                             <div class="card">
-                                <img class="img-fluid img-thumbnail" [src]="episode.imageUrl | printImg" [alt]="episode.title">
+                                <img class="img-fluid img-thumbnail" [src]="episode.imageUrl != null ? (episode.imageUrl | printImg) : './assets/img/noimage.png'" [alt]="episode.title">
                                 <div class="card-body text-left">
                                     <h4>Saison {{activeSeason.seasonNumber}} Episode {{episode.episodeNumber}}</h4>
                                     <p>{{episode.title}}</p>            
