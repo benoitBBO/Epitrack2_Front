@@ -4,22 +4,45 @@
             <div class="row">
                 <div class="col-md-2 p-4">
                     <img [src]="movie.image_portrait != null ? (movie.image_portrait | printImg) : './assets/img/noimageposter.png'" [alt]="movie.title" class="img-fluid img-thumbnail">
+                    <div class="px-5 mt-3">
+                        <p *ngIf="this.userOwned === 'in'" class="mb-auto"><strong>Statut : </strong> {{this.userMovie.status}}</p>
+                        <p *ngIf="this.userOwned === 'in'" class="mb-auto inlineFlex"><strong class="customPaddingRight">Mon vote : </strong> <app-stars *ngIf="this.userOwned === 'in'" [selectedUserMovie]="userMovie" [componentType]="'vote'" [score]="userMovie.userRating"></app-stars></p>
+                    </div>
                 </div>
                 <div class="col-md-10 p-4 d-flex flex-column"> 
                     <h2 class="mb-0">{{movie.title}}</h2>
-                    <div class="mb-auto"><app-stars [componentType]="'display'" [score]="movie.rating"></app-stars></div>
-                    <p class="mb-auto"><strong>Résumé : </strong>{{movie.overview}}</p>
-                    <p class="mb-auto"><strong>Date de diffusion : </strong>{{movie.release_date}}</p>
-                    <p class="mb-auto"><strong>Genres : </strong> <span *ngFor="let genre of movie.genres">
+                    <div class="mb-5"><app-stars [componentType]="'display'" [score]="movie.rating"></app-stars></div>                    
+                    <p class="mb-5"><strong>Résumé : </strong>{{movie.overview}}</p>
+                    <p class="mb-5"><strong>Date de diffusion : </strong>{{movie.release_date}}</p>
+                    <p class="mb-5"><strong>Genres : </strong> <span *ngFor="let genre of movie.genres">
                         {{genre.name}} 
                     </span></p>
-                    <p class="mb-auto"><strong>Acteurs : </strong> <span *ngFor="let actor of movie.actors">
-                        {{actor.name}}, 
-                    </span></p>
-                    <p *ngIf="this.userOwned === 'in'" class="mb-auto"><strong>Statut : </strong> {{this.userMovie.status}}</p>
-                    <p *ngIf="this.userOwned === 'in'" class="mb-auto inlineFlex"><strong class="customPaddingRight">Vote : </strong> <app-stars *ngIf="this.userOwned === 'in'" [selectedUserMovie]="userMovie" [componentType]="'vote'" [score]="userMovie.userRating"></app-stars></p>
                     
-
+                    <div (click)="onClickCollapsible($event)" class="collapsible">
+                        <div class="short-text">
+                            <p class="mb-5"><strong>Acteurs principaux : </strong>
+                                <span *ngFor="let actor of shortListActors; let i = index;">
+                                    <ng-template [ngIf]="i < (shortListActors.length - 1)" [ngIfElse]="tplShortWithoutCommaMovies">
+                                        {{movie.actors[i].name}}, 
+                                    </ng-template>
+                                    <ng-template #tplShortWithoutCommaMovies>
+                                        {{movie.actors[i].name}} [...]
+                                    </ng-template>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="full-text">
+                            <p class="mb-5"><strong>Acteurs principaux : </strong> 
+                            <span *ngFor="let actor of movie.actors; let i = index;">
+                                <ng-template [ngIf]="i < (movie.actors.length - 1)" [ngIfElse]="tplWithoutCommaMovies">
+                                    {{actor.name}}, 
+                                </ng-template>
+                                <ng-template #tplWithoutCommaMovies>
+                                    {{actor.name}}
+                                </ng-template>
+                            </span></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div> 
@@ -30,18 +53,45 @@
             <div class="row">
                 <div class="col-md-2 p-4">
                     <img [src]="serie.image_portrait != null ? (serie.image_portrait | printImg) : './assets/img/noimageposter.png'" [alt]="serie.title" class="img-fluid img-thumbnail">
+                    <div class="px-5 mt-3">
+                        <!--TODO AFFICHAGE USER LOGGED IN-->
+                        <!-- <p *ngIf="this.userOwned === 'in'" class="mb-auto"><strong>Statut : </strong> {{this.userMovie.status}}</p>
+                        <p *ngIf="this.userOwned === 'in'" class="mb-auto inlineFlex"><strong class="customPaddingRight">Mon vote : </strong> <app-stars *ngIf="this.userOwned === 'in'" [selectedUserMovie]="userMovie" [componentType]="'vote'" [score]="userMovie.userRating"></app-stars></p> -->
+                    </div>
                 </div>
                 <div class="col-md-10 p-4 d-flex flex-column">
                     <h2 class="mb-0">{{serie.title}}</h2>
-                    <div class="mb-auto"><app-stars [componentType]="'display'" [score]="serie.rating"></app-stars></div>
-                    <p class="mb-auto"><strong>Résumé : </strong>{{serie.overview}}</p>
-                    <p class="mb-auto"><strong>Date de diffusion : </strong>{{serie.release_date}}</p>
-                    <p class="mb-auto"><strong>Genres : </strong> <span *ngFor="let genre of serie.genres">
+                    <div class="mb-5"><app-stars [componentType]="'display'" [score]="serie.rating"></app-stars></div>
+                    <p class="mb-5"><strong>Résumé : </strong>{{serie.overview}}</p>
+                    <p class="mb-5"><strong>Date de diffusion : </strong>{{serie.release_date}}</p>
+                    <p class="mb-5"><strong>Genres : </strong> <span *ngFor="let genre of serie.genres">
                         {{genre.name}} 
                     </span></p>
-                    <p class="mb-auto"><strong>Acteurs : </strong> <span *ngFor="let actor of serie.actors">
-                        {{actor.name}}, 
-                    </span></p>
+                    <div (click)="onClickCollapsible($event)" class="collapsible">
+                        <div class="short-text">
+                            <p class="mb-5"><strong>Acteurs principaux : </strong>
+                                <span *ngFor="let actor of shortListActors; let i = index;">
+                                    <ng-template [ngIf]="i < (shortListActors.length - 1)" [ngIfElse]="tplShortWithoutCommaSeries">
+                                        {{serie.actors[i].name}}, 
+                                    </ng-template>
+                                    <ng-template #tplShortWithoutCommaSeries>
+                                        {{serie.actors[i].name}} <span *ngIf="serie.actors.length > shortListActors.length">[...]</span>
+                                    </ng-template>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="full-text">
+                            <p class="mb-5"><strong>Acteurs principaux : </strong> 
+                            <span *ngFor="let actor of serie.actors; let i = index;">
+                                <ng-template [ngIf]="i < (serie.actors.length - 1)" [ngIfElse]="tplWithoutCommaSeries">
+                                    {{actor.name}}, 
+                                </ng-template>
+                                <ng-template #tplWithoutCommaSeries>
+                                    {{actor.name}}
+                                </ng-template>
+                            </span></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div> 
@@ -50,16 +100,6 @@
             <div class="row">
                 <div id="seasonPart" class="p-4">
                     <h2 class="">Saisons</h2>
-                    <!-- <div class="row justify-content-center">
-                        <div *ngFor="let season of serie.seasons" class="col-md-2">
-                            <div class="card">
-                                <img class="img-fluid img-thumbnail" [src]="season.imageUrl | printImg" [alt]="season.title">
-                                <div class="card-body text-center">
-                                    <p>{{season.title}}</p>            
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="row row-cols-8 g-0 justify-content-center">
                         <div *ngFor="let season of serie.seasons" class="col mb-3">
                             <div class="card customWidth" (click)="onClickSeasonCard($event,season.seasonNumber)" >

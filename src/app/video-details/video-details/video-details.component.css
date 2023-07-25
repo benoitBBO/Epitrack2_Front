@@ -23,3 +23,25 @@
 .customPaddingRight {
     padding-right: 5px;
 }
+
+.collapsible {
+    /* border: 1px solid #ccc;
+    padding: 10px; */
+    cursor: pointer;
+}
+
+.short-text {
+    display: block;
+}
+
+.full-text {
+    display: none;
+}
+
+.collapsible.open .full-text {
+    display: block;
+}
+
+.collapsible.open .short-text {
+    display: none;
+}

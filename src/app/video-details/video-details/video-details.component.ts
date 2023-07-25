@@ -21,7 +21,7 @@ export class VideoDetailsComponent {
   movie!: MovieModel;
   serie!: SerieModel;
   activeSeason!: any;
-  actors!: string[];
+  shortListActors: string[] = [];
   loaded: boolean = false;
   userMovies!: UsermovieModel[];
   userMovie!: UsermovieModel;
@@ -63,18 +63,34 @@ export class VideoDetailsComponent {
         this.movieService.getMovieById(this.id).subscribe( data => {
           this.movie = data;
           this.loaded = true;
+          
+          //Gestion des acteurs pour affichage
+          for(let i = 0; i < 5; i++){
+            this.shortListActors.push(this.movie.actors[i].name);
+          }
+
         });
       } else { //Utilisateur connecté
-        if(this.userOwned === "out"){
+        if(this.userOwned === "out"){ //Film non suivi
           this.movieService.getMovieById(this.id).subscribe( data => {
             this.movie = data;
             this.loaded = true;
+
+            //Gestion des acteurs pour affichage
+            for(let i = 0; i < 5; i++){
+              this.shortListActors.push(this.movie.actors[i].name);
+            }
           });
-        } else {
+        } else { //Film suivi
           this.userMovieService.getUserMovieById(this.id).subscribe( data => {
             this.movie = data.movie;
             this.userMovie = data;
             this.loaded = true;
+
+            //Gestion des acteurs pour affichage
+            for(let i = 0; i < 5; i++){
+              this.shortListActors.push(this.movie.actors[i].name);
+            }
           });
         }
 
@@ -85,10 +101,16 @@ export class VideoDetailsComponent {
         this.serie = data;
         this.loaded = true;
         this.activeSeason = this.serie.seasons[0]; //##TODO possibilité de gérer dynamiquement en fonction d'où en était le visionnage
-      });
 
-      
+        //Gestion des acteurs pour affichage
+        for(let i = 0; i < 5; i++){
+          this.shortListActors.push(this.serie.actors[i].name);
+        }
+      });
     }
+
+    //Initialisation de la liste de 10 acteurs
+
   }
 
   onClickSeasonCard(event: MouseEvent, seasonNumber: number){
@@ -108,6 +130,10 @@ export class VideoDetailsComponent {
     }
     
     return movieId;
+  }
+
+  onClickCollapsible(event:any){
+    event.currentTarget.classList.toggle('open');
   }
 
 

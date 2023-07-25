@@ -17,36 +17,28 @@ export class IsInCatalogPipe implements PipeTransform {
 
   transform(idVideo:Number,typeVideo:String):boolean{
     if (typeVideo == 'Movie') {
-      this.userMovie._usermovies$.subscribe(data => {
-        this.userMovies = data;
-        console.log("recherche dans isInCatalog, _usermovies$ : ",data);
-        if(sessionStorage.length > 0){
-          for(let userMovie of this.userMovies){
-            if(userMovie.movie.id === idVideo){
-              return false;
-            }
+      this.userMovie._usermovies$.subscribe(data => this.userMovies = data);
+      if(sessionStorage.length > 0){
+        for(let userMovie of this.userMovies){
+          if(userMovie.movie.id === idVideo){
+            return false;
           }
-          return true;
         }
         return true;
-      });
+      }
       return true;
-      
     } else {
-      this.userSerie._userseries$.subscribe(data => {
-        this.userSeries = data;
-        console.log("recherche dans isInCatalog, _userseries$ : ",data);
-        if(sessionStorage.length > 0 && this.userSeries != null){
-          for(let userSerie of this.userSeries){
-            if(userSerie.serie.id === idVideo){
-              return false;
-            }
+      this.userSerie._userseries$.subscribe(data => this.userSeries = data);
+      if(sessionStorage.length > 0){
+        for(let userSerie of this.userSeries){
+          if(userSerie.serie.id === idVideo){
+            return false;
           }
-          return true;
         }
         return true;
-      });
+      }
       return true;
     }
   }
 }
+
