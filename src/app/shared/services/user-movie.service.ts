@@ -54,16 +54,15 @@ export class UserMovieService {
   }
   changeStatusUserMovie(userMovieId:number, status:string) {
     let endpoint = '/usermovie/status/';
-    return this.http.put( this.EPITRACK_API + endpoint + userMovieId + "/" + status, {responseType:'text'});
-    //  .subscribe();
+    let data = {};
+    return this.http.put( this.EPITRACK_API + endpoint + userMovieId + "/" + status, data, {responseType:'text'});
   }
 
   getUserMovieById(id: number):Observable<UsermovieModel> {
     let endpoint = '/usermovie/' + id;
       return this.http.get(this.EPITRACK_API + endpoint)
           .pipe( map( (response:any) => 
-            new UsermovieModel(response)) );
-      
+            new UsermovieModel(response)) );   
   }
 
   updateUserRating(userRating:object):any{

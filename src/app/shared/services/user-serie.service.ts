@@ -84,7 +84,8 @@ export class UserSerieService {
 
   changeStatusUserSerie(userSerieId:number, status:string) {
     let endpoint = '/userserie/status/';
-    return this.http.put( this.EPITRACK_API + endpoint + userSerieId + "/" + status, {responseType:'text'})
+    let data = {};
+    return this.http.put( this.EPITRACK_API + endpoint + userSerieId + "/" + status, data, {responseType:'text'})
     ;
   } 
 
