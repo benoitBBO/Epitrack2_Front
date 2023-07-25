@@ -9,7 +9,7 @@ export class UserserieModel {
     userRating!: number;
     statusDate!: Date;
     user!: UserModel;
-    userSeason!: UserseasonModel;
+    userSeasons!: UserseasonModel[];
 
     constructor(userSerie: any) {
         this.id = userSerie.id;
@@ -17,8 +17,12 @@ export class UserserieModel {
         this.status = userSerie.status;
         this.userRating = userSerie.userRating;
         this.statusDate = userSerie.statusDate;
-        this.user = new UserModel(userSerie.user);
-        this.userSeason = new UserseasonModel(userSerie.userSeason);
+        this.user = userSerie.user;
+        this.userSeasons = [];
+        for (let season of userSerie.userSeasons) {
+            let seasonModel = new UserseasonModel(season);
+            this.userSeasons.push(seasonModel);
+        }
     }
 
 
