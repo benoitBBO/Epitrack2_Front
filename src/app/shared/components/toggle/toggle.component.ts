@@ -34,7 +34,6 @@ export class ToggleComponent {
   }
   
   changed(event: any){
-    console.log("toggle changed");
     if (this.checked) {
       this.status = "WATCHED";
     } else {
@@ -54,13 +53,17 @@ export class ToggleComponent {
   }
 
   changedForMovie(){
-    console.log("changedForMovie");
     this.userMovieService.changeStatusUserMovie(this.userVideoId, this.status)
     .subscribe({
-      next: () => this.messageService.show("statut du film mis à jour", "success"),
+      next: () => {
+        console.log("Ok next");
+        this.messageService.show("statut du film mis à jour", "success");
+      },
       error: (err:unknown) => {
-        this.checked = !this.checked;
-        this.messageService.show("erreur de mise à jour du statut", "error");
+        if (err instanceof HttpErrorResponse){
+          this.checked = !this.checked;
+          this.messageService.show("erreur de mise à jour du statut", "error");
+        }
       }
     });
   }
@@ -85,8 +88,10 @@ export class ToggleComponent {
       .subscribe({
         next: () => this.messageService.show("statut du film mis à jour", "success"),
         error: (err:unknown) => {
-          this.checked = !this.checked;
-          this.messageService.show("erreur de mise à jour du statut", "error");
+          if (err instanceof HttpErrorResponse){
+            this.checked = !this.checked;
+            this.messageService.show("erreur de mise à jour du statut", "error");
+          }
         }
       })
     }
