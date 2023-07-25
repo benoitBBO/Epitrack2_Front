@@ -34,7 +34,10 @@ export class UserSerieListComponent {
     } else if (this.router.url == '/user/series') {
       this.userSerieService.getUserSeriesFromApi(this.loggedUser.id);
     }
-    this.userSerieService.userseries$.subscribe( data => this.series = data);
+    this.userSerieService.userseries$.subscribe( data => {
+      this.series = data;
+      console.log("retour userSeries => ",data);
+    });
   }
 
   
