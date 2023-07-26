@@ -71,15 +71,4 @@ export class MovieListComponent {
         this.router.navigate(['/login']);
     }
   }
-  isInCatalog(idMovie:Number){
-    if(sessionStorage.length > 0 && this.userMovies.length > 0){
-      for(let userMovie of this.userMovies){
-        if(userMovie.movie.id === idMovie){
-          return false;
-        }
-      }
-      return true;
-    }
-    return true;
-  }
 }

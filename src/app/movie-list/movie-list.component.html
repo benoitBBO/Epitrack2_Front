@@ -12,7 +12,7 @@
                     <h2 [routerLink]='["/details", movie.id, movie.type, ((movie.id | isInCatalog:movie.type) ? "out" : "in"), "catalog"]'>
                         {{movie.title}}
                     </h2>
-                    <ng-template [ngIf]="isInCatalog(movie.id) === true" [ngIfElse]="inCatalog">
+                    <ng-template [ngIf]="(movie.id | isInCatalog:movie.type) === true" [ngIfElse]="inCatalog">
                         <button (click)="onClickAddMovie(movie.id)" class="btn btn-light" 
                                 title="Ajouter un film dans mon catalogue">
                             <i class="fas fa-plus"></i>

@@ -86,7 +86,7 @@ export class ToggleComponent {
     } else {
       this.userSerieService.changeStatusUserSerie(this.userVideoId, this.status)
       .subscribe({
-        next: () => this.messageService.show("statut du film mis à jour", "success"),
+        next: () => this.messageService.show("statut de la série mis à jour", "success"),
         error: (err:unknown) => {
           if (err instanceof HttpErrorResponse){
             this.checked = !this.checked;
