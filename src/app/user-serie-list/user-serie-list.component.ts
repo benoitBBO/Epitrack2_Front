@@ -30,14 +30,17 @@ export class UserSerieListComponent {
     this.userService._loggedUser$.subscribe((user:any) => this.loggedUser=user );
     //requete get API
     if (this.router.url == '/user') {
-      this.userSerieService.getBest4UserSeriesFromApi(this.loggedUser.id);
+      this.userSerieService.getBest4UserSeriesFromApi(this.loggedUser.id).subscribe( data => this.series = data );
+
+      //Chargement du catalogue à la première connexion
+      this.userSerieService.getUserSeriesFromApi(this.loggedUser.id);
     } else if (this.router.url == '/user/series') {
       this.userSerieService.getUserSeriesFromApi(this.loggedUser.id);
+      this.userSerieService.userseries$.subscribe( data => {
+        this.series = data;
+      });
     }
-    this.userSerieService.userseries$.subscribe( data => {
-      this.series = data;
-      console.log("retour userSeries => ",data);
-    });
+    
   }
 
   

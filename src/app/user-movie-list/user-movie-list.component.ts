@@ -28,14 +28,14 @@ export class UserMovieListComponent {
     this.userService._loggedUser$.subscribe((user:any) => this.loggedUser=user );
     //requete get API
     if (this.router.url == '/user') {
-      this.userMovie.getBest4UserMoviesFromApi(this.loggedUser.id);
+      this.userMovie.getBest4UserMoviesFromApi(this.loggedUser.id).subscribe( data => this.movies = data);
+      
+      //Chargement du catalogue à la première connexion
+      this.userMovie.getUserMoviesFromApi(this.loggedUser.id);
     } else if (this.router.url == '/user/movies') {
       this.userMovie.getUserMoviesFromApi(this.loggedUser.id);
+      this.userMovie.usermovies$.subscribe( data => this.movies = data);
     }
-    this.userMovie.usermovies$.subscribe( data => this.movies = data);
+    
   }
-
-  // ngAfterViewInit(){
-  //   console.log(this.toggle);
-  // }
 }

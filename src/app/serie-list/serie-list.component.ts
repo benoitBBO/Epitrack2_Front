@@ -8,6 +8,7 @@ import { UserService } from '../shared/services/user.service';
 import { UserSerieService } from '../shared/services/user-serie.service';
 import { MessageService } from '../shared/services/message.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-serie-list',
@@ -19,6 +20,7 @@ export class SerieListComponent {
   serie!: SerieModel;
   userSeries!: UserserieModel[];
   loggedUser!:UserModel;
+  dynamicCatalog: any[] = [];
   
   constructor(private service: SerieService,
               private router:Router,
@@ -32,20 +34,31 @@ export class SerieListComponent {
     this.userService._loggedUser$.subscribe((user:any) => {
       this.loggedUser=user;
     });
+    //Récupération des userSeries
+    this.userSerie._userseries$.subscribe(data => this.userSeries = data);
+
     if (this.router.url == '/') {
-      this.service.getBest4SeriesFromApi().subscribe( data => this.series = data);
+      this.service.getBest4SeriesFromApi().subscribe( data => {
+        this.series = data;
+        this.loadingDynamicCatalogVariable();
+      });
     } else if (this.router.url == '/series') {
-      this.service.getSeriesFromApi().subscribe( data => this.series = data);
+      this.service.getSeriesFromApi().subscribe( data => {
+        this.series = data
+        this.loadingDynamicCatalogVariable();
+      });
     }
   }
-  onClickAddSerie(serie:SerieModel) {
-    console.log('onClickAddSerie===');
+  onClickAddSerie(serie:SerieModel, index:number) {
     if (sessionStorage.getItem('token') && this.loggedUser) {
       this.userSerie.postUserSerie(serie, this.loggedUser.id)
         .subscribe( {
           next: (response:any) => {
-            console.log("retour post userSerie",response);
+            //Mise à jour de la selection User
+            this.userSerie._userseries$ = new BehaviorSubject<any>(response);
+            
             this.msgService.show("Série ajoutée avec succès", "success");
+            this.dynamicCatalog[index] = !this.dynamicCatalog[index];
           },
           error: (err:unknown) => {
             if (err instanceof HttpErrorResponse){
@@ -66,5 +79,50 @@ export class SerieListComponent {
     } else {
         this.router.navigate(['/login']);
     }
+  }
+
+  onClickWithdrawSerie(serie:SerieModel, index:number) {
+    this.userService._loggedUser$.subscribe((user:any) => {
+      this.loggedUser=user;
+      this.userSerie.deleteUserSerie(serie.id, this.loggedUser.id)
+        .subscribe( {
+          next: (response:any) => {
+            this.msgService.show("Serie retirée du catalogue avec succès", "success");
+            this.dynamicCatalog[index] = !this.dynamicCatalog[index];
+          },
+          error: (err:unknown) => {
+            if (err instanceof HttpErrorResponse){
+              let errorObj = JSON.parse(err.error);
+              switch(err.status) {
+                case 404:
+                  this.msgService.show(errorObj.description, "error");
+                  break;
+                default:
+                  this.msgService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
+              }          
+            }
+          }
+        });
+      });
+  };
+
+  loadingDynamicCatalogVariable(){
+    if(sessionStorage.length > 0){
+      for(let serie of this.series){
+        this.dynamicCatalog.push(this.isNotInCatalog(serie.id));
+      }
+    }
+  }
+
+  isNotInCatalog(idSerie:Number){
+    if(sessionStorage.length > 0){
+      for(let userSerie of this.userSeries){
+        if(userSerie.serie.id === idSerie){
+          return false;
+        }
+      }
+      return true;
+    }
+    return true;
   }
 }

@@ -56,8 +56,12 @@ export class UserSerieService {
       }
       data.userSeasons.push(userSeason);
     }
-    console.log('avant post /userserie', data);
-    return this.http.post( this.EPITRACK_API + endpoint, data, {responseType:'text'});
+    return this.http.post( this.EPITRACK_API + endpoint, data, {responseType:'json'});
+  }
+
+  deleteUserSerie(userSerieId:Number, idUser:Number):any {
+    let endpoint = '/userserie/' + userSerieId + "/" + idUser;
+    return this.http.delete(this.EPITRACK_API + endpoint);
   }
 
   getUserSeriesFromApi(userid:number):void {
@@ -68,18 +72,12 @@ export class UserSerieService {
       .subscribe(data => this._userseries$.next(data))
   }
 
-  getBest4UserSeriesFromApi(userid:number):void {
+  getBest4UserSeriesFromApi(userid:number):Observable<UserserieModel[]> {
     console.log("getBest4UserSeriesFromApi  --- id= ",userid);
     let endpoint = '/userserie/best4/';
-    this.http.get( this.EPITRACK_API + endpoint + userid)
+    return this.http.get( this.EPITRACK_API + endpoint + userid)
       .pipe( map( (response:any) => 
-            response.map((serie:any) => new UserserieModel(serie)) ) )
-      .subscribe(
-        data => {this._userseries$.next(data)
-        console.log("data : ", data)
-        console.log("this._userseries$ : ", this._userseries$)
-        }
-      )
+            response.map((serie:any) => new UserserieModel(serie)) ) );
   }
 
   getUserSerieById(id: number):Observable<UserserieModel> {
