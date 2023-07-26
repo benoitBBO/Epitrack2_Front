@@ -29,7 +29,13 @@ export class UserMovieService {
       }
     }
     console.log('avant post /usermovie', data);
-    return this.http.post( this.EPITRACK_API + endpoint, data, {responseType:'text'});
+    return this.http.post( this.EPITRACK_API + endpoint, data, {responseType:'json'});
+  }
+
+  
+  deleteUserMovie(userMovieId:Number, idUser:Number):any {
+    let endpoint = '/usermovie/' + userMovieId + "/" + idUser;
+    return this.http.delete(this.EPITRACK_API + endpoint);
   }
 
   getUserMoviesFromApi(userid:number):void {
@@ -40,17 +46,11 @@ export class UserMovieService {
       .subscribe(data => this._usermovies$.next(data))
   }
 
-  getBest4UserMoviesFromApi(userid:number):void {
+  getBest4UserMoviesFromApi(userid:number):Observable<UsermovieModel[]> {
     let endpoint = '/usermovie/best4/';
-    this.http.get( this.EPITRACK_API + endpoint + userid)
+    return this.http.get( this.EPITRACK_API + endpoint + userid)
       .pipe( map( (response:any) => 
-            response.map((movie:any) => new UsermovieModel(movie)) ) )
-      .subscribe(
-        data => {this._usermovies$.next(data)
-        console.log("data : ", data)
-        console.log("this._usermovies$ : ", this._usermovies$)
-        }
-      )
+            response.map((movie:any) => new UsermovieModel(movie)) ) );
   }
   changeStatusUserMovie(userMovieId:number, status:string) {
     let endpoint = '/usermovie/status/';

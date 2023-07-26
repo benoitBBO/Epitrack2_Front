@@ -54,7 +54,6 @@
                 <div class="col-md-2 p-4">
                     <img [src]="serie.image_portrait != null ? (serie.image_portrait | printImg) : './assets/img/noimageposter.png'" [alt]="serie.title" class="img-fluid img-thumbnail">
                     <div class="px-5 mt-3">
-                        <!--TODO AFFICHAGE USER LOGGED IN-->
                         <p *ngIf="this.userOwned === 'in'" class="mb-auto"><strong>Statut : </strong> {{this.userSerie.status}}</p>
                         <p *ngIf="this.userOwned === 'in'" class="mb-auto inlineFlex"><strong class="customPaddingRight">Mon vote : </strong> <app-stars *ngIf="this.userOwned === 'in'" [selectedUserSerie]="userSerie" [componentType]="'vote'" [score]="userSerie.userRating"></app-stars></p>
                     </div>

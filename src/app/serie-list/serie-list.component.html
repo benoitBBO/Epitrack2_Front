@@ -2,24 +2,22 @@
     <i class="fas fa-tv fa-2x"></i><h2><a routerLink="/series">Les Séries</a></h2>
 </div>
 <div class="row">
-    <div *ngFor="let serie of series" class="col-12 col-md-3">
+    <div *ngFor="let serie of series; let i = index;" class="col-12 col-md-3">
         <div class="card">
             <img [src]="serie.image_landscape != null ? (serie.image_landscape | printImg) : './assets/img/noimage.png'" [alt]="serie.title" [routerLink]='["/details", serie.id, serie.type, ((serie.id | isInCatalog:serie.type) ? "out" : "in"), "catalog"]'>
             <div class="card-body">
                 <div class=" d-flex align-items-center justify-content-between">
                     <h2 [routerLink]='["/details", serie.id, serie.type, ((serie.id | isInCatalog:serie.type) ? "out" : "in"), "catalog"]' >{{serie.title}}</h2>
-                    <ng-template [ngIf]="(serie.id | isInCatalog:serie.type) === true" [ngIfElse]="inCatalog">
-                        <button (click)="onClickAddSerie(serie)" class="btn btn-light" 
-                                title="Ajouter une série dans mon catalogue">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </ng-template>
-                    <ng-template #inCatalog>
-                        <button (click)="onClickAddSerie(serie)" class="btn btn-light" 
-                                title="Supprimer une série dans mon catalogue">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </ng-template>
+                    <button *ngIf="dynamicCatalog.length === 0" (click)="onClickAddSerie(serie, i)" class="btn btn-light" title="Ajouter une série dans mon catalogue">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button *ngIf="dynamicCatalog[i] && dynamicCatalog.length !== 0" (click)="onClickAddSerie(serie, i)" class="btn btn-light" title="Ajouter une série dans mon catalogue">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button *ngIf="!dynamicCatalog[i] && dynamicCatalog.length !== 0" (click)="onClickWithdrawSerie(serie, i)" class="btn btn-light" 
+                            title="Supprimer une série dans mon catalogue">
+                        <i class="fas fa-minus"></i>
+                    </button>
                 </div>
                 <app-stars [componentType]="'display'" [score]="serie.rating"></app-stars>                
             </div>
