@@ -6,10 +6,10 @@
         <div class="card">
             <img [src]="userserie.serie.image_landscape != null ? (userserie.serie.image_landscape | printImg) : './assets/img/noimage.png'"
                  [alt]="userserie.serie.title" 
-                 [routerLink]='["/details", userserie.serie.id, "Serie", "in", "userCatalog"]'>
+                 [routerLink]='["/details", userserie.id, "Serie", "in", "userCatalog"]'>
             <div class="card-body">
                 <div class=" d-flex align-items-center justify-content-between">
-                    <h2 [routerLink]='["/details", userserie.serie.id, "Serie", "in", "userCatalog"]'>
+                    <h2 [routerLink]='["/details", userserie.id, "Serie", "in", "userCatalog"]'>
                         {{userserie.serie.title}}
                     </h2>
                     
@@ -34,7 +34,7 @@
                                 <!-- (statusEvent)="updateUserSerieList($event)" -->
                     </app-toggle>
                 </div>
-                <app-stars [componentType]="'display'" [score]="userserie.userRating"></app-stars>
+                <app-stars [componentType]="'display'" [score]="userserie.serie.rating"></app-stars>
 
             </div>
         </div>

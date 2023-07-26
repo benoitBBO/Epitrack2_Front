@@ -55,8 +55,8 @@
                     <img [src]="serie.image_portrait != null ? (serie.image_portrait | printImg) : './assets/img/noimageposter.png'" [alt]="serie.title" class="img-fluid img-thumbnail">
                     <div class="px-5 mt-3">
                         <!--TODO AFFICHAGE USER LOGGED IN-->
-                        <!-- <p *ngIf="this.userOwned === 'in'" class="mb-auto"><strong>Statut : </strong> {{this.userMovie.status}}</p>
-                        <p *ngIf="this.userOwned === 'in'" class="mb-auto inlineFlex"><strong class="customPaddingRight">Mon vote : </strong> <app-stars *ngIf="this.userOwned === 'in'" [selectedUserMovie]="userMovie" [componentType]="'vote'" [score]="userMovie.userRating"></app-stars></p> -->
+                        <p *ngIf="this.userOwned === 'in'" class="mb-auto"><strong>Statut : </strong> {{this.userSerie.status}}</p>
+                        <p *ngIf="this.userOwned === 'in'" class="mb-auto inlineFlex"><strong class="customPaddingRight">Mon vote : </strong> <app-stars *ngIf="this.userOwned === 'in'" [selectedUserSerie]="userSerie" [componentType]="'vote'" [score]="userSerie.userRating"></app-stars></p>
                     </div>
                 </div>
                 <div class="col-md-10 p-4 d-flex flex-column">
@@ -95,42 +95,82 @@
                 </div>
             </div>
         </div> 
-
-        <div class="col-md-12 bg-white mb-3">
-            <div class="row">
-                <div id="seasonPart" class="p-4">
-                    <h2 class="">Saisons</h2>
-                    <div class="row row-cols-8 g-0 justify-content-center">
-                        <div *ngFor="let season of serie.seasons" class="col mb-3">
-                            <div class="card customWidth" (click)="onClickSeasonCard($event,season.seasonNumber)" >
-                                <img class="card-img-top" [src]="season.imageUrl != null ? (season.imageUrl | printImg) : './assets/img/noimageposter.png'" [alt]="season.title">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title ellipse" [title]="season.title">{{season.title}}</h5>            
+        <ng-template [ngIf]="!userCatalogView" [ngIfElse]="userViewPart"> <!-- Vue dynamique Serie -->
+            <div class="col-md-12 bg-white mb-3">
+                <div class="row">
+                    <div id="seasonPart" class="p-4">
+                        <h2 class="">Saisons</h2>
+                        <div class="row row-cols-8 g-0 justify-content-center">
+                            <div *ngFor="let season of serie.seasons" class="col mb-3">
+                                <div class="card customWidth" (click)="onClickSeasonCard($event,season.seasonNumber)" >
+                                    <img class="card-img-top" [src]="season.imageUrl != null ? (season.imageUrl | printImg) : './assets/img/noimageposter.png'" [alt]="season.title">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title ellipse" [title]="season.title">{{season.title}}</h5>            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+    
+            <div class="col-md-12 bg-white">
+                <div class="row">
+                    <div id="episodesPart" class="p-4">
+                        <h2 class="">Saison {{activeSeason.seasonNumber}}</h2>
+                        <div class="row justify-content-center">
+                            <div *ngFor="let episode of activeSeason.episodes" class="col-md-2 mb-3">
+                                <div class="card">
+                                    <img class="img-fluid img-thumbnail" [src]="episode.imageUrl != null ? (episode.imageUrl | printImg) : './assets/img/noimage.png'" [alt]="episode.title">
+                                    <div class="card-body text-left">
+                                        <h4>Saison {{activeSeason.seasonNumber}} Episode {{episode.episodeNumber}}</h4>
+                                        <p>{{episode.title}}</p>            
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div> 
+        </ng-template>
 
-        <div class="col-md-12 bg-white">
-            <div class="row">
-                <div id="episodesPart" class="p-4">
-                    <h2 class="">Saison {{activeSeason.seasonNumber}}</h2>
-                    <div class="row justify-content-center">
-                        <div *ngFor="let episode of activeSeason.episodes" class="col-md-2 mb-3">
-                            <div class="card">
-                                <img class="img-fluid img-thumbnail" [src]="episode.imageUrl != null ? (episode.imageUrl | printImg) : './assets/img/noimage.png'" [alt]="episode.title">
-                                <div class="card-body text-left">
-                                    <h4>Saison {{activeSeason.seasonNumber}} Episode {{episode.episodeNumber}}</h4>
-                                    <p>{{episode.title}}</p>            
+        <ng-template #userViewPart> <!-- Vue dynamique UserSerie -->
+            <div class="col-md-12 bg-white mb-3">
+                <div class="row">
+                    <div id="seasonPart" class="p-4">
+                        <h2 class="">Saisons</h2>
+                        <div class="row row-cols-8 g-0 justify-content-center">
+                            <div *ngFor="let userSeason of userSeasons" class="col mb-3">
+                                <div class="card customWidth" (click)="onClickSeasonCard($event,userSeason.season.seasonNumber)" >
+                                    <img class="card-img-top" [src]="userSeason.season.imageUrl != null ? (userSeason.season.imageUrl | printImg) : './assets/img/noimageposter.png'" [alt]="userSeason.season.title">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title ellipse" [title]="userSeason.season.title">{{userSeason.season.title}}</h5>            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="col-md-12 bg-white">
+                <div class="row">
+                    <div id="episodesPart" class="p-4">
+                        <h2 class="">Saison {{activeSeason.season.seasonNumber}}</h2>
+                        <div class="row justify-content-center">
+                            <div *ngFor="let userEpisode of activeSeason.userEpisodes" class="col-md-2 mb-3">
+                                <div class="card">
+                                    <img class="img-fluid img-thumbnail" [src]="userEpisode.episode.imageUrl != null ? (userEpisode.episode.imageUrl | printImg) : './assets/img/noimage.png'" [alt]="userEpisode.episode.title">
+                                    <div class="card-body text-left">
+                                        <h4>Saison {{activeSeason.season.seasonNumber}} Episode {{userEpisode.episode.episodeNumber}}</h4>
+                                        <p>{{userEpisode.episode.title}}</p>            
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </ng-template>
     </ng-template>
 </div>    

@@ -82,6 +82,19 @@ export class UserSerieService {
       )
   }
 
+  getUserSerieById(id: number):Observable<UserserieModel> {
+    let endpoint = '/userserie/' + id;
+      return this.http.get(this.EPITRACK_API + endpoint)
+          .pipe( map( (response:any) => 
+            new UserserieModel(response)) );   
+  }
+
+  updateUserRating(userRating:object):any{
+    let endpoint = '/userserie/rating';
+    let data = userRating;
+    return this.http.put( this.EPITRACK_API + endpoint + "/", data, {responseType:'text'});
+  }
+
   changeStatusUserSerie(userSerieId:number, status:string) {
     let endpoint = '/userserie/status/';
     let data = {};

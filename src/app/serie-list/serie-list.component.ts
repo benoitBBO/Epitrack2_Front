@@ -67,15 +67,4 @@ export class SerieListComponent {
         this.router.navigate(['/login']);
     }
   }
-  isInCatalog(idSerie:Number){
-    if(sessionStorage.length > 0 && this.userSeries != null){
-      for(let userSerie of this.userSeries){
-        if(userSerie.serie.id === idSerie){
-          return false;
-        }
-      }
-      return true;
-    }
-    return true;
-  }
 }
