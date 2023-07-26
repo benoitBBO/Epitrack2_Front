@@ -143,8 +143,9 @@
                             <div *ngFor="let userSeason of userSeasons" class="col mb-3">
                                 <div class="card customWidth" (click)="onClickSeasonCard($event,userSeason.season.seasonNumber)" >
                                     <img class="card-img-top" [src]="userSeason.season.imageUrl != null ? (userSeason.season.imageUrl | printImg) : './assets/img/noimageposter.png'" [alt]="userSeason.season.title">
-                                    <div class="card-body text-center">
-                                        <h5 class="card-title ellipse" [title]="userSeason.season.title">{{userSeason.season.title}}</h5>            
+                                    <div class="card-body d-flex align-items-stretch justify-content-between">
+                                        <h5 class="card-title ellipse" [title]="userSeason.season.title">{{userSeason.season.title}}</h5>  
+                                        <app-toggle [status]="userSeason.status" [userVideoId]="userSeason.id" videoType="SEASON" [userSerieId]="userSerie.id"></app-toggle>
                                     </div>
                                 </div>
                             </div>
@@ -162,8 +163,12 @@
                                 <div class="card">
                                     <img class="img-fluid img-thumbnail" [src]="userEpisode.episode.imageUrl != null ? (userEpisode.episode.imageUrl | printImg) : './assets/img/noimage.png'" [alt]="userEpisode.episode.title">
                                     <div class="card-body text-left">
-                                        <h4>Saison {{activeSeason.season.seasonNumber}} Episode {{userEpisode.episode.episodeNumber}}</h4>
-                                        <p>{{userEpisode.episode.title}}</p>            
+                                        <div class="d-flex align-items-stretch justify-content-between">
+                                            <h4>Saison {{activeSeason.season.seasonNumber}} Episode {{userEpisode.episode.episodeNumber}}</h4>
+                                            <app-toggle [status]="userEpisode.status" [userVideoId]="userEpisode.id" videoType="EPISODE" [userSeasonId]="activeSeason.id" [userSerieId]="userSerie.id"></app-toggle>
+                                        </div>
+                                        <p>{{userEpisode.episode.title}}</p>  
+                                        
                                     </div>
                                 </div>
                             </div>

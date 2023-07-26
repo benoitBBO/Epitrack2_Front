@@ -102,6 +102,20 @@ export class UserSerieService {
     ;
   } 
 
+  changeStatusUserSeason(userSerieId:number, userSeasonId:number, status:string) {
+    let endpoint = '/userSeasons/status/';
+    let data = {};
+    return this.http.put( this.EPITRACK_API + endpoint + userSerieId+"/"+userSeasonId+"/" + status, data, {responseType:'text'})
+    ;
+  } 
+
+  changeStatusUserEpisode(userSerieId:number, userSeasonId:number, userEpisodeId:number, status:string) {
+    let endpoint = '/userepisode/status/';
+    let data = {};
+    return this.http.put( this.EPITRACK_API + endpoint + userSerieId+"/"+userSeasonId+"/"+userEpisodeId+"/" + status, data, {responseType:'text'})
+    ;
+  } 
+
   get userseries$():Observable<UserserieModel[]> {
     return this._userseries$.asObservable();
   }
