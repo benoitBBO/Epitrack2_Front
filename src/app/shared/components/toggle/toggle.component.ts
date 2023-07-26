@@ -18,8 +18,11 @@ export class ToggleComponent {
   @Input() status!:string;
   @Input() userVideoId!:number;
   @Input() videoType!:String;
-  //newStatus!:string;
-  checked = false;    //false quand satus "A voir" - true quand status 'Déjà vu"
+  @Input() userSeasonId!:number; //seulement dans cas de Video type EPISODE
+  @Input() userSerieId!:number;  //seulement dans cas de Video type EPISODE et SEASON
+  
+  checked = false;    //false quand status "A voir" - true quand status 'Déjà vu"
+  confirmationMessage: string = "";
   
   constructor(private userMovieService: UserMovieService,
               private userSerieService: UserSerieService,
@@ -47,6 +50,12 @@ export class ToggleComponent {
       case 'SERIE':
         this.changedForSerie();
         break;
+      case 'SEASON':
+        this.changedForSeason();
+        break;
+      case 'EPISODE':
+        this.changedForEpisode();
+        break;
       default:
         this.messageService.show("Erreur type de video inconnu", "error");
     }
@@ -71,17 +80,16 @@ export class ToggleComponent {
   changedForSerie(){
     // Pour Serie, avant de mettre à jour le statut, on demande confirmation à l'utilisateur
     // car la màj de la serie va entrainer la màj des saisons/épisodes
-    let confirmationMessage: string;
-    
+      
     if (this.checked) {
-      confirmationMessage = 'Confirmez-vous avoir vu la serie ET toutes les saisons/épisodes ?';
+      this.confirmationMessage = 'Confirmez-vous avoir vu la serie ET toutes les saisons/épisodes ?';
     } else {
-      confirmationMessage = 'Confirmez-vous vouloir remettre à "A voir" la serie ET toutes les saisons/épisodes ?';
+      this.confirmationMessage = 'Confirmez-vous vouloir remettre à "A voir" la serie ET toutes les saisons/épisodes ?';
     };
     
     //    si confirme non -> pas d'update en base + inverser this.checked pour le remettre à son état initial
     //    si confirme oui -> update en base serie/saisons/épisodes avec nouveau status
-    if (!confirm(confirmationMessage)) {
+    if (!confirm(this.confirmationMessage)) {
       this.checked = !this.checked;
     } else {
       this.userSerieService.changeStatusUserSerie(this.userVideoId, this.status)
@@ -97,5 +105,48 @@ export class ToggleComponent {
     }
   }
   
+  changedForSeason(){
+    // Pour Season, avant de mettre à jour le statut, on demande confirmation à l'utilisateur
+    // car la màj de la season va entrainer la màj des épisodes
+      
+    if (this.checked) {
+      this.confirmationMessage = 'Confirmez-vous avoir vu la saison ET TOUS ses épisodes ?';
+    } else {
+      this.confirmationMessage = 'Confirmez-vous vouloir remettre à "A voir" la saison ET TOUS ses épisodes ?';
+    };
+    
+    //    si confirme non -> pas d'update en base + inverser this.checked pour le remettre à son état initial
+    //    si confirme oui -> update en base serie/saisons/épisodes avec nouveau status
+    if (!confirm(this.confirmationMessage)) {
+      this.checked = !this.checked;
+    } else {
+      this.userSerieService.changeStatusUserSeason(this.userSerieId, this.userVideoId, this.status)
+      .subscribe({
+        next: () => this.messageService.show("statut de la saison mis à jour", "success"),
+        error: (err:unknown) => {
+          if (err instanceof HttpErrorResponse){
+            this.checked = !this.checked;
+            this.messageService.show("erreur de mise à jour du statut", "error");
+          }
+        }
+      })
+    }
+  }
+
+  changedForEpisode(){
+    this.userSerieService.changeStatusUserEpisode(this.userSerieId, this.userSeasonId, this.userVideoId, this.status)
+    .subscribe({
+      next: () => {
+        console.log("Ok next");
+        this.messageService.show("statut de l'épisode mis à jour", "success");
+      },
+      error: (err:unknown) => {
+        if (err instanceof HttpErrorResponse){
+          this.checked = !this.checked;
+          this.messageService.show("erreur de mise à jour du statut", "error");
+        }
+      }
+    });
+  }
 
 }

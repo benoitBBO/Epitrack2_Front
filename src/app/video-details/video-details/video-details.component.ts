@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -6,6 +7,7 @@ import { SerieModel } from 'src/app/shared/models/serie.model';
 import { UsermovieModel } from 'src/app/shared/models/usermovie.model';
 import { UserseasonModel } from 'src/app/shared/models/userseason.model';
 import { UserserieModel } from 'src/app/shared/models/userserie.model';
+import { MessageService } from 'src/app/shared/services/message.service';
 import { MovieService } from 'src/app/shared/services/movie.service';
 import { SerieService } from 'src/app/shared/services/serie.service';
 import { UserMovieService } from 'src/app/shared/services/user-movie.service';
@@ -40,7 +42,8 @@ export class VideoDetailsComponent {
     private serieService: SerieService,
     private route: ActivatedRoute,
     private userMovieService: UserMovieService,
-    private userSerieService: UserSerieService){}
+    private userSerieService: UserSerieService,
+    private messageService : MessageService){}
 
     
 
@@ -102,14 +105,21 @@ export class VideoDetailsComponent {
       
     } else {
       if(sessionStorage.length === 0){ //Si Utilisateur non connecté
-        this.serieService.getSerieById(this.id).subscribe( data => {
-          this.serie = data;
-          this.loaded = true;
-          this.activeSeason = this.serie.seasons[0]; //##TODO possibilité de gérer dynamiquement en fonction d'où en était le visionnage
+        this.serieService.getSerieById(this.id).subscribe( {
+          next: (data:SerieModel) => {
+            this.serie = data;
+            this.loaded = true;
+            this.activeSeason = this.serie.seasons[0]; //##TODO possibilité de gérer dynamiquement en fonction d'où en était le visionnage
+    
+            //Gestion des acteurs pour affichage
+            this.displayActors(this.serie);
   
-          //Gestion des acteurs pour affichage
-          this.displayActors(this.serie);
-
+          },
+          error: (err:unknown) => {
+            if (err instanceof HttpErrorResponse){
+              this.messageService.show("erreur dans le détail de la série", "error");
+            }
+          }
         });
       } else { //Utilisateur connecté
         if(this.userOwned === "out"){ //Série non suivie
@@ -124,7 +134,7 @@ export class VideoDetailsComponent {
         } else { //Série suivie
           this.userSerieService.getUserSerieById(this.id).subscribe( data => {
             //##Inversion des saisons et episodes suite retour back?
-            data = this.reverseArrays(data);
+            //data = this.reverseArrays(data);
             this.userCatalogView = true;
             this.userSerie = data;
             this.serie = data.serie;
