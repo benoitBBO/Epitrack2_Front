@@ -16,47 +16,9 @@ export class UserSerieService {
   
   constructor(private http:HttpClient) { }
 
-  postUserSerie(serie:SerieModel, idUser:Number){
-    let endpoint = '/userserie';
-    let data = {
-      "serie": {
-        "id": serie.id
-      },
-      "userSeasons": new Array(),
-      "status":"UNWATCHED",
-      "statusDate":new Date(),
-      "userRating":0,
-      "user":{
-        "id":idUser
-      }
-    }
-    for (let season of serie.seasons) {
-      let userSeason = {
-        "season": {
-          "id":season.id
-        },
-        "userEpisodes": new Array(),
-        "status":"UNWATCHED",
-        "statusDate":new Date(),
-        "user":{
-          "id":idUser
-        }
-      }
-      for (let episode of season.episodes) {
-        let userEpisode = {
-          "episode": {
-            "id": episode.id
-          },
-          "status":"UNWATCHED",
-          "statusDate":new Date(),
-          "user":{
-            "id":idUser
-          }
-        }
-        userSeason.userEpisodes.push(userEpisode);
-      }
-      data.userSeasons.push(userSeason);
-    }
+  postUserSerie(serieId:number, idUser:Number){
+    let endpoint = '/userserie/'+serieId+"/"+idUser;
+    let data = {};
     return this.http.post( this.EPITRACK_API + endpoint, data, {responseType:'json'});
   }
 

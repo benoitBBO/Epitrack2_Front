@@ -1,23 +1,43 @@
-<div class="text-center mb-2 mt-2">
-    <i class="fas fa-tv fa-2x"></i><h2><a routerLink="/series">Les Séries</a></h2>
+<div class="row text-center">
+    <div class="d-inline-block">
+        <div class="text-center d-md-inline-block marginCustom">
+            <i class="fas fa-film fa-2x"></i> <h2><a routerLink="/movies">Les Films</a></h2>
+        </div>
+        <div class="text-center d-md-inline-block marginCustom active">
+            <i class="fas fa-tv fa-2x"></i><h2><a class="activeLink" routerLink="/series">Les Séries</a></h2>
+        </div>
+    </div>
 </div>
+
 <div class="row">
     <div *ngFor="let serie of series; let i = index;" class="col-12 col-md-3">
         <div class="card">
-            <img [src]="serie.image_landscape != null ? (serie.image_landscape | printImg) : './assets/img/noimage.png'" [alt]="serie.title" [routerLink]='["/details", serie.id, serie.type, ((serie.id | isInCatalog:serie.type) ? "out" : "in"), "catalog"]'>
+            <!-- Changement d'url dynamique avec ajout ou suppression du catalogue-->
+            <img *ngIf="!dynamicCatalog[i] && dynamicCatalog.length !== 0" [src]="serie.image_landscape != null ? (serie.image_landscape | printImg) : './assets/img/noimage.png'" [alt]="serie.title" [routerLink]='["/details", serie.id, serie.type, "in", "catalog"]'>
+            <img *ngIf="dynamicCatalog[i] && dynamicCatalog.length !== 0" [src]="serie.image_landscape != null ? (serie.image_landscape | printImg) : './assets/img/noimage.png'" [alt]="serie.title" [routerLink]='["/details", serie.id, serie.type, "out", "catalog"]'>
+            <img *ngIf="dynamicCatalog.length === 0" [src]="serie.image_landscape != null ? (serie.image_landscape | printImg) : './assets/img/noimage.png'" [alt]="serie.title" [routerLink]='["/details", serie.id, serie.type, "out", "catalog"]'>
+            <!-- Changement d'url dynamique avec ajout ou suppression du catalogue-->
+
             <div class="card-body">
                 <div class=" d-flex align-items-center justify-content-between">
-                    <h2 [routerLink]='["/details", serie.id, serie.type, ((serie.id | isInCatalog:serie.type) ? "out" : "in"), "catalog"]' >{{serie.title}}</h2>
-                    <button *ngIf="dynamicCatalog.length === 0" (click)="onClickAddSerie(serie, i)" class="btn btn-light" title="Ajouter une série dans mon catalogue">
+                    <!-- Changement d'url dynamique avec ajout ou suppression du catalogue-->
+                    <h2 *ngIf="!dynamicCatalog[i] && dynamicCatalog.length !== 0" [routerLink]='["/details", serie.id, serie.type, "in", "catalog"]' >{{serie.title}}</h2>
+                    <h2 *ngIf="dynamicCatalog[i] && dynamicCatalog.length !== 0" [routerLink]='["/details", serie.id, serie.type, "out", "catalog"]' >{{serie.title}}</h2>
+                    <h2 *ngIf="dynamicCatalog.length === 0" [routerLink]='["/details", serie.id, serie.type, "out", "catalog"]' >{{serie.title}}</h2>
+                    <!-- Changement d'url dynamique avec ajout ou suppression du catalogue-->
+
+                    <!-- Changement du bouton en fonction de l'ajout ou suppression du catalogue-->
+                    <button *ngIf="dynamicCatalog.length === 0" (click)="onClickAddSerie(serie.id, i)" class="btn btn-light" title="Ajouter une série dans mon catalogue">
                         <i class="fas fa-plus"></i>
                     </button>
-                    <button *ngIf="dynamicCatalog[i] && dynamicCatalog.length !== 0" (click)="onClickAddSerie(serie, i)" class="btn btn-light" title="Ajouter une série dans mon catalogue">
+                    <button *ngIf="dynamicCatalog[i] && dynamicCatalog.length !== 0" (click)="onClickAddSerie(serie.id, i)" class="btn btn-light" title="Ajouter une série dans mon catalogue">
                         <i class="fas fa-plus"></i>
                     </button>
                     <button *ngIf="!dynamicCatalog[i] && dynamicCatalog.length !== 0" (click)="onClickWithdrawSerie(serie, i)" class="btn btn-light" 
                             title="Supprimer une série dans mon catalogue">
                         <i class="fas fa-minus"></i>
                     </button>
+                    <!-- Changement du bouton en fonction de l'ajout ou suppression du catalogue-->
                 </div>
                 <app-stars [componentType]="'display'" [score]="serie.rating"></app-stars>                
             </div>

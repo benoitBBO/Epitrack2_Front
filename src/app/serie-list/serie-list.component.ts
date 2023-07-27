@@ -49,9 +49,9 @@ export class SerieListComponent {
       });
     }
   }
-  onClickAddSerie(serie:SerieModel, index:number) {
+  onClickAddSerie(serieId:number, index:number) {
     if (sessionStorage.getItem('token') && this.loggedUser) {
-      this.userSerie.postUserSerie(serie, this.loggedUser.id)
+      this.userSerie.postUserSerie(serieId, this.loggedUser.id)
         .subscribe( {
           next: (response:any) => {
             //Mise à jour de la selection User
@@ -87,6 +87,8 @@ export class SerieListComponent {
       this.userSerie.deleteUserSerie(serie.id, this.loggedUser.id)
         .subscribe( {
           next: (response:any) => {
+            //Mise à jour de la selection User
+            this.userSerie._userseries$ = new BehaviorSubject<any>(response);
             this.msgService.show("Serie retirée du catalogue avec succès", "success");
             this.dynamicCatalog[index] = !this.dynamicCatalog[index];
           },

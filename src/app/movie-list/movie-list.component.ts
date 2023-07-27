@@ -91,7 +91,9 @@ export class MovieListComponent {
       this.userMovie.deleteUserMovie(idMovie, this.loggedUser.id)
         .subscribe( {
           next: (response:any) => {
-            console.log("retour post userMovie",response);
+            //Mise à jour de la selection User
+            this.userMovie._usermovies$ = new BehaviorSubject<any>(response);
+
             this.msgService.show("Film retiré du catalogue avec succès", "success");
             this.dynamicCatalog[index] = !this.dynamicCatalog[index];
           },
