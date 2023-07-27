@@ -1,5 +1,12 @@
-<div class="text-center mb-2 mt-2">
-    <i class="fas fa-film fa-2x"></i> <h2><a routerLink="/user/movies">Mes Films</a></h2>
+<div class="row text-center">
+    <div class="d-inline-block">
+        <div class="text-center d-md-inline-block marginCustom active">
+            <i class="fas fa-film fa-2x"></i> <h2><a class="activeLink" routerLink="/user/movies">Mes Films</a></h2>
+        </div>
+        <div class="text-center d-md-inline-block marginCustom">
+            <i class="fas fa-tv fa-2x"></i><h2><a routerLink="/user/series">Mes Séries</a></h2>
+        </div>
+    </div>
 </div>
 <div class="row">
     <div *ngFor="let movie of movies" class="col-12 col-md-3">
