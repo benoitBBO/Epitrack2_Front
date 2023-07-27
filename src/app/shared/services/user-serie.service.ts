@@ -12,6 +12,7 @@ export class UserSerieService {
   EPITRACK_API = 'http://localhost:8080/api/v1';
   
   public _userseries$ = new BehaviorSubject<UserserieModel[]>([]);
+  public _userserie$ = new BehaviorSubject<any>(UserserieModel);
   
   constructor(private http:HttpClient) { }
 
@@ -93,25 +94,25 @@ export class UserSerieService {
     return this.http.put( this.EPITRACK_API + endpoint + "/", data, {responseType:'text'});
   }
 
-  changeStatusUserSerie(userSerieId:number, status:string) {
+  changeStatusUserSerie(userSerieId:number, status:string):Observable<UserserieModel> {
     let endpoint = '/userserie/status/';
     let data = {};
-    return this.http.put( this.EPITRACK_API + endpoint + userSerieId + "/" + status, data, {responseType:'text'})
-    ;
+    return this.http.put( this.EPITRACK_API + endpoint + userSerieId + "/" + status, data)
+        .pipe( map( (response:any) => new UserserieModel(response)) );
   } 
 
-  changeStatusUserSeason(userSerieId:number, userSeasonId:number, status:string) {
-    let endpoint = '/userSeasons/status/';
+  changeStatusUserSeason(userSerieId:number, userSeasonId:number, status:string):Observable<UserserieModel> {
+    let endpoint = '/userserie/status/';
     let data = {};
-    return this.http.put( this.EPITRACK_API + endpoint + userSerieId+"/"+userSeasonId+"/" + status, data, {responseType:'text'})
-    ;
+    return this.http.put( this.EPITRACK_API + endpoint + userSerieId+"/"+userSeasonId+"/" + status, data)
+        .pipe( map( (response:any) =>  new UserserieModel(response)) );
   } 
 
-  changeStatusUserEpisode(userSerieId:number, userSeasonId:number, userEpisodeId:number, status:string) {
-    let endpoint = '/userepisode/status/';
+  changeStatusUserEpisode(userSerieId:number, userSeasonId:number, userEpisodeId:number, status:string):Observable<UserserieModel> {
+    let endpoint = '/userserie/status/';
     let data = {};
-    return this.http.put( this.EPITRACK_API + endpoint + userSerieId+"/"+userSeasonId+"/"+userEpisodeId+"/" + status, data, {responseType:'text'})
-    ;
+    return this.http.put( this.EPITRACK_API + endpoint + userSerieId+"/"+userSeasonId+"/"+userEpisodeId+"/" + status, data)
+        .pipe( map( (response:any) => new UserserieModel(response)) ) ;
   } 
 
   get userseries$():Observable<UserserieModel[]> {

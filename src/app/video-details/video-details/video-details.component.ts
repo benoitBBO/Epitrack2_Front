@@ -2,7 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { MovieModel } from 'src/app/shared/models/movie.model';
+import { SeasonModel } from 'src/app/shared/models/season.model';
 import { SerieModel } from 'src/app/shared/models/serie.model';
 import { UsermovieModel } from 'src/app/shared/models/usermovie.model';
 import { UserseasonModel } from 'src/app/shared/models/userseason.model';
@@ -52,6 +54,8 @@ export class VideoDetailsComponent {
     this.userMovieService._usermovies$.subscribe(data => this.userMovies = data);
     this.userSerieService._userseries$.subscribe(data => this.userSeries = data);
 
+    
+    
     //Recupération du catalogue userSeries
     //##TODO
     
@@ -141,9 +145,25 @@ export class VideoDetailsComponent {
             this.loaded = true;
             this.userSeasons = data.userSeasons;
             this.activeSeason = data.userSeasons[0]; //##TODO possibilité de gérer dynamiquement en fonction d'où en était le visionnage
-    
+            
             //Gestion des acteurs pour affichage
             this.displayActors(this.serie);
+
+            //Abonnement au changement sur userSerie 
+            //(pour actualiser la page détail user-serie, notamment quand changement toggle status)
+            this.userSerieService._userserie$ = new BehaviorSubject<any>(data);
+            this.userSerieService._userserie$.subscribe(data => 
+              {
+                console.log("abonnement userSerie data= ", data);
+                console.log("activeSeason=", this.activeSeason);
+                this.userSeasons = data.userSeasons;
+                this.userSerie = data;
+                // SBI : je n'arrive pas à repositionner la vue sur l'activeSeason, au changement de statut
+                //this.activeSeason = data.userSeasons[0];
+                let activeSeasonNumber:number = this.activeSeason.season.seasonNumber;
+                console.log("activeSeasonNumber=", activeSeasonNumber);
+                this.activeSeason = data.userSeasons[activeSeasonNumber-1];
+              })
           });
         }
 
@@ -193,6 +213,24 @@ export class VideoDetailsComponent {
 
     return userSerie;
     
+  }
+
+  convertStatusDisplay(status:String){
+    let statusToDisplay:string ="";
+    switch (status){
+      case 'WATCHED':
+        statusToDisplay = "Déjà Vu";
+        break;
+      case 'UNWATCHED':
+        statusToDisplay = "A voir";
+        break;
+      case 'ONGOING':
+        statusToDisplay = "En cours";
+        break;
+      default:
+        statusToDisplay = "inconnu";
+    }
+    return statusToDisplay;
   }
 
 

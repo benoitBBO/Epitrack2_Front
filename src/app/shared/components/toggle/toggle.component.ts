@@ -6,6 +6,7 @@ import { UserSerieService } from '../../services/user-serie.service';
 import { MessageService } from '../../services/message.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UserserieModel } from '../../models/userserie.model';
 
 @Component({
   selector: 'app-toggle',
@@ -31,6 +32,7 @@ export class ToggleComponent {
             ){}
 
   ngOnInit(){
+    console.log("status toggle= ", this.status);
     if (this.status == "WATCHED") {
       this.checked = true;
     }
@@ -94,7 +96,11 @@ export class ToggleComponent {
     } else {
       this.userSerieService.changeStatusUserSerie(this.userVideoId, this.status)
       .subscribe({
-        next: () => this.messageService.show("statut de la série mis à jour", "success"),
+        next: (userserie:UserserieModel) => {
+          this.userSerieService._userserie$.next(userserie);
+          console.log(this.userSerieService._userserie$);
+          this.messageService.show("statut de la série mis à jour", "success");
+        },
         error: (err:unknown) => {
           if (err instanceof HttpErrorResponse){
             this.checked = !this.checked;
@@ -122,7 +128,11 @@ export class ToggleComponent {
     } else {
       this.userSerieService.changeStatusUserSeason(this.userSerieId, this.userVideoId, this.status)
       .subscribe({
-        next: () => this.messageService.show("statut de la saison mis à jour", "success"),
+        next: (userserie:UserserieModel) => {
+          console.log("après update status, userserie= ", userserie);
+          this.userSerieService._userserie$.next(userserie);
+          this.messageService.show("statut de la saison mis à jour", "success");
+        },
         error: (err:unknown) => {
           if (err instanceof HttpErrorResponse){
             this.checked = !this.checked;
@@ -136,8 +146,8 @@ export class ToggleComponent {
   changedForEpisode(){
     this.userSerieService.changeStatusUserEpisode(this.userSerieId, this.userSeasonId, this.userVideoId, this.status)
     .subscribe({
-      next: () => {
-        console.log("Ok next");
+      next: (userserie:UserserieModel) => {
+        this.userSerieService._userserie$.next(userserie);
         this.messageService.show("statut de l'épisode mis à jour", "success");
       },
       error: (err:unknown) => {

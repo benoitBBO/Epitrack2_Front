@@ -1,3 +1,5 @@
+import { EpisodeModel } from "./episode.model"
+
 export class SeasonModel {
     id!: number
     title!: string
@@ -5,6 +7,7 @@ export class SeasonModel {
     overview!: string
     imageUrl!: string
     airDate!: string
+    episodes!: EpisodeModel[];
 
     constructor(season:any){
         this.id = season.id;
@@ -13,5 +16,6 @@ export class SeasonModel {
         this.overview = season.overview;
         this.imageUrl = season.imageUrl;
         this.airDate = season.airDate;
+        this.episodes = season.episodes;
     }
 }
