@@ -1,3 +1,5 @@
+import { SeasonModel } from "./season.model";
+
 interface Genre {
     id: number;
     name:string;    
@@ -10,21 +12,6 @@ interface Actor {
     tmdb_ref:string;
 }
 
-interface Episode {
-    id: number;
-    title:string;
-    imageUrl:string;
-    airDate: Date;
-}
-
-interface Season {
-    id: number;
-    title:string;
-    seasonNumber:number;
-    imageUrl:string;
-    airDate: Date;
-    episodes: Episode[];
-}
 
 export class SerieModel {
     id!: number;
@@ -37,7 +24,7 @@ export class SerieModel {
     genres!: Genre[];
     actors!: Actor[];
     imdb_ref!:string;
-    seasons!: Season[];
+    seasons!: SeasonModel[];
     type:string = "Serie";
 
     constructor(serieFromApi: any) {

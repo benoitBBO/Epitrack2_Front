@@ -54,7 +54,10 @@
                 <div class="col-md-2 p-4">
                     <img [src]="serie.image_portrait != null ? (serie.image_portrait | printImg) : './assets/img/noimageposter.png'" [alt]="serie.title" class="img-fluid img-thumbnail">
                     <div class="px-5 mt-3">
-                        <p *ngIf="this.userOwned === 'in'" class="mb-auto"><strong>Statut : </strong> {{this.userSerie.status}}</p>
+                        <div *ngIf="this.userOwned === 'in'" class="align-items-stretch justify-content-between">
+                            <p class="mb-auto"><strong>Statut : </strong> {{convertStatusDisplay(this.userSerie.status)}}</p>
+                            <app-toggle [status]="this.userSerie.status" [userVideoId]="this.userSerie.id" videoType="SERIE"></app-toggle>
+                        </div>
                         <p *ngIf="this.userOwned === 'in'" class="mb-auto inlineFlex"><strong class="customPaddingRight">Mon vote : </strong> <app-stars *ngIf="this.userOwned === 'in'" [selectedUserSerie]="userSerie" [componentType]="'vote'" [score]="userSerie.userRating"></app-stars></p>
                     </div>
                 </div>
