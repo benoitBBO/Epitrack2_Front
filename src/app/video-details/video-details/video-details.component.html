@@ -14,7 +14,7 @@
                           </button>
                       </p>
                       <p *ngIf="userOwned === 'in'" class=" text-center mb-auto">
-                          <button title="Retirer un film dans mon catalogue" (click)="onClickWithdrawMovie(movie.id)" style="display: flex;" class="btn btn-danger btn-sm d-inline-block">
+                          <button title="Retirer un film de mon catalogue" (click)="onClickWithdrawMovie(movie.id)" style="display: flex;" class="btn btn-danger btn-sm d-inline-block">
                               <i class="fas fa-minus"></i> 
                               Retirer de mon catalogue
                           </button>
@@ -76,8 +76,23 @@
             <div class="row">
                 <div class="col-md-2 p-4">
                     <img [src]="serie.image_portrait != null ? (serie.image_portrait | printImg) : './assets/img/noimageposter.png'" [alt]="serie.title" class="img-fluid img-thumbnail">
-                    <!-- <div class="px-5 mt-3"> -->
-                        <div class="mt-3">
+                    
+                    <div class="px-2 mt-3">
+                      <p *ngIf="userOwned === 'out'" class="text-center mb-auto ">
+                          <button title="Ajouter un film dans mon catalogue" (click)="onClickAddSerie(serie.id)" style="display: flex;" class="btn btn-primary btn-sm d-inline-block">
+                              <i class="fas fa-plus"></i> 
+                              Ajouter à mon catalogue
+                          </button>
+                      </p>
+                      <p *ngIf="userOwned === 'in'" class=" text-center mb-auto">
+                          <button title="Retirer un film de mon catalogue" (click)="onClickWithdrawSerie(serie.id)" style="display: flex;" class="btn btn-danger btn-sm d-inline-block">
+                              <i class="fas fa-minus"></i> 
+                              Retirer de mon catalogue
+                          </button>
+                      </p>
+                    </div>
+                    
+                    <div class="mt-3">
                         <div *ngIf="this.userOwned === 'in'" class="d-flex align-items-stretch justify-content-between">
                             <p class="mb-auto"><strong>Statut : </strong> {{this.userSerie.status | statusDisplay}}</p>
                             <app-toggle [status]="this.userSerie.status" [userVideoId]="this.userSerie.id" videoType="SERIE"></app-toggle>
