@@ -21,3 +21,8 @@ h1 {
 img {
     box-shadow: 2px 2px 5px #00000026;
 }
+
+.backgroundColorAndMargin{
+    background: #0000004f;
+    margin: 0 0 15px 0;
+}

@@ -1,9 +1,9 @@
 <div class="row text-center">
     <div class="d-inline-block">
-        <div class="text-center d-md-inline-block marginCustom active">
-            <i class="fas fa-film fa-2x"></i> <h2><a class="activeLink" routerLink="/movies">Les Films</a></h2>
+        <div [class]="currentUrl === '/' ? 'text-center d-md-inline-block marginCustom' : 'text-center d-md-inline-block marginCustom active'">
+            <i class="fas fa-film fa-2x"></i> <h2><a [class]="currentUrl === '/' ? '' : 'active'" routerLink="/movies">Les Films</a></h2>
         </div>
-        <div class="text-center d-md-inline-block marginCustom">
+        <div *ngIf="currentUrl !== '/'" class="text-center d-md-inline-block marginCustom">
             <i class="fas fa-tv fa-2x"></i><h2><a routerLink="/series">Les Séries</a></h2>
         </div>
     </div>

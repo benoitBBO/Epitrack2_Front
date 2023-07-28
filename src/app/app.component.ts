@@ -18,6 +18,7 @@ export class AppComponent {
     console.log("ngOnInit de app-component");
     //charger loggedUSer
     this.userService._loggedUser$.subscribe((user:any) => this.loggedUser=user );
+    console.log(this.loggedUser);
    
 
   }

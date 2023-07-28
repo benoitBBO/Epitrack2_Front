@@ -22,16 +22,23 @@ export class MovieListComponent {
   userMovies!: UsermovieModel[];
   loggedUser!:UserModel;
   dynamicCatalog: any[] = [];
+  currentUrl!: string;
 
   constructor(private service: MovieService,
               private router:Router,
               private msgService:MessageService,
               private userMovie:UserMovieService,
               private userService:UserService) {
-    console.log("constructor MovieService : ", this);
   }
 
   ngOnInit() {
+    //RG pour css Films/Series
+    this.currentUrl = this.router.url;
+
+    this.userService._loggedUser$.subscribe((user:any) => {
+      this.loggedUser=user;
+    });
+    
     //Récupération des userMovies
     this.userMovie._usermovies$.subscribe(data => this.userMovies = data);
     //requete get API
@@ -51,7 +58,7 @@ export class MovieListComponent {
 
   onClickAddMovie(idMovie:Number, index:number) {
     console.log('onClickAddMovie===');
-    if (sessionStorage.getItem('token')) {
+    if (sessionStorage.getItem('token') && this.loggedUser.id !==0 && this.loggedUser.id !== undefined) {
         this.userService._loggedUser$.subscribe((user:any) => {
         this.loggedUser=user;
         this.userMovie.postUserMovie(idMovie, this.loggedUser.id)

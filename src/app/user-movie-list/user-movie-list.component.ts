@@ -14,6 +14,7 @@ export class UserMovieListComponent {
   movies: UsermovieModel[] = [];
   movie!: UsermovieModel;
   loggedUser!:UserModel;
+  currentUrl!: string;
 
   // @ViewChild("toggleVideo0") toggle!:ElementRef;
   
@@ -24,6 +25,9 @@ export class UserMovieListComponent {
   }
 
   ngOnInit() {
+    //RG pour css Films/Series
+    this.currentUrl = this.router.url;
+
     //charger loggedUSer
     this.userService._loggedUser$.subscribe((user:any) => this.loggedUser=user );
     //requete get API
