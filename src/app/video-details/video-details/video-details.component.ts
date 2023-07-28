@@ -302,10 +302,10 @@ export class VideoDetailsComponent {
     }
   }
 
-  onClickWithdrawSerie(serie:SerieModel) {
+  onClickWithdrawSerie(serieId:number) {
     this.userService._loggedUser$.subscribe((user:any) => {
       this.loggedUser=user;
-      this.userSerieService.deleteUserSerie(serie.id, this.loggedUser.id)
+      this.userSerieService.deleteUserSerie(serieId, this.loggedUser.id)
         .subscribe( {
           next: (response:any) => {
             //Mise à jour de la selection User
