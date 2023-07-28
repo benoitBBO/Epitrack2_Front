@@ -6,20 +6,20 @@
                 <div class="col-md-2 p-4">
                     <img [src]="movie.image_portrait != null ? (movie.image_portrait | printImg) : './assets/img/noimageposter.png'" [alt]="movie.title" class="img-fluid img-thumbnail">
 
-                    <div class="px-5 mt-3">
-                      <p *ngIf="userOwned === 'out'" class="mb-auto">
+                    <div class="px-2 mt-3">
+                      <p *ngIf="userOwned === 'out'" class="text-center mb-auto ">
                           <button title="Ajouter un film dans mon catalogue" (click)="onClickAddMovie(movie.id)" style="display: flex;" class="btn btn-primary btn-sm d-inline-block">
                               <i class="fas fa-plus"></i> 
                               Ajouter à mon catalogue
                           </button>
                       </p>
-                      <p *ngIf="userOwned === 'in'" class="mb-auto">
+                      <p *ngIf="userOwned === 'in'" class=" text-center mb-auto">
                           <button title="Retirer un film dans mon catalogue" (click)="onClickWithdrawMovie(movie.id)" style="display: flex;" class="btn btn-danger btn-sm d-inline-block">
                               <i class="fas fa-minus"></i> 
                               Retirer de mon catalogue
                           </button>
                       </p>
-
+                    </div>
                     <div class="mt-3">
                         <div *ngIf="this.userOwned === 'in'" class="d-flex align-items-stretch justify-content-between">
                             <p class="mb-auto"><strong>Statut : </strong> {{this.userMovie.status | statusDisplay}}</p>
