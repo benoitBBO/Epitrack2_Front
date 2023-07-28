@@ -1,0 +1,80 @@
+<div class="container">
+    <form [formGroup]="profilForm">
+
+        <h1>Mes informations de Connexion</h1>
+        
+        <div [formGroup]="passwordForm">
+            <div class="mb-3">
+                <label for="username-id" class="form-label">Nom d'utilisateur (*obligatoire)</label>
+                <input id="username-id" formControlName="userName" type="text" class="form-control">
+            </div>
+    
+            <div *ngIf="!modifiedPassword">
+                <button (click)="onClickModifyPassword()" type="button" class="btn btn-primary">Modifier mon mot de passe</button>
+                <button routerLink="/user" type="button" class="btn btn-primary mx-2">Retour</button>
+            </div>
+
+            <div *ngIf="modifiedPassword" [formGroup]="passwordForm">
+                <div class="mb-3">
+                    <label for="pwd-id" class="form-label">Mot de passe*</label>
+                    <input id="pwd-id" formControlName="password" type="password" class="form-control">
+                    <div *ngIf="modifiedPassword" id="pwd-HelpBlock" class="form-text">
+                      Votre mot de passe doit contenir au moins 8 caractères dont au moins une majuscule, une chiffre et un caractère spécial
+                    </div>
+                    <p class="error" 
+                       *ngIf="(passwordForm.controls['password'].hasError('required') ||
+                               passwordForm.controls['password'].hasError('pattern'))
+                              && isSubmitted">
+                      mot de passe invalide
+                    </p>
+                  </div>
+    
+                  <div *ngIf="modifiedPassword" class="mb-3">
+                    <label for="pwd2-id" class="form-label">Confirmation Mot de passe*</label>
+                    <input id="pwd2-id" formControlName="confirmPassword" type="password" class="form-control">
+                    <p class="error"
+                      *ngIf="(passwordForm.controls['confirmPassword'].hasError('required') ||
+                              profilForm.controls['passwords'].hasError('confirmEqual'))
+                              && isSubmitted">
+                      confirmation mot de passe invalide
+                    </p>
+                  </div>
+    
+                  <button (click)="onClickValidatePassword()" type="button" class="btn btn-primary">Valider nouveau mot de passe</button>
+    
+            </div>
+        </div>
+                        
+
+        <h1 class="mt-5">Mes informations personnelles</h1>
+        
+        <div [formGroup]="personalInfoForm">
+            <div class="mb-3">
+              <label for="email-id" class="form-label">Adresse Email (*obligatoire)</label>
+              <input id="email-id" formControlName="email" type="email" class="form-control">
+              <p class="error" 
+                 *ngIf="personalInfoForm.controls['email'].invalid && isSubmitted">
+                email invalide
+              </p>
+            </div>
+    
+            <div class="mb-3">
+                <label for="firstname-id" class="form-label">Prénom</label>
+                <input id="firstname-id" formControlName="firstName" class="form-control" type="text">
+            </div>
+    
+            <div class="mb-3">
+                <label for="lastname-id" class="form-label">Nom</label>
+                <input id="lastname-id" formControlName="lastName" class="form-control" type="text">
+            </div>      
+                    
+            <button (click)="onClickValidatePersonalData()" type="button" class="btn btn-primary mr-2">Valider mes informations personnelles</button>
+            <button routerLink="/user" type="button" class="btn btn-primary mx-2">Retour</button>
+
+        </div>
+        
+        <!-- <p class="my-4"><a class="link-opacity-100" href="#">Se désinscrire</a></p> -->
+        
+    </form>
+</div>
+

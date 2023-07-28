@@ -16,10 +16,16 @@
       </div>
       <app-searchbar class="width40"></app-searchbar>
       <div>
-        <span *ngIf="loggedUser.userName">{{loggedUser.userName}} </span>
-        <!-- <a *ngIf="loggedUser.userName" class="link-opacity-100">Se déconnecter</a> -->
         <button *ngIf="!loggedUser.userName" routerLink="/login" class="btn btn-light"><i class="fas fa-user"></i></button>
-        <button *ngIf="loggedUser.userName" routerLink="/logout" class="btn btn-light"><i class="fas fa-user"></i></button>
+        <div *ngIf="loggedUser.userName">
+          <span>{{loggedUser.userName}} </span>
+          <button [matMenuTriggerFor]="menu3" class="btn btn-light"><i class="fas fa-user"></i></button>
+          <mat-menu #menu3="matMenu">
+            <button mat-menu-item routerLink="/profil"><a class="navbar-brand">Mon profil</a></button>
+            <button mat-menu-item  routerLink="/logout"><a class="navbar-brand">Se déconnecter</a></button>
+         </mat-menu>
+        </div>
+        
       </div>
   </div>
 </nav>
