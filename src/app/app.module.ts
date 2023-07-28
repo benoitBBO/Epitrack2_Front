@@ -32,6 +32,7 @@ import { ConfirmationDialogComponent } from './shared/components/confirmation-di
 import { MatDialogModule } from '@angular/material/dialog';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { IsInCatalogPipe } from './shared/pipes/is-in-catalog.pipe';
+import { StatusDisplayPipe } from './shared/pipes/status-display.pipe';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { IsInCatalogPipe } from './shared/pipes/is-in-catalog.pipe';
     SearchTMDBComponent,
     ConfirmationDialogComponent,
     LogoutComponent,
-    IsInCatalogPipe
+    IsInCatalogPipe,
+    StatusDisplayPipe
   ],
   imports: [
     BrowserModule,

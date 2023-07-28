@@ -206,24 +206,6 @@ export class VideoDetailsComponent {
     }
   }
 
-  convertStatusDisplay(status:String){
-    let statusToDisplay:string ="";
-    switch (status){
-      case 'WATCHED':
-        statusToDisplay = "Déjà Vu";
-        break;
-      case 'UNWATCHED':
-        statusToDisplay = "A voir";
-        break;
-      case 'ONGOING':
-        statusToDisplay = "En cours";
-        break;
-      default:
-        statusToDisplay = "Inconnu";
-    }
-    return statusToDisplay;
-  }
-
   onClickAddMovie(idMovie:Number) {
     if (sessionStorage.getItem('token') && this.loggedUser.id !==0 && this.loggedUser.id !== undefined) {
         this.userService._loggedUser$.subscribe((user:any) => {
@@ -360,7 +342,6 @@ export class VideoDetailsComponent {
     }
     return userVideoFinal;
   }
-
 
   
 }
