@@ -11,11 +11,13 @@ import { UserMovieAccueilComponent } from './user-movie-accueil/user-movie-accue
 import { UserSerieAccueilComponent } from './user-serie-accueil/user-serie-accueil.component';
 import { SearchTMDBComponent } from './search-tmdb/search-tmdb.component';
 import { LogoutComponent } from './auth/logout/logout.component';
+import { ProfilComponent } from './auth/profil/profil.component';
 
 const routes: Routes = [
   {path:'', component:VideoAccueilComponent},
   {path:'login', component:LoginComponent},
   {path:'logout', component:LogoutComponent},
+  {path:'profil', component:ProfilComponent},
   {path:'register', component:RegisterComponent},
   {path:'movies', component:MovieAccueilComponent},
   {path:'series', component:SerieAccueilComponent},

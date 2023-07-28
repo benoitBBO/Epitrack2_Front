@@ -31,36 +31,6 @@ export class LoginComponent {
   }
 
   
-  //VERSION INITIALE, AVANT BehaviorSubject dans USER-SERVICE
-  // onLoginSubmit(ev:Event){
-  //   this.isSubmitted = true;
-  //   if(this.loginForm.valid){
-  //     this.userService.login(this.loginForm.value)
-  //       .subscribe( {
-  //         next: (response:any) => {
-  //           sessionStorage.setItem('token', response.token);
-  //           sessionStorage.setItem('username', response.username);
-  //           this.userService.findUser(response.username)
-  //             .subscribe( {
-  //               next: (response:any) => {
-  //                 sessionStorage.setItem('id',response.id);
-  //                 sessionStorage.setItem('lastname',response.lastName);
-  //                 sessionStorage.setItem('firstname',response.firstName);
-  //                 sessionStorage.setItem('email',response.email);
-  //                 console.log("reponse findUser", response);
-  //                 this.msgService.show("Vous êtes connecté", "success");
-  //                 this.router.navigate(['/user']);
-  //                 this.isSubmitted = false;
-  //               }
-  //             }
-  //           )
-  //         }
-  //       }    
-  //     )
-  //   }
-  // }
- 
-
   onLoginSubmit(ev:Event){
     this.isSubmitted = true;
     if(this.loginForm.valid){

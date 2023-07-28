@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ParseError } from '@angular/compiler';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserModel } from 'src/app/shared/models/user.model';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
@@ -14,7 +15,11 @@ import { UserService } from 'src/app/shared/services/user.service';
 export class RegisterComponent {
 
   registerForm!:FormGroup;
+  passwordForm!:FormGroup;
+  passwordControl!:FormControl;
+  confirmPasswordControl!:FormControl;
   isSubmitted:boolean = false;
+  inputUser:UserModel = new UserModel({});
   
   constructor(private fb:FormBuilder,
             private userService:UserService,
@@ -23,22 +28,55 @@ export class RegisterComponent {
               ){}
 
   ngOnInit(){
-    console.log("coucou Register.ts NgOnInit");
+    this.initFormControls();
+        
     this.registerForm = this.fb.group({
       userName:['', [Validators.required]],
-      password:['', [Validators.required, Validators.minLength(8)]],
+      passwords: this.passwordForm,
       email:['', [Validators.required, Validators.email]],
       firstName:[''],
       lastName:['']     
     });
   }
 
+  initFormControls(){
+    this.passwordControl = this.fb.control('', [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')]);
+    this.confirmPasswordControl = this.fb.control('', [Validators.required]) ;
+    this.passwordForm = this.fb.group({
+      password: this.passwordControl,
+      confirmPassword: this.confirmPasswordControl
+    },
+    { validators: [this.confirmEqualValidator('password', 'confirmPassword')]}
+    )
+  }
+
+  confirmEqualValidator(main:string, confirm:string): ValidatorFn {
+    return (ctl:AbstractControl) : null | ValidationErrors => {
+      if (!ctl.get(main) || !ctl.get(confirm)) {
+        return {confirmEqual:"erreur : les données ne peuvent pas être comparées"};
+      }
+      let mainValue = ctl.get(main)!.value;
+      let confirmValue = ctl.get(confirm)!.value;
+      console.log("mdp1et2 = ", mainValue, confirmValue);
+      if (mainValue === confirmValue) {
+        return null;    //validator OK
+      } else {
+        return {confirmEqual:"erreur : valeurs différentes"}; 
+      };
+    };
+  }
 
   onRegisterSubmit(ev:Event){
     this.isSubmitted = true;
-    console.log("avant inscription "+this.registerForm.valid);
+    
+    this.inputUser.userName = this.registerForm.value.userName;
+    this.inputUser.password = this.registerForm.value.passwords.password;
+    this.inputUser.email = this.registerForm.value.email;
+    this.inputUser.firstName = this.registerForm.value.firstName;
+    this.inputUser.lastName = this.registerForm.value.lastName;
+    
     if(this.registerForm.valid){
-      this.userService.register(this.registerForm.value)
+      this.userService.register(this.inputUser)
       .subscribe( {
         next: (response:any) => {
           console.log("inscription ok"+response);

@@ -51,6 +51,7 @@ export class UserService {
 
   register(user:UserModel){
     let endpoint = '/users/register';
+    console.log("user= ", user);
     return this.http.post(this.EPITRACK_API+endpoint, user, {responseType:'text'});
   }
 
@@ -74,6 +75,28 @@ export class UserService {
       )
   }
 
+  updateUser(user:UserModel){
+    
+    console.log("update user: ", user);
+    let endpoint = '/users';
+    return this.http.put(this.EPITRACK_API+endpoint, user, {responseType:'text'})
+      .pipe(
+        tap( {
+          error: (err:unknown) => {
+            if (err instanceof HttpErrorResponse){
+              switch(err.status) {
+                case 404:
+                  this.msgService.show("utilisateur inconnu", "error");
+                  break;
+                default:
+                  this.msgService.show("erreur serveur", "error");
+              }          
+            }
+          }
+        })
+      )  
+  }
+
   saveLoggedUser(user:any){   
     sessionStorage.setItem('id',user.id);
     sessionStorage.setItem('username',user.userName);
@@ -82,6 +105,7 @@ export class UserService {
     sessionStorage.setItem('email',user.email);
 
     //TODO en double sessionStorage + loggedUser => OK on laisse les 2
+    // password présent dans le loggedUser pour pouvoir le modifier
     this._loggedUser$.next(user);
     return new Promise( (resolve, reject) => {
       if (this.loggedUser == null) {
@@ -92,7 +116,9 @@ export class UserService {
     })
   }
 
-  clearLoggedUser(){   
+  clearLoggedUserAndSessionStorage(){   
+    sessionStorage.clear();
+    
     this.loggedUser.id = 0;
     this.loggedUser.userName = "";
     this.loggedUser.firstName = "";

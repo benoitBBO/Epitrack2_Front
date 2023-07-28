@@ -13,9 +13,7 @@ export class LogoutComponent {
               private userService:UserService){}
 
   onClickLogoutYes(){
-    this.userService.clearLoggedUser();
-    //sessionStorage.removeItem('token');
-    sessionStorage.clear();
+    this.userService.clearLoggedUserAndSessionStorage();
     this.router.navigate(['/']);
   }
         
