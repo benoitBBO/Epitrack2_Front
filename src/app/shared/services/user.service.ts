@@ -26,36 +26,11 @@ export class UserService {
       return this._loggedUser$.getValue();
   }
 
-  //VERSION INITIALE, AVANT BehaviorSubject
-  // login(data:{username:String, password:String}){
-  //   //appel serveur (seveur vérifie les données de login et renvoie
-  //   //               un token de connexion si ok)
-  //   let endpoint = '/login';
-  //   console.log("service login")
-  //   return this.http.post(this.EPITRACK_API+endpoint, data)
-  //      .pipe(
-  //       tap( {
-  //         error: (err:unknown) => {
-  //           if (err instanceof HttpErrorResponse){
-  //             switch(err.status) {
-  //               case 401:
-  //                 this.msgService.show("utilisateur non authentifié", "error");
-  //                 break;
-  //               default:
-  //                 this.msgService.show("erreur serveur", "error");
-  //             }          
-  //           }
-  //         }
-  //       })
-  //      )  
-  // }
-
-  //VERSION AVEC BehaviorSubject
+  
   login(data:{username:String, password:String}){
     //appel serveur (seveur vérifie les données de login et renvoie
     //               un token de connexion si ok)
     let endpoint = '/login';
-    console.log("service login")
     return this.http.post(this.EPITRACK_API+endpoint, data)
       .pipe(
         tap( {
@@ -75,14 +50,11 @@ export class UserService {
   }
 
   register(user:UserModel){
-    console.log("méthode register");
-    console.log("user"+user.userName+" "+user.password+" "+user.email+" "+user.firstName+" "+user.lastName);
     let endpoint = '/users/register';
     return this.http.post(this.EPITRACK_API+endpoint, user, {responseType:'text'});
   }
 
   findUser(username:String){
-    console.log("méthode findUser");
     let endpoint = '/users/username/';
     return this.http.get(this.EPITRACK_API+endpoint + username)
       .pipe(
@@ -102,16 +74,14 @@ export class UserService {
       )
   }
 
-  saveLoggedUser(user:any){
-    console.log("méthode saveLoggedUser");
-    
+  saveLoggedUser(user:any){   
     sessionStorage.setItem('id',user.id);
     sessionStorage.setItem('username',user.userName);
     sessionStorage.setItem('lastname',user.lastName);
     sessionStorage.setItem('firstname',user.firstName);
     sessionStorage.setItem('email',user.email);
 
-    //TODO en double sessionStorage + loggedUser
+    //TODO en double sessionStorage + loggedUser => OK on laisse les 2
     this._loggedUser$.next(user);
     return new Promise( (resolve, reject) => {
       if (this.loggedUser == null) {
@@ -122,9 +92,7 @@ export class UserService {
     })
   }
 
-  clearLoggedUser(){
-    console.log("méthode clearLoggedUser");
-    
+  clearLoggedUser(){   
     this.loggedUser.id = 0;
     this.loggedUser.userName = "";
     this.loggedUser.firstName = "";

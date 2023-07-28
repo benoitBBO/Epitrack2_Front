@@ -215,24 +215,5 @@ export class VideoDetailsComponent {
     
   }
 
-  convertStatusDisplay(status:String){
-    let statusToDisplay:string ="";
-    switch (status){
-      case 'WATCHED':
-        statusToDisplay = "Déjà Vu";
-        break;
-      case 'UNWATCHED':
-        statusToDisplay = "A voir";
-        break;
-      case 'ONGOING':
-        statusToDisplay = "En cours";
-        break;
-      default:
-        statusToDisplay = "inconnu";
-    }
-    return statusToDisplay;
-  }
-
-
   
 }
