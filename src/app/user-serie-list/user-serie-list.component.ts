@@ -16,16 +16,18 @@ export class UserSerieListComponent {
   series: UserserieModel[] = [];
   serie!: UserserieModel;
   loggedUser!:UserModel;
+  currentUrl!: string;
 
   constructor(private router:Router,
               private userSerieService:UserSerieService,
               private userService:UserService,
               private messageService:MessageService) {
-    console.log("constructor UserSerieService : ", this);
   }
 
   ngOnInit() {
-    console.log("ngOnInit de user-serie-list");
+    //RG pour css Films/Series
+    this.currentUrl = this.router.url;
+    
     //charger loggedUSer
     this.userService._loggedUser$.subscribe((user:any) => this.loggedUser=user );
     //requete get API

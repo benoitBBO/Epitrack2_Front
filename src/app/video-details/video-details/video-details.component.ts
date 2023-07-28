@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { MovieModel } from 'src/app/shared/models/movie.model';
 import { SeasonModel } from 'src/app/shared/models/season.model';
 import { SerieModel } from 'src/app/shared/models/serie.model';
+import { UserModel } from 'src/app/shared/models/user.model';
 import { UsermovieModel } from 'src/app/shared/models/usermovie.model';
 import { UserseasonModel } from 'src/app/shared/models/userseason.model';
 import { UserserieModel } from 'src/app/shared/models/userserie.model';
@@ -14,6 +15,7 @@ import { MovieService } from 'src/app/shared/services/movie.service';
 import { SerieService } from 'src/app/shared/services/serie.service';
 import { UserMovieService } from 'src/app/shared/services/user-movie.service';
 import { UserSerieService } from 'src/app/shared/services/user-serie.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-video-details',
@@ -32,6 +34,7 @@ export class VideoDetailsComponent {
   shortListActors: string[] = [];
   loaded: boolean = false;
   userCatalogView: boolean = false;
+  loggedUser!:UserModel;
   userMovies!: UsermovieModel[];
   userMovie!: UsermovieModel;
   userSeries!: UserserieModel[];
@@ -43,22 +46,23 @@ export class VideoDetailsComponent {
     private movieService: MovieService,
     private serieService: SerieService,
     private route: ActivatedRoute,
+    private router:Router,
     private userMovieService: UserMovieService,
     private userSerieService: UserSerieService,
-    private messageService : MessageService){}
+    private messageService : MessageService,
+    private userService:UserService
+    ){}
 
     
 
   ngOnInit() {
     //Recupération du catalogue userMovies et userSeries
     this.userMovieService._usermovies$.subscribe(data => this.userMovies = data);
-    this.userSerieService._userseries$.subscribe(data => this.userSeries = data);
-
+    this.userSerieService._userseries$.subscribe(data => this.userSeries = data); 
     
-    
-    //Recupération du catalogue userSeries
-    //##TODO
-    
+    this.userService._loggedUser$.subscribe((user:any) => {
+      this.loggedUser=user;
+    });
 
     //Params recovery for Get Request
     this.userOwned = this.route.snapshot.params['isInCatalog'];
@@ -137,8 +141,6 @@ export class VideoDetailsComponent {
           });
         } else { //Série suivie
           this.userSerieService.getUserSerieById(this.id).subscribe( data => {
-            //##Inversion des saisons et episodes suite retour back?
-            //data = this.reverseArrays(data);
             this.userCatalogView = true;
             this.userSerie = data;
             this.serie = data.serie;
@@ -204,15 +206,141 @@ export class VideoDetailsComponent {
     }
   }
 
-  reverseArrays(userSerie:any){
-    for(let i = 0; i < userSerie.userSeasons.length; i++){
-      userSerie.userSeasons[i].userEpisodes = userSerie.userSeasons[i].userEpisodes.reverse();
+  onClickAddMovie(idMovie:Number) {
+    if (sessionStorage.getItem('token') && this.loggedUser.id !==0 && this.loggedUser.id !== undefined) {
+        this.userService._loggedUser$.subscribe((user:any) => {
+        this.loggedUser=user;
+        this.userMovieService.postUserMovie(idMovie, this.loggedUser.id)
+          .subscribe( {
+            next: (response:any) => {
+              //Mise à jour de la selection User
+              this.userMovieService._usermovies$ = new BehaviorSubject<any>(response);
+              this.userMovie = this.findUserVideByVideoId(response);
+              
+              this.messageService.show("Film ajouté avec succès", "success");
+              this.userOwned = "in";
+            },
+            error: (err:unknown) => {
+              if (err instanceof HttpErrorResponse){
+                let errorObj = JSON.parse(err.error);
+                switch(err.status) {
+                  case 404:
+                    this.messageService.show(errorObj.description, "error");
+                    break;
+                  case 409:
+                    this.messageService.show("Ce film est déjà suivi", "error");
+                    break;
+                  default:
+                    this.messageService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
+                }          
+              }
+            }
+          });
+        });
+    } else {
+        this.router.navigate(['/login']);
     }
+  }
 
-    userSerie.userSeasons = userSerie.userSeasons.reverse();
+  onClickWithdrawMovie(idMovie:Number) {
+    this.userService._loggedUser$.subscribe((user:any) => {
+      this.loggedUser=user;
+      this.userMovieService.deleteUserMovie(idMovie, this.loggedUser.id)
+        .subscribe( {
+          next: (response:any) => {
+            //Mise à jour de la selection User
+            this.userMovieService._usermovies$ = new BehaviorSubject<any>(response);
 
-    return userSerie;
-    
+            this.messageService.show("Film retiré du catalogue avec succès", "success");
+            this.userOwned = "out";
+          },
+          error: (err:unknown) => {
+            if (err instanceof HttpErrorResponse){
+              let errorObj = JSON.parse(err.error);
+              switch(err.status) {
+                case 404:
+                  this.messageService.show(errorObj.description, "error");
+                  break;
+                default:
+                  this.messageService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
+              }          
+            }
+          }
+        });
+      });
+  };
+
+  onClickAddSerie(serieId:number) {
+    if (sessionStorage.getItem('token') && (this.loggedUser.id !==0 && this.loggedUser.id !== undefined)) {
+      this.userSerieService.postUserSerie(serieId, this.loggedUser.id)
+        .subscribe( {
+          next: (response:any) => {
+            //Mise à jour de la selection User
+            this.userSerieService._userseries$ = new BehaviorSubject<any>(response);
+            this.userSerie = this.findUserVideByVideoId(response);
+            this.userOwned = "in";
+            this.messageService.show("Série ajoutée avec succès", "success");
+          },
+          error: (err:unknown) => {
+            if (err instanceof HttpErrorResponse){
+              let errorObj = JSON.parse(err.error);
+              switch(err.status) {
+                case 404:
+                  this.messageService.show(errorObj.description, "error");
+                  break;
+                case 409:
+                  this.messageService.show("Cette série est déjà suivie", "error");
+                  break;
+                default:
+                  this.messageService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
+              }          
+            }
+          }
+        })
+    } else {
+        this.router.navigate(['/login']);
+    }
+  }
+
+  onClickWithdrawSerie(serie:SerieModel) {
+    this.userService._loggedUser$.subscribe((user:any) => {
+      this.loggedUser=user;
+      this.userSerieService.deleteUserSerie(serie.id, this.loggedUser.id)
+        .subscribe( {
+          next: (response:any) => {
+            //Mise à jour de la selection User
+            this.userSerieService._userseries$ = new BehaviorSubject<any>(response);
+            this.userOwned = "out";
+            this.messageService.show("Serie retirée du catalogue avec succès", "success");
+
+          },
+          error: (err:unknown) => {
+            if (err instanceof HttpErrorResponse){
+              let errorObj = JSON.parse(err.error);
+              switch(err.status) {
+                case 404:
+                  this.messageService.show(errorObj.description, "error");
+                  break;
+                default:
+                  this.messageService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
+              }          
+            }
+          }
+        });
+      });
+  };
+
+  findUserVideByVideoId(userVideoArray:any[]):any{
+    let videoProperty:string = this.type === "Movie" ? "movie" : "serie";
+    let currentVideo = this.type === "Movie" ? this.movie : this.serie;
+    let userVideoFinal!:UsermovieModel | UserserieModel;
+
+    for(let userVideo of userVideoArray){
+      if(userVideo[videoProperty].id === currentVideo.id){
+        userVideoFinal = userVideo;
+      }
+    }
+    return userVideoFinal;
   }
 
   

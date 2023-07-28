@@ -21,16 +21,19 @@ export class SerieListComponent {
   userSeries!: UserserieModel[];
   loggedUser!:UserModel;
   dynamicCatalog: any[] = [];
+  currentUrl!: string;
   
   constructor(private service: SerieService,
               private router:Router,
               private msgService:MessageService,
               private userSerie: UserSerieService,
               private userService:UserService) {
-    console.log("constructor SerieService : ", this);
   }
 
   ngOnInit() {
+    //RG pour css Films/Series
+    this.currentUrl = this.router.url;
+    
     this.userService._loggedUser$.subscribe((user:any) => {
       this.loggedUser=user;
     });
@@ -50,7 +53,7 @@ export class SerieListComponent {
     }
   }
   onClickAddSerie(serieId:number, index:number) {
-    if (sessionStorage.getItem('token') && this.loggedUser) {
+    if (sessionStorage.getItem('token') && (this.loggedUser.id !==0 && this.loggedUser.id !== undefined)) {
       this.userSerie.postUserSerie(serieId, this.loggedUser.id)
         .subscribe( {
           next: (response:any) => {

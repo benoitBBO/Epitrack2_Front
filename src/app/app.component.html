@@ -1,9 +1,18 @@
-<nav class="navbar entete">
+<nav class="navbar entete backgroundColorAndMargin">
   <div class="d-flex justify-content-between align-items-center">
       <a routerLink="/" class="navbar-brand"><h1><img src="./assets/img/epitrack.png"></h1></a>
       <div>
-        <button class="btn btn-light" routerLink="/movies">Le Catalogue</button>
-        <button class="btn btn-light" routerLink="/user/movies">Mon Catalogue</button>
+        <button class="btnMenu" [matMenuTriggerFor]="menu">Le Catalogue</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item  routerLink="/movies"><a class="navbar-brand">Les films</a></button>
+          <button mat-menu-item routerLink="/series"><a class="navbar-brand">Les séries</a></button>
+        </mat-menu>
+        <button [class]="this.loggedUser.id !== undefined && this.loggedUser.id !== 0 ? 'btnMenu' : 'btnMenu d-none'" [matMenuTriggerFor]="menu2">Mon Catalogue</button>
+        <mat-menu #menu2="matMenu">
+          <button mat-menu-item routerLink="/user/movies"><a class="navbar-brand">Mes films</a></button>
+          <button mat-menu-item routerLink="/user/series"><a class="navbar-brand">Mes séries</a></button>
+        </mat-menu>
+
       </div>
       <app-searchbar class="width40"></app-searchbar>
       <div>
