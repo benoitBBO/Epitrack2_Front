@@ -46,3 +46,9 @@
     display: none;
 }
 
+.customFlex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+

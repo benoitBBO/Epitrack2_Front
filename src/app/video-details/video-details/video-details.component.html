@@ -143,8 +143,8 @@
                 <div class="row">
                     <div id="seasonPart" class="p-4">
                         <h2 class="">Saisons</h2>
-                        <div class="row row-cols-8 g-0 justify-content-center">
-                            <div *ngFor="let season of serie.seasons" class="col mb-3">
+                        <div class="customFlex">
+                            <div *ngFor="let season of serie.seasons" class="mx-1 mb-1">
                                 <div class="card customWidth" (click)="onClickSeasonCard($event,season.seasonNumber)" >
                                     <img class="card-img-top" [src]="season.imageUrl != null ? (season.imageUrl | printImg) : './assets/img/noimageposter.png'" [alt]="season.title">
                                     <div class="card-body text-center">
@@ -184,8 +184,8 @@
                 <div class="row">
                     <div id="seasonPart" class="p-4">
                         <h2 class="">Saisons</h2>
-                        <div class="row row-cols-8 g-0 justify-content-center">
-                            <div *ngFor="let userSeason of userSeasons" class="col mb-3">
+                        <div class="customFlex">
+                            <div *ngFor="let userSeason of userSeasons" class="mx-1 mb-1">
                                 <div class="card customWidth" (click)="onClickSeasonCard($event,userSeason.season.seasonNumber)" >
                                     <img class="card-img-top" [src]="userSeason.season.imageUrl != null ? (userSeason.season.imageUrl | printImg) : './assets/img/noimageposter.png'" [alt]="userSeason.season.title">
                                     <div class="card-body">
