@@ -33,5 +33,10 @@ export class SearchbarComponent {
         .subscribe((series:SerieModel[]) => this.searchVideos.push(...series));
     }
   }
+
+  onBlur(){
+    this.searchVideos = [];
+    this.isListVisible = false;
+  }
   
 }

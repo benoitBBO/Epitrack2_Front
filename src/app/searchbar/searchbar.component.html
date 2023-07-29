@@ -1,5 +1,5 @@
 <div>
-    <input (keyup)="onKeyUp(tagSaisie.value)" 
+    <input (blur)="onBlur()" (keyup)="onKeyUp(tagSaisie.value)" 
             #tagSaisie placeholder="Rechercher une vidéo..." 
             class="form-control" type="text">
     <div *ngIf="searchVideos.length!=0; else elseBlock">

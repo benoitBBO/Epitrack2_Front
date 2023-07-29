@@ -201,7 +201,7 @@ export class VideoDetailsComponent {
   }
 
   displayActors(videoObj:any){
-    for(let i = 0; i < 5; i++){
+    for(let i = 0; i < (videoObj.actors.length < 5 ? videoObj.actors.length  : 5); i++){
       this.shortListActors.push(videoObj.actors[i].name);
     }
   }
@@ -278,8 +278,11 @@ export class VideoDetailsComponent {
             //Mise à jour de la selection User
             this.userSerieService._userseries$ = new BehaviorSubject<any>(response);
             this.userSerie = this.findUserVideByVideoId(response);
-            this.userOwned = "in";
+            // this.userOwned = "in";
+
+            //Refresh de la page
             this.messageService.show("Série ajoutée avec succès", "success");
+            this.redirectTo(this.router.url.replace("/out/catalog", "/in/catalog"));
           },
           error: (err:unknown) => {
             if (err instanceof HttpErrorResponse){
@@ -310,7 +313,10 @@ export class VideoDetailsComponent {
           next: (response:any) => {
             //Mise à jour de la selection User
             this.userSerieService._userseries$ = new BehaviorSubject<any>(response);
-            this.userOwned = "out";
+            // this.userOwned = "out";
+
+            //Refresh de la page
+            this.redirectTo(this.router.url.replace("/in/catalog", "/out/catalog"));
             this.messageService.show("Serie retirée du catalogue avec succès", "success");
 
           },
@@ -342,6 +348,11 @@ export class VideoDetailsComponent {
     }
     return userVideoFinal;
   }
+
+  redirectTo(uri: string) {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+    this.router.navigate([uri]));
+ }
 
   
 }
