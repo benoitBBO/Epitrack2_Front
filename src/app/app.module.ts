@@ -34,6 +34,10 @@ import { LogoutComponent } from './auth/logout/logout.component';
 import { IsInCatalogPipe } from './shared/pipes/is-in-catalog.pipe';
 import { StatusDisplayPipe } from './shared/pipes/status-display.pipe';
 import { ProfilComponent } from './auth/profil/profil.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatIconModule} from '@angular/material/icon'; 
+import {MatFormFieldModule} from '@angular/material/form-field'; 
+
 
 @NgModule({
   declarations: [
@@ -59,7 +63,7 @@ import { ProfilComponent } from './auth/profil/profil.component';
     LogoutComponent,
     IsInCatalogPipe,
     StatusDisplayPipe,
-    ProfilComponent
+    ProfilComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,7 +75,10 @@ import { ProfilComponent } from './auth/profil/profil.component';
     MatSlideToggleModule,
     ToggleComponent,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    MatAutocompleteModule,
+    MatIconModule,
+    MatFormFieldModule
   ],
 
   providers: [
