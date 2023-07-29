@@ -1,0 +1,30 @@
+<div>
+    <input (keyup)="onKeyUp(tagSaisie.value)" 
+            #tagSaisie placeholder="Rechercher une vidéo..." 
+            class="form-control" type="text">
+    <div *ngIf="searchVideos.length!=0; else elseBlock">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let video of searchVideos">
+                <i *ngIf="video.type=='Movie'" class="fas fa-film pe-1"></i>
+                <i *ngIf="video.type=='Serie'" class="fas fa-tv"></i>
+                <a [routerLink]='["/details",video.id, video.type, ((video.id | isInCatalog:video.type) ? "out" : "in"), "searchbar"]'
+                    (click)="isListVisible = !isListVisible; tagSaisie.value=''; onKeyUp('')">
+                    {{video.title}}
+                </a>
+            </li>
+        </ul> 
+    </div>
+    <ng-template #elseBlock>
+        <div *ngIf="isListVisible">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <i class="fa-solid fa-magnifying-glass pe-2"></i>
+                    <a [routerLink]='["/searchTMDB",tagSaisie.value]'
+                        (click)="isListVisible = !isListVisible; tagSaisie.value='';">
+                        Aucun résultat, lancer la recherche dans TMDB
+                    </a>
+                </li>
+            </ul> 
+        </div>
+    </ng-template>
+</div>

@@ -1,0 +1,57 @@
+<div class="row text-center">
+    <div class="d-inline-block">
+        <div [class]="currentUrl === '/' ? 'text-center d-md-inline-block marginCustom' : 'text-center d-md-inline-block marginCustom active'">
+            <i class="fas fa-film fa-2x"></i> <h2><a [class]="currentUrl === '/' ? '' : 'active'" routerLink="/movies">Les Films</a></h2>
+        </div>
+        <div *ngIf="currentUrl !== '/'" class="text-center d-md-inline-block marginCustom">
+            <i class="fas fa-tv fa-2x"></i><h2><a routerLink="/series">Les Séries</a></h2>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div *ngFor="let movie of movies; let i = index;" class="col-12 col-md-3">
+        <div class="card">
+            <!-- Changement d'url dynamique avec ajout ou suppression du catalogue-->
+            <img *ngIf="!dynamicCatalog[i] && dynamicCatalog.length !== 0" [src]="movie.image_landscape != null ? (movie.image_landscape | printImg) : './assets/img/noimage.png'"
+                 [alt]="movie.title" 
+                 [routerLink]='["/details", movie.id, movie.type, "in", "catalog"]'>
+            <img *ngIf="dynamicCatalog[i] && dynamicCatalog.length !== 0" [src]="movie.image_landscape != null ? (movie.image_landscape | printImg) : './assets/img/noimage.png'"
+                 [alt]="movie.title" 
+                 [routerLink]='["/details", movie.id, movie.type,"out", "catalog"]'>
+            <img *ngIf="dynamicCatalog.length === 0" [src]="movie.image_landscape != null ? (movie.image_landscape | printImg) : './assets/img/noimage.png'"
+                 [alt]="movie.title" 
+                 [routerLink]='["/details", movie.id, movie.type,"out", "catalog"]'>
+            <!-- Changement d'url dynamique avec ajout ou suppression du catalogue-->
+
+            <div class="card-body">
+                <div class=" d-flex align-items-center justify-content-between">
+                    <!-- Changement d'url dynamique avec ajout ou suppression du catalogue-->
+                    <h2 *ngIf="!dynamicCatalog[i] && dynamicCatalog.length !== 0" [routerLink]='["/details", movie.id, movie.type,"in", "catalog"]'>
+                        {{movie.title}}
+                    </h2>
+                    <h2 *ngIf="dynamicCatalog[i] && dynamicCatalog.length !== 0" [routerLink]='["/details", movie.id, movie.type,"out", "catalog"]'>
+                        {{movie.title}}
+                    </h2>
+                    <h2 *ngIf="dynamicCatalog.length === 0" [routerLink]='["/details", movie.id, movie.type, "out", "catalog"]'>
+                        {{movie.title}}
+                    </h2>
+                    <!-- Changement d'url dynamique avec ajout ou suppression du catalogue-->
+
+                    <!-- Changement du bouton en fonction de l'ajout ou suppression du catalogue-->
+                    <button *ngIf="dynamicCatalog.length === 0" (click)="onClickAddMovie(movie.id, i)" class="btn btn-light" title="Ajouter un film dans mon catalogue">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button *ngIf="dynamicCatalog[i] && dynamicCatalog.length !== 0" (click)="onClickAddMovie(movie.id, i)" class="btn btn-light" title="Ajouter un film dans mon catalogue">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button *ngIf="!dynamicCatalog[i] && dynamicCatalog.length !== 0" (click)="onClickWithdrawMovie(movie.id, i)" class="btn btn-light" 
+                            title="Supprimer un film dans mon catalogue">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <!-- Changement du bouton en fonction de l'ajout ou suppression du catalogue-->
+                </div>
+                <app-stars [componentType]="'display'" [score]="movie.rating"></app-stars>
+            </div>
+        </div>
+    </div>
+</div>

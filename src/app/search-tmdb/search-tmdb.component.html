@@ -1,0 +1,52 @@
+<div class="container-fluid">
+    <div class="text-center mb-3 mt-3">
+        <i class="fas fa-film fa-2x"></i> <h2>Les Films TMDB</h2>
+    </div>
+    <div class="row">
+        <div *ngFor="let movie of movies" class="col-12 col-md-3">
+            <div class="card">
+                <img [src]="movie.image_landscape != null ? (movie.image_landscape | printImg) : './assets/img/noimage.png'" 
+                    [alt]="movie.titre" 
+                    [routerLink]='["/details"]'>
+                <div class="card-body">
+                    <div class=" d-flex align-items-center justify-content-between">
+                        <h2 [routerLink]='["/details"]'>
+                            {{movie.titre}}
+                        </h2>
+                        <button (click)="onClickAddMovie(movie.id)"
+                                class="btn btn-light" 
+                                title="Ajouter un film dans le catalogue EpiTrack">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <app-stars [componentType]="'display'" [score]="movie.score"></app-stars>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mb-3 mt-3">
+        <i class="fas fa-film fa-2x"></i> <h2>Les Séries TMDB</h2>
+    </div>
+    <div class="row">
+        <div *ngFor="let serie of series" class="col-12 col-md-3">
+            <div class="card">
+                <img [src]="serie.image_landscape != null ? (serie.image_landscape | printImg) : './assets/img/noimage.png'" 
+                    [alt]="serie.titre" 
+                    [routerLink]='["/details"]'>
+                <div class="card-body">
+                    <div class=" d-flex align-items-center justify-content-between">
+                        <h2 [routerLink]='["/details"]'>
+                            {{serie.titre}}
+                        </h2>
+                        <button (click)="onClickAddSerie(serie.id)"
+                                class="btn btn-light" 
+                                title="Ajouter une série dans le catalogue EpiTrack">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <app-stars [componentType]="'display'" [score]="serie.score"></app-stars>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

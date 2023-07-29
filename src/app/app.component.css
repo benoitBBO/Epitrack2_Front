@@ -1,0 +1,28 @@
+.entete {
+    position: sticky;
+    z-index: 1;
+    top:0;
+    display: block;
+    padding: 10px 15px;
+    background-color: #eee;
+}
+.width40 {
+    width: 40%;
+}
+h1 {
+    margin:0px
+}
+.btnMenu {
+    border: 0px;
+    border-radius: 4px;
+    background-color: white;
+    padding: 8px 14px;
+}
+img {
+    box-shadow: 2px 2px 5px #00000026;
+}
+
+.backgroundColorAndMargin{
+    background: #0000004f;
+    margin: 0 0 15px 0;
+}

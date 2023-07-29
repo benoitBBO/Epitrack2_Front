@@ -1,0 +1,36 @@
+.card {
+    font-size:20px;
+    margin-bottom: 20px;
+    transition-duration: .2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.card h2 {
+    font-size:1.2rem;
+}
+h2 {
+    font-size: large;
+    margin-bottom: 0px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+a {
+    color: black;
+}
+
+.marginCustom {
+    margin: 0 10px 10px 10px;
+}
+
+.active {
+    color: goldenrod;
+}
+
+.activeLink {
+    color: goldenrod !important;
+}

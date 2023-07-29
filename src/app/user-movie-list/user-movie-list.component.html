@@ -1,0 +1,31 @@
+<div class="row text-center">
+    <div class="d-inline-block">
+        <div [class]="currentUrl === '/user' ? 'text-center d-md-inline-block marginCustom' : 'text-center d-md-inline-block marginCustom active'">
+            <i class="fas fa-film fa-2x"></i> <h2><a [class]="currentUrl === '/user' ? '' : 'active'" routerLink="/user/movies">Mes Films</a></h2>
+        </div>
+        <div *ngIf="currentUrl !== '/user'" class="text-center d-md-inline-block marginCustom">
+            <i class="fas fa-tv fa-2x"></i><h2><a routerLink="/user/series">Mes Séries</a></h2>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div *ngFor="let movie of movies" class="col-12 col-md-3">
+        <div class="card">
+            <img [src]="movie.movie.image_landscape != null ? (movie.movie.image_landscape | printImg) : './assets/img/noimage.png'"
+                 [alt]="movie.movie.title" 
+                 [routerLink]='["/details", movie.id, "Movie", "in", "userCatalog"]'>
+            <div class="card-body">
+                <div class=" d-flex align-items-center justify-content-between">
+                    <h2 [routerLink]='["/details", movie.id, "Movie", "in", "userCatalog"]'>
+                        {{movie.movie.title}}
+                    </h2>
+                    <app-toggle [status]="movie.status" 
+                                [userVideoId]="movie.id"
+                                videoType="MOVIE">
+                    </app-toggle>
+                </div>
+                <app-stars [componentType]="'display'" [score]="movie.movie.rating"></app-stars>
+            </div>
+        </div>
+    </div>
+</div>

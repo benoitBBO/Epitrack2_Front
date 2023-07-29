@@ -1,0 +1,48 @@
+<div class="row text-center">
+    <div class="d-inline-block">
+        <div *ngIf="currentUrl !== '/user'"  class="text-center d-md-inline-block marginCustom">
+            <i class="fas fa-film fa-2x"></i> <h2><a routerLink="/user/movies">Mes Films</a></h2>
+        </div>
+        <div [class]="currentUrl === '/user' ? 'text-center d-md-inline-block marginCustom' : 'text-center d-md-inline-block marginCustom active'">
+            <i class="fas fa-tv fa-2x"></i><h2><a [class]="currentUrl === '/user' ? '' : 'active'" routerLink="/user/series">Mes Séries</a></h2>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div *ngFor="let userserie of series" class="col-12 col-md-3">
+        <div class="card">
+            <img [src]="userserie.serie.image_landscape != null ? (userserie.serie.image_landscape | printImg) : './assets/img/noimage.png'"
+                 [alt]="userserie.serie.title" 
+                 [routerLink]='["/details", userserie.id, "Serie", "in", "userCatalog"]'>
+            <div class="card-body">
+                <div class=" d-flex align-items-center justify-content-between">
+                    <h2 [routerLink]='["/details", userserie.id, "Serie", "in", "userCatalog"]'>
+                        {{userserie.serie.title}}
+                    </h2>
+                    
+                    <!-- <div> -->
+                        <!-- <button type="button" class="btn" -->
+                                <!-- (click)="updateStatusOfUserSerie(userserie.id,'WATCHED')"  -->
+                                <!-- [class.btn-info]="userserie.status=='WATCHED'"  -->
+                                <!-- [class.btn-light]="userserie.status!='WATCHED'" -->
+                                <!-- [disabled]="userserie.status=='WATCHED'"> -->
+                            <!-- Déjà Vu</button> -->
+                        <!-- <button type="button" class="btn" -->
+                                <!-- (click)="updateStatusOfUserSerie(userserie.id,'UNWATCHED')"  -->
+                                <!-- [class.btn-info]="userserie.status=='UNWATCHED'" -->
+                                <!-- [class.btn-light]="userserie.status!='UNWATCHED'" -->
+                                <!-- [disabled]="userserie.status=='UNWATCHED'"> -->
+                            <!-- A voir</button> -->
+                    <!-- </div> -->
+                    
+                    <app-toggle [status]="userserie.status" 
+                                [userVideoId]="userserie.id"
+                                videoType="SERIE">
+                    </app-toggle>
+                </div>
+                <app-stars [componentType]="'display'" [score]="userserie.serie.rating"></app-stars>
+
+            </div>
+        </div>
+    </div>
+</div>
