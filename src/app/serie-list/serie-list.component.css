@@ -34,3 +34,7 @@ a {
 .activeLink {
     color: goldenrod !important;
 }
+
+#divBtnsFilters button {
+    margin: 5px 10px 0 0;
+}

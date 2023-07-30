@@ -17,6 +17,14 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class SerieListComponent {
   series: SerieModel[] = [];
+  originalSeries: SerieModel[] = []; //Sauvegarde des series pour effectuer les tris/filtres
+  genres: string[] = [];
+  btnsSortClass = "btn btn-secondary btn-sm";
+  btnsFilterClass = "btn btn-secondary btn-sm";
+  displaySort: string = "";
+  genreFiltered: string = "";
+  displayBtnSort: boolean = false;
+  displayResetFiterBtn: boolean = false;
   serie!: SerieModel;
   userSeries!: UserserieModel[];
   loggedUser!:UserModel;
@@ -48,7 +56,17 @@ export class SerieListComponent {
     } else if (this.router.url == '/series') {
       this.service.getSeriesFromApi().subscribe( data => {
         this.series = data
+        this.originalSeries = data;
         this.loadingDynamicCatalogVariable();
+
+        //Chargement des genres pour les tris
+        for(let serie of data){
+          for(let genre of serie.genres){
+            if(!this.genres.includes(genre.name)){
+              this.genres.push(genre.name);
+            }
+          }
+        }
       });
     }
   }
@@ -129,5 +147,71 @@ export class SerieListComponent {
       return true;
     }
     return true;
+  }
+
+  onClickSortByAlphabeticalOrderAz(){
+    this.series.sort((a, b) => a.title.localeCompare(b.title, 'fr', {ignorePunctuation: true}));
+    this.displaySort = "Ordre alphabétique (A-Z)";
+    this.displayBtnSort = true;
+    this.btnsSortClass = "btn btn-success btn-sm";
+  }
+
+  onClickSortByAlphabeticalOrderZa(){
+    this.series.sort((a, b) => b.title.localeCompare(a.title, 'fr', {ignorePunctuation: true}));
+    this.displaySort = "Ordre alphabétique (Z-A)";
+    this.displayBtnSort = true;
+    this.btnsSortClass = "btn btn-success btn-sm";
+  }
+
+  onClickSortByRatingAsc(){
+    this.series.sort((a, b) => {
+      if (a.rating < b.rating) {
+        return -1;
+      }
+      if (a.rating > b.rating) {
+        return 1;
+      }
+      return 0;
+    });
+    this.displaySort = "Notation (Croissante)";
+    this.displayBtnSort = true;
+    this.btnsSortClass = "btn btn-success btn-sm";
+  }
+
+  onClickSortByRatingDsc(){
+    this.series.sort((a, b) => {
+      if (a.rating > b.rating) {
+        return -1;
+      }
+      if (a.rating < b.rating) {
+        return 1;
+      }
+      return 0;
+    });
+    this.displaySort = "Notation (Décroissante)";
+    this.displayBtnSort = true;
+    this.btnsSortClass = "btn btn-success btn-sm";
+  }
+
+  onClickResetFilter(){
+    this.series = this.originalSeries;
+    this.displayResetFiterBtn = false;
+    this.btnsFilterClass = "btn btn-secondary btn-sm";
+  }
+
+  onClickFilter(genre:string){
+    this.series = this.originalSeries.filter(serie => 
+      {
+        for(let genreCompare of serie.genres){
+          if(genreCompare.name === genre){
+            return true;
+          }
+        }
+        return false;
+      }
+    );
+    this.genreFiltered = genre;
+    this.displayResetFiterBtn = true;
+    this.btnsFilterClass = "btn btn-success btn-sm";
   }
 }
