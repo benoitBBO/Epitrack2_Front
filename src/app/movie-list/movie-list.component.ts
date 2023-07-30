@@ -17,7 +17,15 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./movie-list.component.css']
 })
 export class MovieListComponent {
-  movies: MovieModel[] = [];
+  movies: MovieModel[] = []; //Utilisé pour l'affichage
+  originalMovies: MovieModel[] = []; //Sauvegarde des movies pour effectuer les tris/filtres
+  genres: string[] = [];
+  btnsSortClass = "btn btn-secondary btn-sm";
+  btnsFilterClass = "btn btn-secondary btn-sm";
+  displaySort: string = "";
+  genreFiltered: string = "";
+  displayBtnSort: boolean = false;
+  displayResetFiterBtn: boolean = false;
   movie!: MovieModel;
   userMovies!: UsermovieModel[];
   loggedUser!:UserModel;
@@ -51,7 +59,17 @@ export class MovieListComponent {
       // this.service.getMoviesFromApi().subscribe( data => this.movies = data);
       this.service.getMoviesFromApi().subscribe( data => {
         this.movies = data;
+        this.originalMovies = data;
         this.loadingDynamicCatalogVariable();
+
+        //Chargement des genres pour les tris
+        for(let movie of data){
+          for(let genre of movie.genres){
+            if(!this.genres.includes(genre.name)){
+              this.genres.push(genre.name);
+            }
+          }
+        }
       });
     }
   }
@@ -138,5 +156,71 @@ export class MovieListComponent {
       return true;
     }
     return true;
+  }
+
+  onClickSortByAlphabeticalOrderAz(){
+    this.movies.sort((a, b) => a.title.localeCompare(b.title, 'fr', {ignorePunctuation: true}));
+    this.displaySort = "Ordre alphabétique (A-Z)";
+    this.displayBtnSort = true;
+    this.btnsSortClass = "btn btn-success btn-sm";
+  }
+
+  onClickSortByAlphabeticalOrderZa(){
+    this.movies.sort((a, b) => b.title.localeCompare(a.title, 'fr', {ignorePunctuation: true}));
+    this.displaySort = "Ordre alphabétique (Z-A)";
+    this.displayBtnSort = true;
+    this.btnsSortClass = "btn btn-success btn-sm";
+  }
+
+  onClickSortByRatingAsc(){
+    this.movies.sort((a, b) => {
+      if (a.rating < b.rating) {
+        return -1;
+      }
+      if (a.rating > b.rating) {
+        return 1;
+      }
+      return 0;
+    });
+    this.displaySort = "Notation (Croissante)";
+    this.displayBtnSort = true;
+    this.btnsSortClass = "btn btn-success btn-sm";
+  }
+
+  onClickSortByRatingDsc(){
+    this.movies.sort((a, b) => {
+      if (a.rating > b.rating) {
+        return -1;
+      }
+      if (a.rating < b.rating) {
+        return 1;
+      }
+      return 0;
+    });
+    this.displaySort = "Notation (Décroissante)";
+    this.displayBtnSort = true;
+    this.btnsSortClass = "btn btn-success btn-sm";
+  }
+
+  onClickResetFilter(){
+    this.movies = this.originalMovies;
+    this.displayResetFiterBtn = false;
+    this.btnsFilterClass = "btn btn-secondary btn-sm";
+  }
+
+  onClickFilter(genre:string){
+    this.movies = this.originalMovies.filter(movie => 
+      {
+        for(let genreCompare of movie.genres){
+          if(genreCompare.name === genre){
+            return true;
+          }
+        }
+        return false;
+      }
+    );
+    this.genreFiltered = genre;
+    this.displayResetFiterBtn = true;
+    this.btnsFilterClass = "btn btn-success btn-sm";
   }
 }
