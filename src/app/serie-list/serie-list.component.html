@@ -17,9 +17,9 @@
         <button (click)="onClickSortByRatingAsc()" mat-menu-item>Notation (croissante)</button>
         <button (click)="onClickSortByRatingDsc()" mat-menu-item>Notation (décroissante)</button>
     </mat-menu>
-    <button *ngIf="displayBtnSort" [class]="btnsSortClass">{{displaySort}}</button>
+    <button *ngIf="displayBtnSort" [class]="btnsSortClass" (click)="onClickResetSort()" [class]="btnsSortClass" ><i class="fa fa-times"></i> {{displaySort}}</button>
     <br>
-    <button [class]="btnsFilterClass" mat-button [matMenuTriggerFor]="filter">Filtrer par : </button>
+    <button [class]="btnsFilterClass" mat-button [matMenuTriggerFor]="filter">Filtrer par genre : </button>
     <mat-menu #filter="matMenu">
         <div *ngFor="let genre of genres">
             <button (click)="onClickFilter(genre)" mat-menu-item>{{genre}}</button>

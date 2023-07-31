@@ -37,6 +37,7 @@ import { ProfilComponent } from './auth/profil/profil.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatIconModule} from '@angular/material/icon'; 
 import {MatFormFieldModule} from '@angular/material/form-field'; 
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 
 @NgModule({
@@ -78,7 +79,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatDialogModule,
     MatAutocompleteModule,
     MatIconModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatButtonToggleModule
   ],
 
   providers: [

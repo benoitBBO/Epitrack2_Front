@@ -14,6 +14,7 @@ import { UserService } from '../shared/services/user.service';
 })
 export class UserSerieListComponent {
   series: UserserieModel[] = [];
+  originalUserSeries: UserserieModel[] = [];
   serie!: UserserieModel;
   loggedUser!:UserModel;
   currentUrl!: string;
@@ -40,6 +41,7 @@ export class UserSerieListComponent {
       this.userSerieService.getUserSeriesFromApi(this.loggedUser.id);
       this.userSerieService.userseries$.subscribe( data => {
         this.series = data;
+        this.originalUserSeries = data;
       });
     }
     
@@ -63,56 +65,31 @@ export class UserSerieListComponent {
             newUserSerieList=[...newUserSerieList, userSerie];
           });
           this.userSerieService.setUserSeries$(newUserSerieList);
-
-          // this.userSerieService.userseries$.subscribe(
-          //   (userSerieList:UserserieModel[]) => {
-          //     oldUserSerieList = userSerieList;
-          //     oldUserSerieList.forEach(userSerie => {
-          //       if(userSerie.id == userVideoId) {
-          //         userSerie.status = newStatus;
-          //       }
-          //       newUserSerieList=[...newUserSerieList, userSerie];
-          //     });
-          //     userSerieList = newUserSerieList;
-          //   }
-          //   );
-          //this.router.navigate(['/user/series']);
         } ,
         error: (err:unknown) => {
           if (err instanceof HttpErrorResponse){
             this.messageService.show("erreur de mise à jour du statut", "error");
-            // newUserSerieList = this.userSerieService.userseries;
-            // newUserSerieList.forEach( userSerie => {
-            //   userSerie.serie.title = "Breaking";
-            //   userSerie.status="UNWATCHED";
-
-            // })
-            // console.log("newUserSerieList: ", newUserSerieList)
-            // this.userSerieService.setUserSeries$(newUserSerieList);
-            // console.log("series: ", this.series);
           }
         }
       } )
   }
 
-  // ngOnChanges() {
-  //   console.log("ngOnChange de user-serie-list");
-  //   if (this.router.url == '/user') {
-  //     this.userSerieService.getBest4UserSeriesFromApi();
-  //   } else if (this.router.url == '/user/series') {
-  //     this.userSerieService.getUserSeriesFromApi();
-  //   }
-  //   this.userSerieService.userseries$.subscribe( data => this.series = data);
-  // }
-
-  // ngDoCheck() {
-  //   console.log("ngOnCheck de user-serie-list");
-  //   if (this.router.url == '/user') {
-  //     this.userSerieService.getBest4UserSeriesFromApi();
-  //   } else if (this.router.url == '/user/series') {
-  //     this.userSerieService.getUserSeriesFromApi();
-  //   }
-  //   this.userSerieService.userseries$.subscribe( data => this.series = data);
-  // }
+  onClickStatusBtn(value: string){
+    switch(value){
+      case "All":
+        this.series = this.originalUserSeries;
+        break;
+      case "UNWATCHED":
+        this.series = this.originalUserSeries.filter(userSerie => userSerie.status === value);
+        break;
+      case "ONGOING":
+        this.series = this.originalUserSeries.filter(userSerie => userSerie.status === value);
+        break;
+      case "WATCHED":
+        this.series = this.originalUserSeries.filter(userSerie => userSerie.status === value);
+        break;
+            
+    }
+  }
   
 }
