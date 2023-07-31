@@ -9,7 +9,7 @@ export class StatusDisplayPipe implements PipeTransform {
     let statusToDisplay:string ="";
     switch (value){
       case 'WATCHED':
-        statusToDisplay = "Déjà Vu";
+        statusToDisplay = "Déjà vu";
         break;
       case 'UNWATCHED':
         statusToDisplay = "A voir";

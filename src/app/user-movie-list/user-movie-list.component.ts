@@ -12,6 +12,7 @@ import { UserService } from '../shared/services/user.service';
 })
 export class UserMovieListComponent {
   movies: UsermovieModel[] = [];
+  originalUserMovies: UsermovieModel[] = [];
   movie!: UsermovieModel;
   loggedUser!:UserModel;
   currentUrl!: string;
@@ -38,8 +39,29 @@ export class UserMovieListComponent {
       this.userMovie.getUserMoviesFromApi(this.loggedUser.id);
     } else if (this.router.url == '/user/movies') {
       this.userMovie.getUserMoviesFromApi(this.loggedUser.id);
-      this.userMovie.usermovies$.subscribe( data => this.movies = data);
+      this.userMovie.usermovies$.subscribe( data => {
+        this.movies = data;
+        this.originalUserMovies = data;
+      });
     }
     
+  }
+
+  onClickStatusBtn(value: string){
+    switch(value){
+      case "All":
+        this.movies = this.originalUserMovies;
+        break;
+      case "UNWATCHED":
+        this.movies = this.originalUserMovies.filter(userMovie => userMovie.status === value);
+        break;
+      case "ONGOING":
+        this.movies = this.originalUserMovies.filter(userMovie => userMovie.status === value);
+        break;
+      case "WATCHED":
+        this.movies = this.originalUserMovies.filter(userMovie => userMovie.status === value);
+        break;
+            
+    }
   }
 }

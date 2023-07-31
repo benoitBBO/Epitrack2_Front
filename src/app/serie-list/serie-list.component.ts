@@ -150,21 +150,21 @@ export class SerieListComponent {
   }
 
   onClickSortByAlphabeticalOrderAz(){
-    this.series.sort((a, b) => a.title.localeCompare(b.title, 'fr', {ignorePunctuation: true}));
+    this.series= this.series.slice().sort((a, b) => a.title.localeCompare(b.title, 'fr', {ignorePunctuation: true}));
     this.displaySort = "Ordre alphabétique (A-Z)";
     this.displayBtnSort = true;
     this.btnsSortClass = "btn btn-success btn-sm";
   }
 
   onClickSortByAlphabeticalOrderZa(){
-    this.series.sort((a, b) => b.title.localeCompare(a.title, 'fr', {ignorePunctuation: true}));
+    this.series= this.series.slice().sort((a, b) => b.title.localeCompare(a.title, 'fr', {ignorePunctuation: true}));
     this.displaySort = "Ordre alphabétique (Z-A)";
     this.displayBtnSort = true;
     this.btnsSortClass = "btn btn-success btn-sm";
   }
 
   onClickSortByRatingAsc(){
-    this.series.sort((a, b) => {
+    this.series= this.series.slice().sort((a, b) => {
       if (a.rating < b.rating) {
         return -1;
       }
@@ -179,7 +179,7 @@ export class SerieListComponent {
   }
 
   onClickSortByRatingDsc(){
-    this.series.sort((a, b) => {
+    this.series= this.series.slice().sort((a, b) => {
       if (a.rating > b.rating) {
         return -1;
       }
@@ -191,6 +191,12 @@ export class SerieListComponent {
     this.displaySort = "Notation (Décroissante)";
     this.displayBtnSort = true;
     this.btnsSortClass = "btn btn-success btn-sm";
+  }
+
+  onClickResetSort(){
+    this.series = this.originalSeries;
+    this.displayBtnSort = false;
+    this.btnsSortClass = "btn btn-secondary btn-sm";
   }
 
   onClickResetFilter(){

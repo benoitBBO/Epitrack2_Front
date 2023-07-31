@@ -8,6 +8,18 @@
         </div>
     </div>
 </div>
+
+<!--Filters UserSeries-->
+<div id="divBtnsFiltersUser" *ngIf="currentUrl !== '/user'" class="mb-3">
+    <mat-button-toggle-group appearance="legacy" name="statusUserMovies" aria-label="Status">
+        <mat-button-toggle (click)="onClickStatusBtn('All')" value="All" checked>Tous</mat-button-toggle>
+        <mat-button-toggle (click)="onClickStatusBtn('UNWATCHED')" value="UNWATCHED">A voir</mat-button-toggle>
+        <mat-button-toggle (click)="onClickStatusBtn('ONGOING')" value="ONGOING">En cours</mat-button-toggle>
+        <mat-button-toggle (click)="onClickStatusBtn('WATCHED')" value="WATCHED">Déjà vu</mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
+<!--Filters UserSeries-->
+
 <div class="row">
     <div *ngFor="let userserie of series" class="col-12 col-md-3">
         <div class="card">

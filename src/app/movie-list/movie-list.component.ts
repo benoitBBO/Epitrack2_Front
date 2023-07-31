@@ -159,21 +159,21 @@ export class MovieListComponent {
   }
 
   onClickSortByAlphabeticalOrderAz(){
-    this.movies.sort((a, b) => a.title.localeCompare(b.title, 'fr', {ignorePunctuation: true}));
+    this.movies = this.movies.slice().sort((a, b) => a.title.localeCompare(b.title, 'fr', {ignorePunctuation: true}));
     this.displaySort = "Ordre alphabétique (A-Z)";
     this.displayBtnSort = true;
     this.btnsSortClass = "btn btn-success btn-sm";
   }
 
   onClickSortByAlphabeticalOrderZa(){
-    this.movies.sort((a, b) => b.title.localeCompare(a.title, 'fr', {ignorePunctuation: true}));
+    this.movies = this.movies.slice().sort((a, b) => b.title.localeCompare(a.title, 'fr', {ignorePunctuation: true}));
     this.displaySort = "Ordre alphabétique (Z-A)";
     this.displayBtnSort = true;
     this.btnsSortClass = "btn btn-success btn-sm";
   }
 
   onClickSortByRatingAsc(){
-    this.movies.sort((a, b) => {
+    this.movies = this.movies.slice().sort((a, b) => {
       if (a.rating < b.rating) {
         return -1;
       }
@@ -188,7 +188,7 @@ export class MovieListComponent {
   }
 
   onClickSortByRatingDsc(){
-    this.movies.sort((a, b) => {
+    this.movies = this.movies.slice().sort((a, b) => {
       if (a.rating > b.rating) {
         return -1;
       }
@@ -200,6 +200,12 @@ export class MovieListComponent {
     this.displaySort = "Notation (Décroissante)";
     this.displayBtnSort = true;
     this.btnsSortClass = "btn btn-success btn-sm";
+  }
+
+  onClickResetSort(){
+    this.movies = this.originalMovies;
+    this.displayBtnSort = false;
+    this.btnsSortClass = "btn btn-secondary btn-sm";
   }
 
   onClickResetFilter(){

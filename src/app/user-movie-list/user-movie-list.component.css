@@ -34,3 +34,11 @@ a {
 .activeLink {
     color: goldenrod !important;
 }
+
+.mat-button-toggle {
+    background-color:#6c757d;
+    color: #fff;
+}
+.mat-button-toggle-checked {
+    background-color:#198754;
+} 
