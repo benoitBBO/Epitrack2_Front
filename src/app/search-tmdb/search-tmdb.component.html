@@ -19,7 +19,7 @@
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
-                    <app-stars [componentType]="'display'" [score]="movie.score"></app-stars>
+                    <app-stars [componentType]="'display'" [score]="(movie.score / 2)"></app-stars>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
-                    <app-stars [componentType]="'display'" [score]="serie.score"></app-stars>
+                    <app-stars [componentType]="'display'" [score]="(serie.score / 2)"></app-stars>
                 </div>
             </div>
         </div>

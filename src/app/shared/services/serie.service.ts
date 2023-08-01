@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, forkJoin } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { SerieModel } from '../models/serie.model';
 import { TmdbserieModel } from '../models/tmdbserie.model';
 import { TmdbserieDetailDtoModel } from '../models/tmdbserie-detail-dto.model';
 import { TmdbepisodeDetailDtoModel } from '../models/tmdbepisode-detail-dto.model';
+import { TmdbseasonDetailDtoModel } from '../models/tmdbseason-detail-dto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,7 @@ export class SerieService {
 
   private _series$ = new BehaviorSubject<SerieModel[]>([]);
   private _serie$ = new BehaviorSubject<any>(SerieModel);
+  private _serieId$ = new BehaviorSubject<number>(777);
 
   constructor(private http: HttpClient) {
     console.log("construteur Serie => ", this)
@@ -74,18 +77,9 @@ export class SerieService {
       .pipe( map( (response:any) => new TmdbserieDetailDtoModel(response) ) )
   }
 
-  postNewSerie(serie:TmdbserieDetailDtoModel) {
-    for (let season of serie.seasons) {
-      this.getSeasonTmdbById(serie.id, season.season_number)
-        .subscribe( (episodes:TmdbepisodeDetailDtoModel[]) => {
-          season.episodes = episodes
-          if (serie.seasons.every((season) => season.episodes.length > 0)) {
-            this.http.post(this.EPITRACK_API + '/series', serie)
-              .subscribe(() => {})
-          }
-        }
-      )
-    }
+  postNewSerie(serie:TmdbserieDetailDtoModel): Observable<number> {
+    return this.http.post<number>(this.EPITRACK_API + '/series', serie)
+      .pipe((response) => { return response })
   }
   
   getSeasonTmdbById(serieId:number, seasonNumber:number) {

@@ -56,7 +56,6 @@ export class MovieListComponent {
         this.loadingDynamicCatalogVariable();
       });
     } else if (this.router.url == '/movies') {
-      // this.service.getMoviesFromApi().subscribe( data => this.movies = data);
       this.service.getMoviesFromApi().subscribe( data => {
         this.movies = data;
         this.originalMovies = data;
@@ -75,7 +74,6 @@ export class MovieListComponent {
   }
 
   onClickAddMovie(idMovie:Number, index:number) {
-    console.log('onClickAddMovie===');
     if (sessionStorage.getItem('token') && this.loggedUser.id !==0 && this.loggedUser.id !== undefined) {
         this.userService._loggedUser$.subscribe((user:any) => {
         this.loggedUser=user;
@@ -106,6 +104,7 @@ export class MovieListComponent {
           });
         });
     } else {
+      this.msgService.show("Vous devez être connecté pour accéder à cette fonctionnalité", "error");
         this.router.navigate(['/login']);
     }
   }
