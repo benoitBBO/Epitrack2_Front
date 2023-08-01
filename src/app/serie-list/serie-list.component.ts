@@ -98,6 +98,7 @@ export class SerieListComponent {
           }
         })
     } else {
+        this.msgService.show("Vous devez être connecté pour accéder à cette fonctionnalité", "error");
         this.router.navigate(['/login']);
     }
   }

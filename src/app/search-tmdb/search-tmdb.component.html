@@ -7,10 +7,10 @@
             <div class="card">
                 <img [src]="movie.image_landscape != null ? (movie.image_landscape | printImg) : './assets/img/noimage.png'" 
                     [alt]="movie.titre" 
-                    [routerLink]='["/details"]'>
+                    >
                 <div class="card-body">
                     <div class=" d-flex align-items-center justify-content-between">
-                        <h2 [routerLink]='["/details"]'>
+                        <h2 >
                             {{movie.titre}}
                         </h2>
                         <button (click)="onClickAddMovie(movie.id)"
@@ -19,7 +19,7 @@
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
-                    <app-stars [componentType]="'display'" [score]="movie.score"></app-stars>
+                    <app-stars [componentType]="'display'" [score]="(movie.score / 2)"></app-stars>
                 </div>
             </div>
         </div>
@@ -32,10 +32,10 @@
             <div class="card">
                 <img [src]="serie.image_landscape != null ? (serie.image_landscape | printImg) : './assets/img/noimage.png'" 
                     [alt]="serie.titre" 
-                    [routerLink]='["/details"]'>
+                    >
                 <div class="card-body">
                     <div class=" d-flex align-items-center justify-content-between">
-                        <h2 [routerLink]='["/details"]'>
+                        <h2 >
                             {{serie.titre}}
                         </h2>
                         <button (click)="onClickAddSerie(serie.id)"
@@ -44,7 +44,7 @@
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
-                    <app-stars [componentType]="'display'" [score]="serie.score"></app-stars>
+                    <app-stars [componentType]="'display'" [score]="(serie.score / 2)"></app-stars>
                 </div>
             </div>
         </div>

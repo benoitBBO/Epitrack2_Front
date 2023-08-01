@@ -83,8 +83,8 @@ export class MovieService {
   }
 
   postNewMovie(movie:TmdbmovieDetailDtoModel) {
-    this.http.post(this.EPITRACK_API + '/movies', movie)
-      .subscribe(() => {})
+    return this.http.post(this.EPITRACK_API + '/movies', movie)
+      .pipe(map((response) => new Number(response)));
   }
 
   get movies$():Observable<MovieModel[]> {
