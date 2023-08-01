@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -42,6 +42,7 @@ export class VideoDetailsComponent {
   userSerie!: UserserieModel;
   previousPage!: string;
   isSeasonNumberZero: boolean = false;
+  @ViewChild("collapsibleDiv", { static: false }) collapseDiv!: ElementRef<any>;
 
 
   constructor(
@@ -83,53 +84,22 @@ export class VideoDetailsComponent {
     
     this.spinner.show();
     if(this.type === "Movie"){
-      if(sessionStorage.length === 0){ //Si Utilisateur non connecté
+      if(sessionStorage.length === 0 || this.userOwned === "out"){ //Si Utilisateur non connecté ou connecté mais film non suivi
         this.movieService.getMovieById(this.id).subscribe( data => {
-          this.movie = data;
-          this.loaded = true;
-          
-          //Gestion des acteurs pour affichage
-          this.displayActors(this.movie);
-          this.spinner.hide();
+          this.loadMovieView(data, "out");
         });
-      } else { //Utilisateur connecté
-        if(this.userOwned === "out"){ //Film non suivi
-          this.movieService.getMovieById(this.id).subscribe( data => {
-            this.movie = data;
-            this.loaded = true;
-
-            //Gestion des acteurs pour affichage
-            this.displayActors(this.movie);
-            this.spinner.hide();
-          });
-        } else { //Film suivi
-          this.userMovieService.getUserMovieById(this.id).subscribe( data => {
-            this.userCatalogView = true;
-            this.movie = data.movie;
-            this.userMovie = data;
-            this.loaded = true;
-
-            //Gestion des acteurs pour affichage
-            this.displayActors(this.movie);
-            this.spinner.hide();
-          });
-        }
+      } else { //Utilisateur connecté et film suivi
+        this.userMovieService.getUserMovieById(this.id).subscribe( data => {
+          this.loadMovieView(data, "in");
+        });
 
       }
       
     } else {
-      if(sessionStorage.length === 0){ //Si Utilisateur non connecté
+      if(sessionStorage.length === 0 || this.userOwned === "out"){ //Si Utilisateur non connecté
         this.serieService.getSerieById(this.id).subscribe( {
           next: (data:SerieModel) => {
-            this.serie = data;
-            this.loaded = true;
-            this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.serie.seasons, "serie");
-            this.activeSeason = this.serie.seasons[0];
-    
-            //Gestion des acteurs pour affichage
-            this.displayActors(this.serie);
-            this.spinner.hide();
-  
+            this.loadSerieView(data, "out");
           },
           error: (err:unknown) => {
             if (err instanceof HttpErrorResponse){
@@ -137,48 +107,64 @@ export class VideoDetailsComponent {
             }
           }
         });
-      } else { //Utilisateur connecté
-        if(this.userOwned === "out"){ //Série non suivie
-          this.serieService.getSerieById(this.id).subscribe( data => {
-            this.serie = data;
-            this.loaded = true;
-            this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.serie.seasons, "serie");
-            this.activeSeason = this.serie.seasons[0];
-    
-            //Gestion des acteurs pour affichage
-            this.displayActors(this.serie);
-            this.spinner.hide();
-          });
-        } else { //Série suivie
-          this.userSerieService.getUserSerieById(this.id).subscribe( data => {
-            this.userCatalogView = true;
-            this.userSerie = data;
-            this.serie = data.serie;
-            this.loaded = true;
-            this.userSeasons = data.userSeasons;
-            this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.userSerie.userSeasons, "userSerie");
-            this.activeSeason = data.userSeasons[0]; //##TODO possibilité de gérer dynamiquement en fonction d'où en était le visionnage
-            
-            //Gestion des acteurs pour affichage
-            this.displayActors(this.serie);
-            this.spinner.hide();
+      } else { //Utilisateur connecté & inCatalogue
+        this.userSerieService.getUserSerieById(this.id).subscribe( data => {
+          this.loadSerieView(data, "in");
 
-            //Abonnement au changement sur userSerie 
-            //(pour actualiser la page détail user-serie, notamment quand changement toggle status)
-            this.userSerieService._userserie$ = new BehaviorSubject<any>(data);
-            this.userSerieService._userserie$.subscribe(data => 
-              {
-                this.userSeasons = data.userSeasons;
-                this.userSerie = data;
-                this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.userSerie.userSeasons, "userSerie");
-                let activeSeasonNumber:number = this.activeSeason.season.seasonNumber;
-                this.activeSeason = data.userSeasons[this.isSeasonNumberZero ? activeSeasonNumber : activeSeasonNumber-1];
-              })
-          });
-        }
+          //Abonnement au changement sur userSerie 
+          //(pour actualiser la page détail user-serie, notamment quand changement toggle status)
+          this.userSerieService._userserie$ = new BehaviorSubject<any>(data);
+          this.userSerieService._userserie$.subscribe(data => 
+            {
+              this.userSeasons = data.userSeasons;
+              this.userSerie = data;
+              this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.userSerie.userSeasons, "userSerie");
+              let activeSeasonNumber:number = this.activeSeason.season.seasonNumber;
+              this.activeSeason = data.userSeasons[this.isSeasonNumberZero ? activeSeasonNumber : activeSeasonNumber-1];
+            }
+          );
+        });
 
       }
     }
+  }
+
+  loadMovieView(data:any, type:string){
+    if(type === "in"){
+      this.userCatalogView = true;
+      this.movie = data.movie;
+      this.userMovie = data;
+      this.loaded = true;
+    } else {
+      this.movie = data;
+      this.loaded = true;
+    }
+    
+    //Gestion des acteurs pour affichage
+    this.displayActors(this.movie);
+    this.spinner.hide();
+  }
+
+  loadSerieView(data:any, type:string){
+    if(type === "in"){
+      this.userCatalogView = true;
+      this.userSerie = data;
+      this.serie = data.serie;
+      this.loaded = true;
+      this.userSeasons = data.userSeasons;
+      this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.userSerie.userSeasons, "userSerie");
+      this.activeSeason = data.userSeasons[0]; //##TODO possibilité de gérer dynamiquement en fonction d'où en était le visionnage
+
+    } else {
+      this.serie = data;
+      this.loaded = true;
+      this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.serie.seasons, "serie");
+      this.activeSeason = this.serie.seasons[0];
+    }
+
+    //Gestion des acteurs pour affichage
+    this.displayActors(this.serie);
+    this.spinner.hide();
   }
 
   doesSeasonsIncludesZero(seasonsArray:any, type:string){
@@ -224,8 +210,8 @@ export class VideoDetailsComponent {
     return movieId;
   }
 
-  onClickCollapsible(event:any){
-    event.currentTarget.classList.toggle('open');
+  onClickCollapsible(){
+    this.collapseDiv.nativeElement.classList.toggle('open');
   }
 
   displayActors(videoObj:any){
