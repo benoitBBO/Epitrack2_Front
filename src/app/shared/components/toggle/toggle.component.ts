@@ -7,6 +7,7 @@ import { MessageService } from '../../services/message.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserserieModel } from '../../models/userserie.model';
+import { UsermovieModel } from '../../models/usermovie.model';
 
 @Component({
   selector: 'app-toggle',
@@ -66,7 +67,8 @@ export class ToggleComponent {
   changedForMovie(){
     this.userMovieService.changeStatusUserMovie(this.userVideoId, this.status)
     .subscribe({
-      next: () => {
+      next: (usermovie: UsermovieModel) => {
+        this.userMovieService._usermovie$.next(usermovie);
         console.log("Ok next");
         this.messageService.show("statut du film mis à jour", "success");
       },

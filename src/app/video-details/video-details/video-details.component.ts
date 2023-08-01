@@ -61,6 +61,7 @@ export class VideoDetailsComponent {
   ngOnInit() {
     //Recupération du catalogue userMovies et userSeries
     this.userMovieService._usermovies$.subscribe(data => this.userMovies = data);
+    this.userMovieService._usermovie$.subscribe(data => this.userMovie = data);
     this.userSerieService._userseries$.subscribe(data => this.userSeries = data); 
     
     this.userService._loggedUser$.subscribe((user:any) => {
