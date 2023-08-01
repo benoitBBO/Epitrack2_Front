@@ -9,6 +9,7 @@ import { UserSerieService } from '../shared/services/user-serie.service';
 import { MessageService } from '../shared/services/message.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-serie-list',
@@ -35,7 +36,8 @@ export class SerieListComponent {
               private router:Router,
               private msgService:MessageService,
               private userSerie: UserSerieService,
-              private userService:UserService) {
+              private userService:UserService,
+              private spinner: NgxSpinnerService) {
   }
 
   ngOnInit() {
@@ -48,10 +50,12 @@ export class SerieListComponent {
     //Récupération des userSeries
     this.userSerie._userseries$.subscribe(data => this.userSeries = data);
 
+    this.spinner.show();
     if (this.router.url == '/') {
       this.service.getBest4SeriesFromApi().subscribe( data => {
         this.series = data;
         this.loadingDynamicCatalogVariable();
+        this.spinner.hide();
       });
     } else if (this.router.url == '/series') {
       this.service.getSeriesFromApi().subscribe( data => {
@@ -67,11 +71,13 @@ export class SerieListComponent {
             }
           }
         }
+        this.spinner.hide();
       });
     }
   }
   onClickAddSerie(serieId:number, index:number) {
     if (sessionStorage.getItem('token') && (this.loggedUser.id !==0 && this.loggedUser.id !== undefined)) {
+      this.spinner.show();
       this.userSerie.postUserSerie(serieId, this.loggedUser.id)
         .subscribe( {
           next: (response:any) => {
@@ -80,6 +86,7 @@ export class SerieListComponent {
             
             this.msgService.show("Série ajoutée avec succès", "success");
             this.dynamicCatalog[index] = !this.dynamicCatalog[index];
+            this.spinner.hide();
           },
           error: (err:unknown) => {
             if (err instanceof HttpErrorResponse){
@@ -93,7 +100,8 @@ export class SerieListComponent {
                   break;
                 default:
                   this.msgService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
-              }          
+              }   
+              this.spinner.hide();       
             }
           }
         })
@@ -104,6 +112,7 @@ export class SerieListComponent {
   }
 
   onClickWithdrawSerie(serie:SerieModel, index:number) {
+    this.spinner.show();
     this.userService._loggedUser$.subscribe((user:any) => {
       this.loggedUser=user;
       this.userSerie.deleteUserSerie(serie.id, this.loggedUser.id)
@@ -113,6 +122,7 @@ export class SerieListComponent {
             this.userSerie._userseries$ = new BehaviorSubject<any>(response);
             this.msgService.show("Serie retirée du catalogue avec succès", "success");
             this.dynamicCatalog[index] = !this.dynamicCatalog[index];
+            this.spinner.hide();
           },
           error: (err:unknown) => {
             if (err instanceof HttpErrorResponse){
@@ -125,6 +135,7 @@ export class SerieListComponent {
                   this.msgService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
               }          
             }
+            this.spinner.hide();
           }
         });
       });

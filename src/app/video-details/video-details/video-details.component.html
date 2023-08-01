@@ -1,3 +1,4 @@
+<ngx-spinner type="ball-scale-multiple"><p style="color: white">Chargement...</p></ngx-spinner>
 <div *ngIf="loaded" class="container-fluid">
     <!-- Template Movies -->
     <ng-template [ngIf]="type === 'Movie'" [ngIfElse]="seriesTpl">
@@ -39,7 +40,7 @@
                         {{genre.name}} 
                     </span></p>
                     
-                    <div (click)="onClickCollapsible($event)" class="collapsible">
+                    <div #collapsibleDiv class="collapsible">
                         <div class="short-text">
                             <p class="mb-5"><strong>Acteurs principaux : </strong>
                                 <span *ngFor="let actor of shortListActors; let i = index;">
@@ -47,7 +48,9 @@
                                         {{movie.actors[i].name}}, 
                                     </ng-template>
                                     <ng-template #tplShortWithoutCommaMovies>
-                                        {{movie.actors[i].name}} [...]
+                                        {{movie.actors[i].name}}... <span>
+                                            <i (click)="onClickCollapsible()" class="fa-solid fa-circle-plus" title="Plus de détails"></i>
+                                        </span>
                                     </ng-template>
                                 </span>
                             </p>
@@ -59,7 +62,9 @@
                                     {{actor.name}}, 
                                 </ng-template>
                                 <ng-template #tplWithoutCommaMovies>
-                                    {{actor.name}}
+                                    {{actor.name}} <span>
+                                        <i (click)="onClickCollapsible()" class="fa-solid fa-circle-minus" title="Moins de détails"></i>
+                                    </span>
                                 </ng-template>
                             </span></p>
                         </div>
@@ -108,7 +113,7 @@
                     <p class="mb-5"><strong>Genres : </strong> <span *ngFor="let genre of serie.genres">
                         {{genre.name}} 
                     </span></p>
-                    <div (click)="onClickCollapsible($event)" class="collapsible">
+                    <div #collapsibleDiv class="collapsible">
                         <div class="short-text">
                             <p class="mb-5"><strong>Acteurs principaux : </strong>
                                 <span *ngFor="let actor of shortListActors; let i = index;">
@@ -116,7 +121,10 @@
                                         {{serie.actors[i].name}}, 
                                     </ng-template>
                                     <ng-template #tplShortWithoutCommaSeries>
-                                        {{serie.actors[i].name}} <span *ngIf="serie.actors.length > shortListActors.length">[...]</span>
+                                        {{serie.actors[i].name}}... <span *ngIf="serie.actors.length > shortListActors.length">
+                                            <i (click)="onClickCollapsible()" class="fa-solid fa-circle-plus" title="Plus de détails"></i>
+
+                                        </span>
                                     </ng-template>
                                 </span>
                             </p>
@@ -128,7 +136,9 @@
                                     {{actor.name}}, 
                                 </ng-template>
                                 <ng-template #tplWithoutCommaSeries>
-                                    {{actor.name}}
+                                    {{actor.name}} <span>
+                                        <i (click)="onClickCollapsible()" class="fa-solid fa-circle-minus" title="Moins de détails"></i>
+                                    </span>
                                 </ng-template>
                             </span></p>
                         </div>

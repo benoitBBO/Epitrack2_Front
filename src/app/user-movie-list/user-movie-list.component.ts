@@ -16,8 +16,6 @@ export class UserMovieListComponent {
   movie!: UsermovieModel;
   loggedUser!:UserModel;
   currentUrl!: string;
-
-  // @ViewChild("toggleVideo0") toggle!:ElementRef;
   
   constructor(private router:Router,
               private userMovie:UserMovieService,

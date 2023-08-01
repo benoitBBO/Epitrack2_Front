@@ -10,6 +10,7 @@ import { TmdbmovieModel } from '../shared/models/tmdbmovie.model';
 import { UserModel } from '../shared/models/user.model';
 import { UserService } from '../shared/services/user.service';
 import { BehaviorSubject } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-movie-list',
@@ -36,7 +37,8 @@ export class MovieListComponent {
               private router:Router,
               private msgService:MessageService,
               private userMovie:UserMovieService,
-              private userService:UserService) {
+              private userService:UserService,
+              private spinner: NgxSpinnerService) {
   }
 
   ngOnInit() {
@@ -50,10 +52,12 @@ export class MovieListComponent {
     //Récupération des userMovies
     this.userMovie._usermovies$.subscribe(data => this.userMovies = data);
     //requete get API
+    this.spinner.show();
     if (this.router.url == '/') {
       this.service.getBest4MoviesFromApi().subscribe( data => {
         this.movies = data;
         this.loadingDynamicCatalogVariable();
+        this.spinner.hide();
       });
     } else if (this.router.url == '/movies') {
       this.service.getMoviesFromApi().subscribe( data => {
@@ -69,12 +73,14 @@ export class MovieListComponent {
             }
           }
         }
+        this.spinner.hide();
       });
     }
   }
 
   onClickAddMovie(idMovie:Number, index:number) {
     if (sessionStorage.getItem('token') && this.loggedUser.id !==0 && this.loggedUser.id !== undefined) {
+        this.spinner.show();
         this.userService._loggedUser$.subscribe((user:any) => {
         this.loggedUser=user;
         this.userMovie.postUserMovie(idMovie, this.loggedUser.id)
@@ -85,6 +91,7 @@ export class MovieListComponent {
               
               this.msgService.show("Film ajouté avec succès", "success");
               this.dynamicCatalog[index] = !this.dynamicCatalog[index];
+              this.spinner.hide();
             },
             error: (err:unknown) => {
               if (err instanceof HttpErrorResponse){
@@ -100,6 +107,7 @@ export class MovieListComponent {
                     this.msgService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
                 }          
               }
+              this.spinner.hide();
             }
           });
         });
@@ -110,6 +118,7 @@ export class MovieListComponent {
   }
 
   onClickWithdrawMovie(idMovie:Number, index:number) {
+    this.spinner.show();
     this.userService._loggedUser$.subscribe((user:any) => {
       this.loggedUser=user;
       this.userMovie.deleteUserMovie(idMovie, this.loggedUser.id)
@@ -120,6 +129,7 @@ export class MovieListComponent {
 
             this.msgService.show("Film retiré du catalogue avec succès", "success");
             this.dynamicCatalog[index] = !this.dynamicCatalog[index];
+            this.spinner.hide();
           },
           error: (err:unknown) => {
             if (err instanceof HttpErrorResponse){
@@ -132,6 +142,7 @@ export class MovieListComponent {
                   this.msgService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
               }          
             }
+            this.spinner.hide();
           }
         });
       });
