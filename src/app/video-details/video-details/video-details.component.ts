@@ -99,7 +99,14 @@ export class VideoDetailsComponent {
       if(sessionStorage.length === 0 || this.userOwned === "out"){ //Si Utilisateur non connecté
         this.serieService.getSerieById(this.id).subscribe( {
           next: (data:SerieModel) => {
-            this.loadSerieView(data, "out");
+            this.serie = data;
+            this.loaded = true;
+            this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.serie.seasons, "serie");
+            this.activeSeason = this.serie.seasons[0];
+
+            //Gestion des acteurs pour affichage
+            this.displayActors(this.serie);
+            this.spinner.hide();
           },
           error: (err:unknown) => {
             if (err instanceof HttpErrorResponse){
@@ -109,7 +116,18 @@ export class VideoDetailsComponent {
         });
       } else { //Utilisateur connecté & inCatalogue
         this.userSerieService.getUserSerieById(this.id).subscribe( data => {
-          this.loadSerieView(data, "in");
+          this.userCatalogView = true;
+          this.userSerie = data;
+          this.serie = data.serie;
+          this.loaded = true;
+          this.userSeasons = data.userSeasons;
+          this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.userSerie.userSeasons, "userSerie");
+          this.activeSeason = data.userSeasons[0]; //##TODO possibilité de gérer dynamiquement en fonction d'où en était le visionnage
+
+
+          //Gestion des acteurs pour affichage
+          this.displayActors(this.serie);
+          this.spinner.hide();
 
           //Abonnement au changement sur userSerie 
           //(pour actualiser la page détail user-serie, notamment quand changement toggle status)
@@ -142,28 +160,6 @@ export class VideoDetailsComponent {
     
     //Gestion des acteurs pour affichage
     this.displayActors(this.movie);
-    this.spinner.hide();
-  }
-
-  loadSerieView(data:any, type:string){
-    if(type === "in"){
-      this.userCatalogView = true;
-      this.userSerie = data;
-      this.serie = data.serie;
-      this.loaded = true;
-      this.userSeasons = data.userSeasons;
-      this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.userSerie.userSeasons, "userSerie");
-      this.activeSeason = data.userSeasons[0]; //##TODO possibilité de gérer dynamiquement en fonction d'où en était le visionnage
-
-    } else {
-      this.serie = data;
-      this.loaded = true;
-      this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.serie.seasons, "serie");
-      this.activeSeason = this.serie.seasons[0];
-    }
-
-    //Gestion des acteurs pour affichage
-    this.displayActors(this.serie);
     this.spinner.hide();
   }
 
