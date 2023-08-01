@@ -38,6 +38,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatIconModule} from '@angular/material/icon'; 
 import {MatFormFieldModule} from '@angular/material/form-field'; 
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -80,7 +81,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatAutocompleteModule,
     MatIconModule,
     MatFormFieldModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    NgxSpinnerModule
   ],
 
   providers: [

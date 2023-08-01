@@ -9,8 +9,9 @@ import { UserModel } from '../shared/models/user.model';
 import { MessageService } from '../shared/services/message.service';
 import { UserMovieService } from '../shared/services/user-movie.service';
 import { UserSerieService } from '../shared/services/user-serie.service';
-import { HttpErrorResponse, HttpParams, HttpClient} from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, forkJoin } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-search-tmdb',
@@ -30,7 +31,8 @@ export class SearchTMDBComponent {
               private userSerie:UserSerieService,
               private msgService:MessageService,
               private route: ActivatedRoute,
-              private router: Router){};
+              private router: Router,
+              private spinner: NgxSpinnerService){};
 
   ngOnInit() {
     this.userService._loggedUser$.subscribe((user:any) => {
@@ -47,6 +49,7 @@ export class SearchTMDBComponent {
 
   onClickAddMovie(movieId:number) {
     if (sessionStorage.getItem('token') && this.loggedUser.id !==0 && this.loggedUser.id !== undefined) {
+      this.spinner.show();
       this.movieService.getMovieTmdbById(movieId)
       .subscribe( (movie:any) => {
         this.movieService.postNewMovie(movie).subscribe((newMovieId) => {
@@ -57,6 +60,7 @@ export class SearchTMDBComponent {
               this.userMovie._usermovies$ = new BehaviorSubject<any>(response);
               this.msgService.show("Film ajouté avec succès", "success");
               this.router.navigateByUrl("/details/"+ newMovieId + "/Movie/in/catalog");
+              this.spinner.hide();
             },
             error: (err:unknown) => {
               if (err instanceof HttpErrorResponse){
@@ -72,6 +76,7 @@ export class SearchTMDBComponent {
                     this.msgService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
                 }          
               }
+              this.spinner.hide();
             }
           });
         });
@@ -84,6 +89,7 @@ export class SearchTMDBComponent {
 
   onClickAddSerie(serieId:number) {
       if (sessionStorage.getItem('token') && this.loggedUser.id !==0 && this.loggedUser.id !== undefined) {
+      this.spinner.show();
       this.serieService.getSerieTmdbById(serieId)
         .subscribe( (serie:any) => {
           let requests = [];
@@ -106,6 +112,7 @@ export class SearchTMDBComponent {
                     this.userSerie._userseries$ = new BehaviorSubject<any>(response);
                     this.msgService.show("Série ajoutée avec succès", "success");
                     this.router.navigateByUrl("/details/"+ newSerieId + "/Serie/in/catalog");
+                    this.spinner.hide();
                   },
                   error: (err:unknown) => {
                     if (err instanceof HttpErrorResponse){
@@ -121,6 +128,7 @@ export class SearchTMDBComponent {
                           this.msgService.show("code Http: "+errorObj.description+ "description: "+errorObj.description, "error");
                       }          
                     }
+                    this.spinner.hide();
                   }
                 });
               });
