@@ -38,8 +38,6 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatIconModule} from '@angular/material/icon'; 
 import {MatFormFieldModule} from '@angular/material/form-field'; 
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import { SpinnerComponent } from './spinner/spinner.component';
-import { LoadingInterceptor } from './interceptor/loading.interceptor';
 
 
 @NgModule({
@@ -67,7 +65,6 @@ import { LoadingInterceptor } from './interceptor/loading.interceptor';
     IsInCatalogPipe,
     StatusDisplayPipe,
     ProfilComponent,
-    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -92,9 +89,6 @@ import { LoadingInterceptor } from './interceptor/loading.interceptor';
     provide : HTTP_INTERCEPTORS, 
     useClass : TokenInterceptor,
     multi:true
-    },
-    {
-      provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true
     }
   ],
   
