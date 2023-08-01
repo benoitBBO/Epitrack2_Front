@@ -40,6 +40,7 @@ export class VideoDetailsComponent {
   userSeries!: UserserieModel[];
   userSerie!: UserserieModel;
   previousPage!: string;
+  isSeasonNumberZero: boolean = false;
 
 
   constructor(
@@ -117,7 +118,8 @@ export class VideoDetailsComponent {
           next: (data:SerieModel) => {
             this.serie = data;
             this.loaded = true;
-            this.activeSeason = this.serie.seasons[0]; //##TODO possibilité de gérer dynamiquement en fonction d'où en était le visionnage
+            this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.serie.seasons, "serie");
+            this.activeSeason = this.serie.seasons[0];
     
             //Gestion des acteurs pour affichage
             this.displayActors(this.serie);
@@ -134,7 +136,8 @@ export class VideoDetailsComponent {
           this.serieService.getSerieById(this.id).subscribe( data => {
             this.serie = data;
             this.loaded = true;
-            this.activeSeason = this.serie.seasons[0]; //##TODO possibilité de gérer dynamiquement en fonction d'où en était le visionnage
+            this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.serie.seasons, "userSerie");
+            this.activeSeason = this.serie.seasons[0];
     
             //Gestion des acteurs pour affichage
             this.displayActors(this.serie);
@@ -146,6 +149,7 @@ export class VideoDetailsComponent {
             this.serie = data.serie;
             this.loaded = true;
             this.userSeasons = data.userSeasons;
+            this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.userSerie.userSeasons, "userSerie");
             this.activeSeason = data.userSeasons[0]; //##TODO possibilité de gérer dynamiquement en fonction d'où en était le visionnage
             
             //Gestion des acteurs pour affichage
@@ -156,15 +160,11 @@ export class VideoDetailsComponent {
             this.userSerieService._userserie$ = new BehaviorSubject<any>(data);
             this.userSerieService._userserie$.subscribe(data => 
               {
-                console.log("abonnement userSerie data= ", data);
-                console.log("activeSeason=", this.activeSeason);
                 this.userSeasons = data.userSeasons;
                 this.userSerie = data;
-                // SBI : je n'arrive pas à repositionner la vue sur l'activeSeason, au changement de statut
-                //this.activeSeason = data.userSeasons[0];
+                this.isSeasonNumberZero = this.doesSeasonsIncludesZero(this.userSerie.userSeasons, "userSerie");
                 let activeSeasonNumber:number = this.activeSeason.season.seasonNumber;
-                console.log("activeSeasonNumber=", activeSeasonNumber);
-                this.activeSeason = data.userSeasons[activeSeasonNumber-1];
+                this.activeSeason = data.userSeasons[this.isSeasonNumberZero ? activeSeasonNumber : activeSeasonNumber-1];
               })
           });
         }
@@ -173,8 +173,28 @@ export class VideoDetailsComponent {
     }
   }
 
+  doesSeasonsIncludesZero(seasonsArray:any, type:string){
+    let boolean = false;
+    if(type === "serie"){
+      for(let season of seasonsArray){
+        if(season.seasonNumber === 0){
+          boolean = true;
+        }
+      }
+    } else {
+      for(let userSeason of seasonsArray){
+        if(userSeason.season.seasonNumber === 0){
+          boolean = true;
+        }
+      }
+    }
+
+    return boolean;
+  }
+
   onClickSeasonCard(event: MouseEvent, seasonNumber: number){
-    this.activeSeason = this.userCatalogView ? this.userSeasons[seasonNumber-1] : this.serie.seasons[seasonNumber-1];
+    let index = this.isSeasonNumberZero ? seasonNumber : seasonNumber - 1
+    this.activeSeason = this.userCatalogView ? this.userSeasons[index] : this.serie.seasons[index];
   }
 
   getUserVideoId(type:string, id:string){
